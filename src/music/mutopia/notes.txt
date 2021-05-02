@@ -1,0 +1,263 @@
+https://www.mutopiaproject.org/
+
+pictures-at-an-exhibition-mids.zip
+  
+Sym9-mids.zip
+  
+02-lamortdase-strings-mids.zip
+
+03-anitrasdance-mids.zip
+  
+concerto-8-mids.zip
+
+Concerto_a_4_D-mids.zip
+
+Concerto_a_4_G-mids.zip
+  
+Duett-Telemann-mids.zip
+  
+dvorak-o4-mids.zip
+
+dvorak-o96-mids.zip
+
+DvorakSYMPH7-mids.zip
+
+op1_1-mids.zip
+  
+Sonata_1-mids.zip
+
+Sonata_a_4_C-mids.zip
+
+tchai_op35-mids.zip
+
+TelemannGP-canons-sonate1-mids.zip
+
+TelemannGP-canons-sonate2-mids.zip
+
+there-is-sweet-music-mids.zip
+  
+Valvasensi_Concerti-mids.zip
+
+kopylov-gladsome-light.mid
+  Sparse, probly no good.
+  
+alyabyev-cherubic.mid
+  Slow and sparse.
+
+archangelsky-let-us-hasten.mid
+  Slow and sparse. I thought we were going to hasten...
+
+ein_feste_burg.mid
+  Apparently written by Martin Luther?
+  Familiar from church, but can't put my finger on it.
+  Slow and sparse, not very interesting.
+
+*** nobm.mid
+  "Night on Bald Mountain" by M. Mussorgsky (1839–1881)
+  Fast and spooky, kind of reminds me of Mancini or Grieg, I love it.
+  One might want a more distinct melody.
+
+wie_schon_leuchtet.mid
+  Dull, sparse, and churchy.
+  
+rach-prelude23-01.mid
+  Strong square rhythm, thick enough for use, but not very interesting.
+
+rach-prelude23-02.mid
+  Complex rhythm, I don't think appropriate for our purposes.
+  
+rach-prelude23-03.mid
+  Maybe too sparse.
+  
+rach-prelude23-04.mid
+  Slow and sparse.
+  
+*** rach-prelude23-05.mid
+  "Bump bump, da da dump!", this is perfect.
+  Seems to be some tempo change -- not sure if that's a good thing or bad.
+  
+rach-prelude23-06.mid
+  Pleasant, and rich enough, but slow.
+  
+rach-prelude23-08.mid
+  Crazy bumblebee melody, might be too complex for our purposes.
+  
+*** rach-prelude23-09.mid
+  Rich, fairly monorhythmic, kind of like a more erudite Scott Joplin?
+  
+rach-prelude23-10.mid
+  Slow and sparse.
+  
+rach-prelude-op3-no2.mid
+  Sparse, and the rhythm may be hard to follow.
+  
+rimsky-korsakov-op11-1.mid
+  Monorhythmic and pleasant, kind of NES RPG village scene.
+  
+rimsky-korsakov-op11-2.mid
+  Strongly monorhythmic, a bit sparse.
+  
+rimsky-korsakov-op11-3.mid
+  Complex rhythm.
+  
+rimsky-korsakov-op11-4.mid
+  Too slow.
+  
+Rimsky.mid
+  Weak rhythm, not very interesting.
+
+dvorak-als-die-alte-mutter.mid
+  Complex and variable tempo, I can't see this working.
+  
+01MorningPrayer.mid
+  Slow and sparse.
+  
+02-lamortdase.mid
+  Slow, not very interesting.
+
+05MarchOfTheWoodenSoldiers.mid
+  Not bad.
+  
+16OldFrenchSong.mid
+  Slow and sparse.
+  
+7-MountaineersSong.mid
+  Slow and sparse, shame because it's really quite nice.
+  
+AllegroAssai.mid
+  Busy and fast enough to work.
+  Sounds bad with current instruments.
+  
+Austria.mid
+  Slow and I think too simple.
+
+*** dansenapolitaine.mid
+  "Bump, cha cha cha cha", this is great.
+  
+Dans_l_antre_du_roi_de_la_montagne.mid
+  Ohhhh le roi de la montagne! In the Hall of the Mountain King.
+  This could be really nice, increasing tempo and all.
+  
+Deutschlandlied.mid
+  Slow and churchy.
+
+dumka.mid
+  Slow, sparse, weak rhythm.
+
+Greis.mid
+  Slow, not interesting.
+  
+grieg-ich-liebe-dich.mid
+  Not bad.
+  
+Hjemkomst.mid
+  Slow and sparse.
+  
+hob-xvi-27-i-allegro-con-brio.mid
+  Not bad. Definitely not with these instruments.
+  
+hob-xvi-27-iii-presto.mid
+  OK, not great.
+  
+hob-xvi-27-ii-menuet-trio.mid
+  Too slow.
+  
+hob-xvi-28-i-allegro-moderato.mid
+  Not very interesting.
+  
+hob-xvi-28-iii-presto.mid
+  Could be stronger of rhythm but not bad.
+  
+hob-xvi-28-ii-menuetto.mid
+  Slow and sparse.
+  
+horetzky10.mid
+  Not bad, RPG-village-ish.
+  
+horetzky1.mid
+  Slow and sparse.
+  
+horetzky2.mid
+  Pretty good gentle piano piece, maybe too light?
+  
+horetzky3.mid
+  Too light for our purposes.
+  
+horetzky4.mid
+  Slow and sparse.
+  
+horetzky5.mid
+  Twinkle twinkle little star?
+  
+horetzky6.mid
+  Slow and sparse.
+  
+horetzky7.mid
+  Light and pleasant, probably not the right thing for us.
+  
+horetzky8.mid
+  Too slow.
+  
+horetzky9.mid
+  Sparse.
+
+lyons.mid
+  Slow and sparse.
+  
+*** No03_Albumblatt.mid
+  Peppy, oompa-loompa bass. This is perfect.
+  by E. Grieg (1843–1907)
+  Brief tempo dives.
+
+pilm.mid
+  Slow and sparse.
+  
+prelude.mid
+  Very interesting! But complex of rhythm, totally inappropriate.
+  
+scriabine-op16-no1.mid
+  Slow and sparse.
+  
+scriabine-op16-no2.mid
+  Complex rhythm, unusable.
+  
+scriabine-op16-no3.mid
+  Slow and sparse.
+  
+scriabine-op16-no4.mid
+  Slow and sparse.
+  
+scriabine-op16-no5.mid
+  Nice piece, light but complex.
+  
+*** scriabin_etude_2_1.mid
+  Highlight monorhythmic.
+  
+Scriabin_prelude_op11no1.mid
+  Monorhythmic meandering melody... I could see trying this.
+
+troldhaugen.mid
+  Great tune, rhythm maybe.
+  
+*** Troldtog.mid
+  Oompa loompa bass with trilly arpeggios, very nintendo. I love it.
+  
+Tschaikowsky-op37.1.mid
+  Slow, not rhythmic enough.
+  
+Tschaikowsky-op37.2.mid
+  Could work.
+  
+Tschaikowsky-op37.8.mid
+  Could work.
+  
+turpinhar.mid
+  Ragtime, and kind of sparse.
+  Awful with the current instruments.
+  
+*** turpin.mid
+  Really nice ragtime, if we want to go that way.
+  Needs new instruments.
+
+veliumov-great-doxology.mid
+  Not very interesting

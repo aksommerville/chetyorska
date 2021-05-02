@@ -1,0 +1,108 @@
+8x8 tiles yields a 32x18 grid.
+[x] Is that big enough? 8x16 or 9x18 if we can tolerate no header or footer
+  [x] What is the size of NES Tetris's playable area? 10x20
+  [x] Can we handle non-power-of-two tile sizes? YES
+...6x6
+
+[x] End game
+[x] Shuffle new brick low edge to y=-1
+[x] Movement
+[x] Rotation
+[x] Line elimination
+[x] Drop
+
+[x] I've seen bricks get stuck at the top, how did that happen?
+  Seems only to be immediately after clearing a line.
+  ch_game_update(), I was allowing some frames to execute during the elimination blink
+  
+[x] dvorak-o96-1.mid: I love this song, it's perfect but the timing is screwy.
+  A few seconds in, notes start appearing at +5-tick phase and they stay that way.
+  [x] Is the file wrong, or am I?
+    The file is wrong. It is perfectly explicit about adding this 5 tick phase shift around 0:04.503 6917 ticks
+  xxx If it seems worthwhile, manually tweak this file to eliminate the shift.
+    ...maybe no need, seems like we have a bunch of valid candidates.
+  [x] Check other candidate files:
+    * src/music/mutopia/nobm.mid: Absolutely beautiful: 0/0, 1/2, 1/4, 3/4, 1/3, 2/3
+    * src/music/mutopia/rach-prelude23-05.mid: Similar. More 1/2 and 3/4 than nobm, and some 1/6 and 5/6 too, that's cool.
+    * src/music/mutopia/rach-prelude23-09.mid: Gorgeous: Only x/4, and pretty uniform heights.
+    * src/music/mutopia/dansenapolitaine.mid: Beautiful: Only x/4. Oddly, 1/2 is a little higher than 0/1.
+    * src/music/mutopia/No03_Albumblatt.mid: Probly OK: 0/1, 1/2. Small but noticeable collection just north of 3/8.
+    * src/music/mutopia/scriabin_etude_2_1.mid: Gorgeous: 0/1, 1/2, and a bit of 3/4
+    * src/music/mutopia/Troldtog.mid: Probly OK. Almost all 0/1 and 1/2, some 1/8 1/4 3/8 3/4.
+    * src/music/mutopia/turpin.mid: Beautiful: x/4 (1/2 noticeably higher than 0/1)
+      src/music/mutopia/unpack/00_DvorakAmericanQuartet_Conducteur_Mvt2.mid: BAD! Most events slightly right-shifted from x/4
+      src/music/mutopia/unpack/ballet.mid: Probly OK: Overwhelmingly 0/1 1/2, with some oddballs.
+    * src/music/mutopia/unpack/Mvt3_Scherzo.mid: Good: Mostly 0/1, some 1/2, some worrying ~1/8
+      src/music/mutopia/unpack/dvorak-o96-1.mid: BAD! Slight right-shift (see notes above)
+    * src/music/mutopia/unpack/concerto-8-2.mid: Gorgeous, all x/4
+    * src/music/mutopia/unpack/tuileries.mid: Gorgeous, all x/4 and mostly 0/1
+    * src/music/mutopia/unpack/dvorak-o96-2.mid: Great! Much more consistent than o96-1, all 0/1 1/2 3/4
+    * src/music/mutopia/unpack/dvorak-o96-3.mid: Very nice. Some triplets.
+    * src/music/mutopia/unpack/anitrasdance.mid: Perfect, 0/1 and 1/2
+
+[ ] Rearrange the canonical shapes, eg the vertex of the T should always be in the same place.
+[ ] Should we nudge on rotation when blocked horizontally?
+  [ ] Does NES Tetris do anything like that?
+[ ] Eliminating a line way top, where the incoming brick is still partly offscreen, we discard the offscreen part.
+  [ ] Is this consistent with NES Tetris? Is the situation even possible there?
+
+[x] MIDI In
+[x] Count lines
+[ ] Drop score
+[x] Rhythm score
+  [x] Rabbit: Add (framesperqnote) to rb_song, and (elapsedframes) to rb_song_player.
+    Then a public "get_song_phase()" returning (p,c) from the synth context.
+[x] Display lines and score
+[x] Background music
+[x] Get tempo from song
+[x] Sound effects
+[ ] "Next brick"
+[ ] Initial speed, and speed advancement
+  Idea: Allow the game to become technically impossible due to speed, and make that limit reachable, like 50 or 100 lines.
+  The challenge is to squeeze in as many points as you can in the limited time available.
+[ ] Adjust music tempo according to speed?
+[ ] Full graphics -- fixed tile per shape?
+[ ] Pause -- try to sabotage pause-as-slow-motion
+[ ] MIDI per-device running status
+[ ] Clean up building the UI grid in game
+[ ] Some like "WOW!" temporary UI at each line -- show the one-line score
+
+[ ] Remove Rabbit.
+  If not the whole thing, at least replace its synthesizer with Beepbot.
+
+[ ] Clean loading of music
+[ ] Lobby
+[ ] High scores
+[ ] Enumerate shapes instead of generalizing (ch_game_obj.c)
+[ ] Optionalize ossmidi
+[ ] MacOS MIDI in
+[ ] MS Windows MIDI in
+
+Configure MPK225 and document steps.
+  Using Preset 30 "Generic".
+  Desired layout, pads only:
+    Pad 1: LEFT    0x28 E_2 Electric Snare
+    Pad 2: RIGHT   0x29 F_2 Lo Floor Tom
+    Pad 3: DROP    0x24 C_2 Bass Drum 1
+    Pad 5: CCLOCK  0x32 D_3 Hi Tom
+    Pad 6: CLOCK   0x2d A_2 Lo Tom
+    Pad 7: PAUSE   0x31 C#3 Crash Cymbal 1
+  "Edit", strike the pad, arrows and dial to change key. Easy.
+  Output on Channel 10, cool, Chetyorska doesn't care.
+  MPK uses musicianly Note Names, what are the correct values here?
+    Pad 1: 0x24 C_2
+    Pad 2: 0x25 C#2
+    Pad 3: 0x26 D_2
+    Pad 4: 0x27 D#2
+    Pad 5: 0x28 E_2
+    Pad 6: 0x29 F_2
+    Pad 7: 0x2a F#2
+    Pad 8: 0x2b G_2
+    ...beware, the musician's scale is C..B, the A above C_2 is A_2.
+    ...who let musicians name things? that's ridiculous
+  OK that was easy.
+  My rotate pads are backward -- is that the setup, or are they backward internally?
+    COUNTER 0x2d => clock
+    CLOCK   0x32 => counter
+    The error is right here. Fixing initial Desired Layout.
+  Hmmm this is actually a pretty nice way to play Tetris.

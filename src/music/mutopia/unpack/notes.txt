@@ -1,0 +1,459 @@
+../chetyorska/src/music/mutopia/unpack/Score-3.mid: Playing MIDI file
+Sparse and weak rhythm.
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Voix2.mid: Playing MIDI file
+Not interesting. (faulty? keeps repeating two notes...)
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Flauto_I-1.mid: Playing MIDI file
+Silence
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Viola.mid: Playing MIDI file
+Single track?
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Tromba_II-2.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Trombone_I.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/TelemannGP-canons-sonate2_treble-1-2.mid: Playing MIDI file
+Not bad, fast and busy.
+../chetyorska/src/music/mutopia/unpack/piano-3.mid: Playing MIDI file
+Monorhythmic. Usable but not very interesting.
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Clarinetto_I.mid: Playing MIDI file
+silence
+../chetyorska/src/music/mutopia/unpack/Duett-Telemann-3.mid: Playing MIDI file
+slow and sparse
+../chetyorska/src/music/mutopia/unpack/Duett-Telemann.mid: Playing MIDI file
+possibly usable but not very interesting
+../chetyorska/src/music/mutopia/unpack/promenade-6.mid: Playing MIDI file
+Strong strobe rhythm, probably usable.
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Corno_IV.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/Score-16.mid: Playing MIDI file
+slow and sparse
+../chetyorska/src/music/mutopia/unpack/TelemannGP-canons-sonate1_treble-1-2.mid: Playing MIDI file
+very nice but i don't think the rhythm works
+../chetyorska/src/music/mutopia/unpack/violoncellipart.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/Score-15.mid: Playing MIDI file
+slow and sparse
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Corno_IV-3.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/triangolopart.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Conducteur_Mvt2.mid: Playing MIDI file
+*** Very nice. Engaging melody and highly rhythmic.
+../chetyorska/src/music/mutopia/unpack/violiniIIpart.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/Elgar-A2.mid: Playing MIDI file
+silence
+../chetyorska/src/music/mutopia/unpack/Score-19.mid: Playing MIDI file
+sparse  
+../chetyorska/src/music/mutopia/unpack/baba.mid: Playing MIDI file
+interesting piece but i think takes too long to get going
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Viola-1.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/Concerto_a_4_G_score-2.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/bydlo.mid: Playing MIDI file
+slow, good rhythm but i'm not feeling it
+../chetyorska/src/music/mutopia/unpack/Concerto_a_4_D_score-2.mid: Playing MIDI file
+too slow
+../chetyorska/src/music/mutopia/unpack/Sonata_1-2.mid: Playing MIDI file
+not interesting
+../chetyorska/src/music/mutopia/unpack/ballet.mid: Playing MIDI file
+*** Very stimulating. Rhythm might be too complicated
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Fagotto_I-3.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/pictures-at-an-exhibition-all-15.mid: Playing MIDI file
+too slow
+../chetyorska/src/music/mutopia/unpack/tchai_op35-2.mid: Playing MIDI file
+sparse
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Fagotto_II-1.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/great-gate.mid: Playing MIDI file
+sparse
+../chetyorska/src/music/mutopia/unpack/violiniIpart.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Clarinetto_II-2.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/TelemannGP-canons-sonate1_alto-1.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/Mvt3_Scherzo.mid: Playing MIDI file
+*** Beautiful, exactly what we're looking for. Needs new instruments
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Tromba_I.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Corno_II-2.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/Elgar-T1.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/pictures-at-an-exhibition-all-8.mid: Playing MIDI file
+Nice and peppy, but driven by trills and maybe not usable
+../chetyorska/src/music/mutopia/unpack/TelemannGP-canons-sonate2_alto-1-1.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Voix2-3.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/Sonata_a_IV_C_score-1.mid: Playing MIDI file
+Strongly monorhythmic. Could work
+../chetyorska/src/music/mutopia/unpack/score-3.mid: Playing MIDI file
+too slow
+../chetyorska/src/music/mutopia/unpack/Elgar-S2.mid: Playing MIDI file
+silence
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Corno_I.mid: Playing MIDI file
+silence
+../chetyorska/src/music/mutopia/unpack/promenade-3.mid: Playing MIDI file
+Nice but maybe too slow
+../chetyorska/src/music/mutopia/unpack/pictures-at-an-exhibition-all-3.mid: Playing MIDI file
+slow and sparse
+../chetyorska/src/music/mutopia/unpack/promenade-4.mid: Playing MIDI file
+slow and sparse
+../chetyorska/src/music/mutopia/unpack/TelemannGP-canons-sonate2_treble-1-1.mid: Playing MIDI file
+slow and sparse
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Timpani.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/pictures-at-an-exhibition-all-12.mid: Playing MIDI file
+slow and sparse
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Timpani-3.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/TelemannGP-canons-sonate2_alto-1-2.mid: Playing MIDI file
+weak rhythm
+../chetyorska/src/music/mutopia/unpack/dvorak-o96-1.mid: Playing MIDI file
+*** Perfect, this might have been written just for Tetris.
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Violoncello-1.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/two-jews.mid: Playing MIDI file
+slow and sparse. needs more jews
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Corno_III-2.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Trombone_II-2.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/piano-1.mid: Playing MIDI file
+single track? stands alone ok but not so interesting
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Viola-2.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/violin.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Violino_II-3.mid: Playing MIDI file
+single track?
+../chetyorska/src/music/mutopia/unpack/Duett-Telemann-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Timpani-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/concerto-8-2.mid: Playing MIDI file
+*** Great, pompous high-speed classical overture, very usable
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Corno_IV-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Voix2-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Elgar-skupna-glasba.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Sonata_a_IV_C_score.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Corno_I-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Contrabasso-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Sonata_a_IV_C_score-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/tuileries.mid: Playing MIDI file
+*** Nice light march
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Viola-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/dvorak-o96.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Clarinetto_I-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Violino_I-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Score-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Violino_II-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Fagotto_I-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/score-4.mid: Playing MIDI file
+Real nice but maybe not a good rhythm
+../chetyorska/src/music/mutopia/unpack/Mvt1_Adagio.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/pictures-at-an-exhibition-all-14.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Voix3-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/TelemannGP-canons-sonate1_treble-1-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Tromba_I-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_conductor-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Clarinetto_II-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/TelemannGP-canons-sonate1_alto-1-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/violin-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Fagotto_I-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Tromba_II-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/piano-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Duett-Telemann-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Concerto_a_4_D_score-1.mid: Playing MIDI file
+Pretty good, light and monorhythmic
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Tromba_II.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Voix1-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/TelemannGP-canons-sonate2_treble-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Voix2-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Score-6.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Violoncello-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Elgar-T2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Sonata_1-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/tchai_op35-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/gnomus.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Score-14.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Flauto_I.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/TelemannGP-canons-sonate1_alto-1-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Violoncello-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/score-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Violino_I-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Concerto_a_4_D_score-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/limoges.mid: Playing MIDI file
+Nice, highly monorhythmic, bumblebee and woodpecker on one piano
+../chetyorska/src/music/mutopia/unpack/contrabassipart.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/pictures-at-an-exhibition-all-9.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Score-13.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/aasesdeath.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Trombone_II.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Contrabasso-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Violino_II.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Corno_I-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/dvorak-o96-2.mid: Playing MIDI file
+*** Strong rhythm and nice light tune
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Trombone_I-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/concerto-8.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_conductor-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Sonata_a_IV_C_score-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Fagotto_II-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Corno_III-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Clarinetto_II-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Score-8.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Concerto_a_4_G_score-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Voix4-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/piano.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/score-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/pictures-at-an-exhibition-all.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/il-vecchio-castello.mid: Playing MIDI file
+Nice, could work, maybe too slow or sparse
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Corno_III.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Score-9.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Fagotto_II.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Mvt2_Largo.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Score-4.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Elgar-A1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Clarinetto_I-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Violoncello.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/pictures-at-an-exhibition-all-7.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Corno_IV-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Tromba_II-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Voix4-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Score-10.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/pictures-at-an-exhibition-all-5.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Trombone_III-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Timpani-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Violino_I.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/tchai_op35.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/pictures-at-an-exhibition-all-11.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Tromba_I-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Mvt4_conFuoco.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Score-12.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_conductor.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Concerto_a_4_G_score.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Score-18.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/TelemannGP-canons-sonate2_alto-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Trombone_III-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Violino_II-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/pictures-at-an-exhibition-all-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/pictures-at-an-exhibition-all-4.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Voix3-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/catacombae.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/promenade-5.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/TelemannGP-canons-sonate1_treble-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Flauto_I-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Corno_I-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Score-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Score-7.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/dvorak-o96-3.mid: Playing MIDI file
+*** Strong rhythm, very nice tune
+../chetyorska/src/music/mutopia/unpack/anitrasdance.mid: Playing MIDI file
+*** Very cool! Needs new instruments.
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Tromba_I-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/violin-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Voix1-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/violin-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Clarinetto_II.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Conducteur_Mvt4.mid: Playing MIDI file
+Usable, and fits the current instruments
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_conductor-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/pictures-at-an-exhibition-all-13.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Voix3-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/promenade-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Voix1-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Trombone_I-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Violino_I-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Score-11.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Corno_II.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Fagotto_II-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/pictures-at-an-exhibition-all-6.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Concerto_a_4_G_score-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Elgar-B2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Fagotto_I.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/promenade-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Score.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Conducteur_Mvt1.mid: Playing MIDI file
+Usable
+../chetyorska/src/music/mutopia/unpack/concerto-8-1.mid: Playing MIDI file
+
+../chetyorska/src/music/mutopia/unpack/Sonata_1-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Corno_II-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Sonata_1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Voix1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Flauto_I-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/pictures-at-an-exhibition-all-10.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Elgar-B1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Score-17.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Score-5.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Corno_II-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/violepart.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Conducteur_Mvt3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Voix3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Voix4-2.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Corno_III-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/00_DvorakAmericanQuartet_Voix4.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/score.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Clarinetto_I-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Concerto_a_4_D_score.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/pictures-at-an-exhibition-all-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/Elgar-S1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Trombone_II-1.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Contrabasso.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Contrabasso-3.mid: Playing MIDI file
+no
+../chetyorska/src/music/mutopia/unpack/DvorakSYMPH7_part_Trombone_III.mid: Playing MIDI file
+no
+
