@@ -48,7 +48,7 @@
 
 [x] MIDI In
 [x] Count lines
-[ ] Drop score
+xxx Drop score -- not convinced we need this
 [x] Rhythm score
   [x] Rabbit: Add (framesperqnote) to rb_song, and (elapsedframes) to rb_song_player.
     Then a public "get_song_phase()" returning (p,c) from the synth context.
@@ -56,8 +56,8 @@
 [x] Background music
 [x] Get tempo from song
 [x] Sound effects
-[ ] "Next brick"
-[ ] Initial speed, and speed advancement
+[x] "Next brick"
+[x] Initial speed, and speed advancement
   Idea: Allow the game to become technically impossible due to speed, and make that limit reachable, like 50 or 100 lines.
   The challenge is to squeeze in as many points as you can in the limited time available.
 [ ] Adjust music tempo according to speed?
@@ -69,6 +69,8 @@
 
 [ ] Remove Rabbit.
   If not the whole thing, at least replace its synthesizer with Beepbot.
+  
+[ ] Automated speed testing. I need to see game->fallskip in motion.
 
 [ ] Clean loading of music
 [ ] Lobby

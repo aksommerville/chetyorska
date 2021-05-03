@@ -17,13 +17,16 @@ static int ch_game_fall_cb(int x,int y,void *userdata) {
  
 static int ch_game_fall(struct ch_game *game) {
 
-  if (ch_game_for_brick_lower_neighbors(game,&game->brick,ch_game_fall_cb,game)) {
-    if (ch_game_brick_bottom_row(&game->brick)<0) return -1;
-    return 0;
+  int i=game->fallskip;
+  while (i-->0) {
+    if (ch_game_for_brick_lower_neighbors(game,&game->brick,ch_game_fall_cb,game)) {
+      if (ch_game_brick_bottom_row(&game->brick)<0) return -1;
+      return 0;
+    }
+    ch_game_clear_brick_cells(game,&game->brick);
+    game->brick.y++;
+    ch_game_print_brick_cells(game,&game->brick);
   }
-  ch_game_clear_brick_cells(game,&game->brick);
-  game->brick.y++;
-  ch_game_print_brick_cells(game,&game->brick);
   
   return 1;
 }
@@ -65,11 +68,17 @@ static int ch_game_check_lines(struct ch_game *game,int y) {
   
   game->eliminatecounter=60;//TODO how long?
   
+  int pvlevel=game->lines/10;
   game->lines+=game->eliminatec;
+  int level=game->lines/10;
   if (game->rhlopass>=900) {
     game->score+=game->linescorev[game->eliminatec-1]*2;
   } else {
     game->score+=(game->linescorev[game->eliminatec-1]*game->rhlopass)/900;
+  }
+  
+  if (level>pvlevel) {
+    ch_game_advance_level(game);
   }
   
   ch_game_print_number(game,game->linesuip,game->linesuic,game->lines,0);
@@ -140,6 +149,10 @@ int ch_game_update(struct ch_game *game) {
       game->fallcounter=game->framesperfall_drop;
     } else {
       game->fallcounter=game->framesperfall;
+    }
+    if (game->nextbrickdelay>0) {
+      game->nextbrickdelay--;
+      if (!game->nextbrickdelay) ch_game_generate_next_brick(game);
     }
     int err=ch_game_fall(game);
     if (err<0) {

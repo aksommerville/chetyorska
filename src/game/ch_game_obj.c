@@ -14,8 +14,9 @@ struct ch_game *ch_game_new() {
   
   game->towerw=10;
   game->towerh=20;
-  game->framesperfall=20;
+  game->framesperfall=60;
   game->framesperfall_drop=1;
+  game->fallskip=1;
   game->fallcounter=game->framesperfall;
   game->linescorev[0]=100;//TODO scoring
   game->linescorev[1]=300;
@@ -231,6 +232,44 @@ struct rb_grid *ch_game_generate_grid(struct ch_game *game) {
   grid->v[game->rhuip+game->rhuic]=0x25;
   memset(grid->v+game->rhuip,0x24,game->rhuic);
   
+  game->nextuip=(towery)*grid->w+towerx-6;
+  grid->v[game->nextuip-grid->w-1]=0x20;
+  grid->v[game->nextuip-grid->w  ]=0x21;
+  grid->v[game->nextuip-grid->w+1]=0x21;
+  grid->v[game->nextuip-grid->w+2]=0x21;
+  grid->v[game->nextuip-grid->w+3]=0x21;
+  grid->v[game->nextuip-grid->w+4]=0x22;
+  grid->v[game->nextuip-1]=0x30;
+  grid->v[game->nextuip  ]=0x00;
+  grid->v[game->nextuip+1]=0x00;
+  grid->v[game->nextuip+2]=0x00;
+  grid->v[game->nextuip+3]=0x00;
+  grid->v[game->nextuip+4]=0x32;
+  grid->v[game->nextuip+grid->w-1]=0x30;
+  grid->v[game->nextuip+grid->w  ]=0x00;
+  grid->v[game->nextuip+grid->w+1]=0x00;
+  grid->v[game->nextuip+grid->w+2]=0x00;
+  grid->v[game->nextuip+grid->w+3]=0x00;
+  grid->v[game->nextuip+grid->w+4]=0x32;
+  grid->v[game->nextuip+grid->w*2-1]=0x30;
+  grid->v[game->nextuip+grid->w*2  ]=0x00;
+  grid->v[game->nextuip+grid->w*2+1]=0x00;
+  grid->v[game->nextuip+grid->w*2+2]=0x00;
+  grid->v[game->nextuip+grid->w*2+3]=0x00;
+  grid->v[game->nextuip+grid->w*2+4]=0x32;
+  grid->v[game->nextuip+grid->w*3-1]=0x30;
+  grid->v[game->nextuip+grid->w*3  ]=0x00;
+  grid->v[game->nextuip+grid->w*3+1]=0x00;
+  grid->v[game->nextuip+grid->w*3+2]=0x00;
+  grid->v[game->nextuip+grid->w*3+3]=0x00;
+  grid->v[game->nextuip+grid->w*3+4]=0x32;
+  grid->v[game->nextuip+grid->w*4-1]=0x40;
+  grid->v[game->nextuip+grid->w*4  ]=0x41;
+  grid->v[game->nextuip+grid->w*4+1]=0x41;
+  grid->v[game->nextuip+grid->w*4+2]=0x41;
+  grid->v[game->nextuip+grid->w*4+3]=0x41;
+  grid->v[game->nextuip+grid->w*4+4]=0x42;
+  
   // the brick
   ch_game_new_brick(game);
   ch_game_print_brick_cells(game,&game->brick);
@@ -345,18 +384,53 @@ void ch_game_print_brick_cells(struct ch_game *game,const struct ch_brick *brick
   ch_game_replace_brick_cells(game,brick->x,brick->y,brick->shape,brick->tileid);
 }
 
+/* Next brick UI.
+ */
+ 
+void ch_game_redraw_next_brick(struct ch_game *game) {
+  uint8_t *dst=game->grid->v+game->nextuip;
+  uint16_t src=game->nextbrick.shape;
+  int i=4; for (;i-->0;dst+=game->grid->w,src<<=4) {
+    uint16_t mask=0x1000;
+    int x=4; for (;x-->0;mask<<=1) {
+      if (src&mask) dst[x]=game->nextbrick.tileid;
+      else dst[x]=0x00;
+    }
+  }
+}
+
 /* Generate a new brick at the top of the tower, fossilize the old one.
  */
  
 void ch_game_new_brick(struct ch_game *game) {
-  game->brick.shape=ch_game_random_brick_shape(game);
-  game->brick.tileid=0x01+rand()%3;//TODO per shape instead?
+
+  if (game->nextbrick.shape) {
+    game->brick=game->nextbrick;
+  } else {
+    game->brick.shape=ch_game_random_brick_shape(game);
+    game->brick.tileid=0x01+rand()%3;//TODO per shape instead?
+  }
+
+  if (game->nextbrickdelay) {
+    game->nextbrick.shape=ch_game_random_brick_shape(game);
+    game->nextbrick.tileid=0x01+rand()%3;//TODO per shape instead?
+    ch_game_redraw_next_brick(game);
+  } else {
+    game->nextbrickdelay=1;
+  }
+
   game->brick.x=(game->towerw>>1)-2;
   // Position vertically so the brick's bottom edge is just above the tower.
        if (game->brick.shape&0x000f) game->brick.y=-4;
   else if (game->brick.shape&0x00f0) game->brick.y=-3;
   else if (game->brick.shape&0x0f00) game->brick.y=-2;
   else game->brick.y=-1;
+}
+
+void ch_game_generate_next_brick(struct ch_game *game) {
+  game->nextbrick.shape=ch_game_random_brick_shape(game);
+  game->nextbrick.tileid=0x01+rand()%3;//TODO per shape instead?
+  ch_game_redraw_next_brick(game);
 }
 
 /* Iterate the lower neighbors of a brick.
@@ -510,4 +584,19 @@ int ch_game_end(struct ch_game *game) {
 int ch_game_sound(struct ch_game *game,int sfx) {
   if (!game->cb_sound) return 0;
   return game->cb_sound(sfx,game->sound_userdata);
+}
+
+/* Advance to the next level (every 10 lines).
+ */
+ 
+int ch_game_advance_level(struct ch_game *game) {
+  if (game->framesperfall>1) {
+    game->framesperfall>>=1;
+  } else {
+    // Seriously?
+    game->fallskip++;
+  }
+  //TODO should scoring change with the level?
+  //TODO bells, whistles
+  return 0;
 }

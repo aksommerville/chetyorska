@@ -18,8 +18,12 @@ struct ch_game {
   int towerx,towery,towerw,towerh;
   struct rb_grid *grid;
   struct ch_brick brick;
+  struct ch_brick nextbrick;
+  int nextuip;
+  int nextbrickdelay;
   int framesperfall;
   int framesperfall_drop;
+  int fallskip; // How many rows to drop on each fall -- only >1 at ludicrous speed
   int fallcounter;
   int dropping;
   int linescorev[4]; // how many points for each type of elimination
@@ -107,5 +111,10 @@ int ch_game_sound(struct ch_game *game,int sndid);
 #define CH_SFX_MOVE        0x7f35
 #define CH_SFX_ROTATE      0x7f36
 #define CH_SFX_DROP        0x7f37
+
+int ch_game_advance_level(struct ch_game *game);
+
+void ch_game_redraw_next_brick(struct ch_game *game);
+void ch_game_generate_next_brick(struct ch_game *game);
 
 #endif
