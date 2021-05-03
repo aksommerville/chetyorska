@@ -8,10 +8,10 @@
  
 static int ch_game_fall_cb(int x,int y,void *userdata) {
   struct ch_game *game=userdata;
-  if ((x<0)||(x>=game->towerw)) return 1; // how?
+  if ((x<0)||(x>=CH_TOWER_W)) return 1; // how?
   if (y<0) return 0; // falling in from offscreen, let it roll
-  if (y>=game->towerh) return 1; // struck bottom
-  if (game->grid->v[(game->towery+y)*game->grid->w+game->towerx+x]) return 1; // stuck something hard
+  if (y>=CH_TOWER_H) return 1; // struck bottom
+  if (ch_gridder_read(&game->gridder,ch_gridder_get_region(&game->gridder,CH_RGN_TOWER,0),x,y)) return 1;
   return 0; // keep on falling
 }
  
@@ -35,19 +35,21 @@ static int ch_game_fall(struct ch_game *game) {
  * If found, this will enter "eliminate" state and update the score.
  */
  
-static int ch_game_check_line(struct ch_game *game,int y) {
-  const uint8_t *v=game->grid->v+(game->towery+y)*game->grid->w+game->towerx;
-  int i=game->towerw;
-  for (;i-->0;v++) if (!*v) return 0;
-  return 1;
-}
- 
 static int ch_game_check_lines(struct ch_game *game,int y) {
+  const struct ch_gridder_region *tower=ch_gridder_get_region(&game->gridder,CH_RGN_TOWER,0);
+  if (!tower) return 0;
+  
+  const uint8_t *row=game->gridder.grid->v+(tower->y+y)*game->gridder.grid->w+tower->x;
   game->eliminatec=0;
-  int i=4; for (;i-->0;y++) {
+  int i=4; for (;i-->0;y++,row+=game->gridder.grid->w) {
     if (y<0) continue;
-    if (y>=game->towerh) break;
-    if (ch_game_check_line(game,y)) {
+    if (y>=tower->h) break;
+    int filled=1,x=tower->w;
+    while (x-->0) if (!row[x]) {
+      filled=0;
+      break;
+    }
+    if (filled) {
       game->eliminatev[game->eliminatec++]=y;
     }
   }
@@ -81,8 +83,14 @@ static int ch_game_check_lines(struct ch_game *game,int y) {
     ch_game_advance_level(game);
   }
   
-  ch_game_print_number(game,game->linesuip,game->linesuic,game->lines,0);
-  ch_game_print_number(game,game->scoreuip,game->scoreuic,game->score,0);
+  ch_gridder_text_number(
+    &game->gridder,ch_gridder_get_region(&game->gridder,CH_RGN_LINES,0),
+    6,0x56,game->lines
+  );
+  ch_gridder_text_number(
+    &game->gridder,ch_gridder_get_region(&game->gridder,CH_RGN_SCORE,0),
+    6,0x56,game->score
+  );
   
   return 0;
 }
@@ -92,15 +100,20 @@ static int ch_game_check_lines(struct ch_game *game,int y) {
  */
  
 static int ch_game_finalize_elimination(struct ch_game *game) {
+
+  const struct ch_gridder_region *tower=ch_gridder_get_region(&game->gridder,CH_RGN_TOWER,0);
+  if (!tower) return 0;
+  uint8_t *cellv=game->gridder.grid->v+tower->y*game->gridder.grid->w+tower->x;
+
   const int *y=game->eliminatev;
   int i=game->eliminatec;
   for (;i-->0;y++) {
     int rowc=*y;
-    uint8_t *p=game->grid->v+(game->towery+(*y))*game->grid->w+game->towerx;
-    for (;rowc-->0;p-=game->grid->w) {
-      memmove(p,p-game->grid->w,game->towerw);
+    uint8_t *p=cellv+(*y)*game->gridder.grid->w;
+    for (;rowc-->0;p-=game->gridder.grid->w) {
+      memmove(p,p-game->gridder.grid->w,tower->w);
     }
-    memset(p,0,game->towerw);
+    memset(p,0,tower->w);
   }
   game->eliminatecounter=0;
   game->eliminatec=0;
@@ -111,11 +124,16 @@ static int ch_game_finalize_elimination(struct ch_game *game) {
  */
  
 static int ch_game_flash_eliminations(struct ch_game *game) {
+
+  const struct ch_gridder_region *tower=ch_gridder_get_region(&game->gridder,CH_RGN_TOWER,0);
+  if (!tower) return 0;
+  uint8_t *cellv=game->gridder.grid->v+tower->y*game->gridder.grid->w+tower->x;
+  
   const int *y=game->eliminatev;
   int i=game->eliminatec;
   for (;i-->0;y++) {
-    uint8_t *v=game->grid->v+(game->towery+(*y))*game->grid->w+game->towerx;
-    int xi=game->towerw;
+    uint8_t *v=cellv+(*y)*game->gridder.grid->w;
+    int xi=tower->w;
     for (;xi-->0;v++) (*v)^=0x10;
   }
   return 0;
@@ -126,7 +144,7 @@ static int ch_game_flash_eliminations(struct ch_game *game) {
  
 int ch_game_update(struct ch_game *game) {
   game->input_blackout=0;
-  if (!game->grid) return 0;
+  if (!game->gridder.grid) return 0;
   
   if (game->eliminatecounter>0) {
     game->eliminatecounter--;
@@ -240,11 +258,8 @@ static int ch_game_rate_timing(struct ch_game *game) {
  
 static int ch_game_move_cb(int x,int y,void *userdata) {
   struct ch_game *game=userdata;
-  if (x<0) return 1;
-  if (x>=game->towerw) return 1;
-  if (y<0) return 0;
-  if (y>=game->towerh) return 1;
-  if (game->grid->v[(game->towery+y)*game->grid->w+game->towerx+x]) return 1;
+  if ((y<0)&&(x>=0)&&(x<CH_TOWER_W)) return 0;
+  if (ch_gridder_read(&game->gridder,ch_gridder_get_region(&game->gridder,CH_RGN_TOWER,0),x,y)) return 1;
   return 0;
 }
  
@@ -303,7 +318,7 @@ static int ch_game_drop(struct ch_game *game) {
  */
  
 int ch_game_input(struct ch_game *game,int eventid) {
-  if (!game->grid) return 0;
+  if (!game->gridder.grid) return 0;
   if (game->eliminatecounter) return 0;
   if (game->input_blackout&(1<<eventid)) return 0;
   game->input_blackout|=1<<eventid;

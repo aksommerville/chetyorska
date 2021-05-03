@@ -6,9 +6,25 @@
 #ifndef CH_GAME_H
 #define CH_GAME_H
 
+#include "ch_gridder.h"
+
+// Must agree with the source image, and tiles must be square.
+#define CH_TILESIZE 6
+
+// Grid regions.
+#define CH_RGN_TOWER_FRAME     1 /* 12x22 Where the game happens, including a 1-cell border. */
+#define CH_RGN_TOWER           2 /* 10x20 Where the game happens. */
+#define CH_RGN_NEXT            3 /* 6x6 Next brick, including border. */
+#define CH_RGN_LINES           4 /* 8+x4 Line count -- 8 + digitcount */
+#define CH_RGN_SCORE           5 /* 8+x4 Score '' */
+#define CH_RGN_RHYTHM          6 /* 2+x1 Rhythm bar -- 2 + barwidth */
+
+#define CH_TOWER_W 10
+#define CH_TOWER_H 20
+
 // The one moving piece. Always composed of four tiles.
 struct ch_brick {
-  int x,y;
+  int x,y; // top-left of shape's 4x4 box, in tower space
   uint16_t shape; // 16 positions LRTB big-endianly, top left at (x,y)
   uint8_t tileid;
 };
@@ -16,11 +32,11 @@ struct ch_brick {
 struct ch_game {
   int refc;
   int input_blackout; // mask of (1<<CH_EVENTID_*), zeroed at update
-  int towerx,towery,towerw,towerh;
-  struct rb_grid *grid;
+  
+  struct ch_gridder gridder;
+  
   struct ch_brick brick;
   struct ch_brick nextbrick;
-  int nextuip;
   int nextbrickdelay;
   int framesperfall;
   int framesperfall_drop;
@@ -28,17 +44,16 @@ struct ch_game {
   int fallcounter;
   int dropping;
   int linescorev[4]; // how many points for each type of elimination
+  
   // Eliminating rows stops the action temporarily:
   int eliminatecounter;
   int eliminatev[4]; // rows eliminating
   int eliminatec;
+  
   // Scorekeeping:
   int lines;
   int score;
-  int linesuip,scoreuip; // offset in (grid->v) of top left corner (of number only)
-  int linesuic,scoreuic; // how many digits, 1 column and 2 rows for each, tileid from 0x56
   int rhlopass; // running state of rhythm quality, 0..999
-  int rhuip,rhuic;
   
   /* Caller must provide this to enable rhythm rating.
    * On success, (p,c) are populated with the current phase relative to a qnote in the song.
@@ -70,6 +85,8 @@ int ch_game_input(struct ch_game *game,int eventid);
 #define CH_EVENTID_DROP    0x05 /* Drop the piece */
 #define CH_EVENTID_PAUSE   0x06 /* Pause or resume */
 
+/* Create the initial grid and return a WEAK reference on success.
+ */
 struct rb_grid *ch_game_generate_grid(struct ch_game *game);
 
 uint16_t ch_game_random_brick_shape(uint8_t *tileid,struct ch_game *game);
@@ -91,13 +108,6 @@ int ch_game_for_shape(
 );
 
 int ch_game_brick_bottom_row(const struct ch_brick *brick);
-
-void ch_game_print_number(
-  struct ch_game *game,
-  int dstp,int dstc, // offset in grid->v, and column count
-  int src,
-  int leading_zeroes // nonzero for "00123", zero for "  123"
-);
 
 void ch_game_print_rhythm_bar(struct ch_game *game);
 

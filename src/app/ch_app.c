@@ -439,10 +439,8 @@ int ch_app_set_game(struct ch_app *app,struct ch_game *game) {
   if (game) {
     struct rb_grid *grid=ch_game_generate_grid(game);
     if (!grid) return -1;
-    int err=rb_vmgr_set_grid(app->vmgr,grid);
-    rb_grid_del(grid);
-    if (err<0) return -1;
-    app->vmgr->scrollx=-2;//TODO generalize
+    if (rb_vmgr_set_grid(app->vmgr,grid)<0) return -1;
+    app->vmgr->scrollx=-((RB_FB_W-CH_TILESIZE*grid->w)>>1);
     app->vmgr->scrolly=0;
     
     game->cb_get_phase=ch_app_get_phase;

@@ -22,7 +22,7 @@ int main(int argc,char **argv) {
     if ((err=ch_app_update(app))<=0) break;
     
     //XXX TEMP: Detect completion and reset.
-    if (!game->grid) {
+    if (!game->gridder.grid) {
       ch_game_del(game);
       if (!(game=ch_game_new())) { err=-1; break; }
       if ((err=ch_app_set_game(app,game))<0) break;
