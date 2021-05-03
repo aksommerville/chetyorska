@@ -282,16 +282,17 @@ struct rb_grid *ch_game_generate_grid(struct ch_game *game) {
  * We will return only the canonical forms.
  */
 
-uint16_t ch_game_random_brick_shape(struct ch_game *game) {
+uint16_t ch_game_random_brick_shape(uint8_t *tileid,struct ch_game *game) {
   switch (rand()%7) {
-    case 0: return 0x0660;
-    case 1: return 0x00f0;
-    case 2: return 0x0446;
-    case 3: return 0x0226;
-    case 4: return 0x0720;
-    case 5: return 0x0630;
-    case 6: return 0x0360;
+    case 0: *tileid=0x01; return 0x0660;
+    case 1: *tileid=0x02; return 0x00f0;
+    case 2: *tileid=0x03; return 0x0446;
+    case 3: *tileid=0x04; return 0x0226;
+    case 4: *tileid=0x05; return 0x0720;
+    case 5: *tileid=0x06; return 0x0630;
+    case 6: *tileid=0x07; return 0x0360;
   }
+  *tileid=0x01;
   return 0x0660;
 }
 
@@ -407,13 +408,11 @@ void ch_game_new_brick(struct ch_game *game) {
   if (game->nextbrick.shape) {
     game->brick=game->nextbrick;
   } else {
-    game->brick.shape=ch_game_random_brick_shape(game);
-    game->brick.tileid=0x01+rand()%3;//TODO per shape instead?
+    game->brick.shape=ch_game_random_brick_shape(&game->brick.tileid,game);
   }
 
   if (game->nextbrickdelay) {
-    game->nextbrick.shape=ch_game_random_brick_shape(game);
-    game->nextbrick.tileid=0x01+rand()%3;//TODO per shape instead?
+    game->nextbrick.shape=ch_game_random_brick_shape(&game->nextbrick.tileid,game);
     ch_game_redraw_next_brick(game);
   } else {
     game->nextbrickdelay=1;
@@ -428,8 +427,7 @@ void ch_game_new_brick(struct ch_game *game) {
 }
 
 void ch_game_generate_next_brick(struct ch_game *game) {
-  game->nextbrick.shape=ch_game_random_brick_shape(game);
-  game->nextbrick.tileid=0x01+rand()%3;//TODO per shape instead?
+  game->nextbrick.shape=ch_game_random_brick_shape(&game->nextbrick.tileid,game);
   ch_game_redraw_next_brick(game);
 }
 

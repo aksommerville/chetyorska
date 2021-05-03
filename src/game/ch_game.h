@@ -71,7 +71,7 @@ int ch_game_input(struct ch_game *game,int eventid);
 
 struct rb_grid *ch_game_generate_grid(struct ch_game *game);
 
-uint16_t ch_game_random_brick_shape(struct ch_game *game);
+uint16_t ch_game_random_brick_shape(uint8_t *tileid,struct ch_game *game);
 uint16_t ch_game_rotate_shape(uint16_t shape,int d);
 void ch_game_clear_brick_cells(struct ch_game *game,const struct ch_brick *brick);
 void ch_game_print_brick_cells(struct ch_game *game,const struct ch_brick *brick);
