@@ -15,6 +15,7 @@ struct ch_brick {
 
 struct ch_game {
   int refc;
+  int input_blackout; // mask of (1<<CH_EVENTID_*), zeroed at update
   int towerx,towery,towerw,towerh;
   struct rb_grid *grid;
   struct ch_brick brick;

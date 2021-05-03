@@ -125,6 +125,7 @@ static int ch_game_flash_eliminations(struct ch_game *game) {
  */
  
 int ch_game_update(struct ch_game *game) {
+  game->input_blackout=0;
   if (!game->grid) return 0;
   
   if (game->eliminatecounter>0) {
@@ -304,6 +305,8 @@ static int ch_game_drop(struct ch_game *game) {
 int ch_game_input(struct ch_game *game,int eventid) {
   if (!game->grid) return 0;
   if (game->eliminatecounter) return 0;
+  if (game->input_blackout&(1<<eventid)) return 0;
+  game->input_blackout|=1<<eventid;
   switch (eventid) {
     case CH_EVENTID_LEFT: return ch_game_move_left(game);
     case CH_EVENTID_RIGHT: return ch_game_move_right(game);

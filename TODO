@@ -60,25 +60,30 @@ xxx Drop score -- not convinced we need this
 [x] Initial speed, and speed advancement
   Idea: Allow the game to become technically impossible due to speed, and make that limit reachable, like 50 or 100 lines.
   The challenge is to squeeze in as many points as you can in the limited time available.
-[ ] Adjust music tempo according to speed?
-[ ] Full graphics -- fixed tile per shape?
+xxx Adjust music tempo according to speed?
+[x] Full graphics -- fixed tile per shape?
 [ ] Pause -- try to sabotage pause-as-slow-motion
 [ ] MIDI per-device running status
 [ ] Clean up building the UI grid in game
 [ ] Some like "WOW!" temporary UI at each line -- show the one-line score
+[ ] Use sprites for "next brick", center in box
+[x] Restrict input to one stroke per key per frame
 
 [ ] Remove Rabbit.
   If not the whole thing, at least replace its synthesizer with Beepbot.
   
 [ ] Automated speed testing. I need to see game->fallskip in motion.
+  [ ] Verify input restriction.
 
 [ ] Clean loading of music
+[ ] Game over screen -- esp we want to see the score please!
 [ ] Lobby
 [ ] High scores
 [ ] Enumerate shapes instead of generalizing (ch_game_obj.c)
 [ ] Optionalize ossmidi
 [ ] MacOS MIDI in
 [ ] MS Windows MIDI in
+[ ] Video, audio, input drivers for non-linux host (Rabbit?)
 
 Configure MPK225 and document steps.
   Using Preset 30 "Generic".
