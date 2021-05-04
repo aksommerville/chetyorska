@@ -2,6 +2,7 @@
 #include "ch_game.h"
 #include <rabbit/rb_grid.h>
 #include <rabbit/rb_image.h>
+#include <rabbit/rb_sprite.h>
 
 /* New.
  */
@@ -32,6 +33,7 @@ void ch_game_del(struct ch_game *game) {
   if (game->refc-->1) return;
   
   ch_gridder_cleanup(&game->gridder);
+  rb_sprite_group_del(game->sprites);
   
   free(game);
 }
@@ -146,6 +148,25 @@ struct rb_grid *ch_game_generate_grid(struct ch_game *game) {
   return grid;
 }
 
+/* Generate sprite group.
+ */
+ 
+struct rb_sprite_group *ch_game_generate_sprites(struct ch_game *game) {
+  if (!game->sprites) {
+    if (!(game->sprites=rb_sprite_group_new(0))) return 0;
+    int i=4; while (i-->0) {
+      struct rb_sprite *sprite=rb_sprite_new(&rb_sprite_type_dummy);
+      if (!sprite) return 0;
+      sprite->imageid=1;
+      sprite->x=-100; // we can't make them transparent, so go offscreen when invisible
+      int err=rb_sprite_group_add(game->sprites,sprite);
+      rb_sprite_del(sprite);
+      if (err<0) return 0;
+    }
+  }
+  return game->sprites;
+}
+
 /* Select a random brick shape.
  * There are 19 valid shapes, of which 7 are canonical forms.
  * We will return only the canonical forms.
@@ -246,21 +267,62 @@ void ch_game_print_brick_cells(struct ch_game *game,const struct ch_brick *brick
   );
 }
 
+/* Populate 4 sprites according to a shape.
+ * Their positions are sane relative to each other, but don't assume anything about their absolute position.
+ */
+ 
+static void ch_game_populate_sprites_for_shape(
+  struct rb_sprite **spritev,
+  uint16_t shape
+) {
+  int spritec=0;
+  int y=0;
+  for (;y<4;y++) {
+    int x=0;
+    for (;x<4;x++,shape<<=1) {
+      if (shape&0x8000) {
+        (*spritev)->x=x*CH_TILESIZE;
+        (*spritev)->y=y*CH_TILESIZE;
+        spritev++;
+        if (++spritec>=4) return;
+      }
+    }
+  }
+}
+
 /* Next brick UI.
  */
  
 void ch_game_redraw_next_brick(struct ch_game *game) {
-  //TODO use sprite
+  if (!game->sprites||(game->sprites->c<4)) return;
   const struct ch_gridder_region *dst=ch_gridder_get_region(&game->gridder,CH_RGN_NEXT,0);
   if (!dst) return;
-  ch_gridder_framefill_region(&game->gridder,dst,0x20,0x00);
-  ch_gridder_fill_shape(
-    &game->gridder,
-    dst->x+1,dst->y+1,
-    game->nextbrick.shape,
-    game->nextbrick.tileid,
-    dst
-  );
+  
+  ch_game_populate_sprites_for_shape(game->sprites->v,game->nextbrick.shape);
+  int xlo=game->sprites->v[0]->x;
+  int ylo=game->sprites->v[0]->y;
+  int xhi=xlo,yhi=ylo;
+  int i=4;
+  while (i-->0) {
+    struct rb_sprite *sprite=game->sprites->v[i];
+    if (sprite->x<xlo) xlo=sprite->x;
+    else if (sprite->x>xhi) xhi=sprite->x;
+    if (sprite->y<ylo) ylo=sprite->y;
+    else if (sprite->y>yhi) yhi=sprite->y;
+    sprite->tileid=game->nextbrick.tileid;
+  }
+  int x=(xlo+xhi)>>1;
+  int y=(ylo+yhi)>>1;
+  
+  int dstx=dst->x*CH_TILESIZE+((dst->w*CH_TILESIZE)>>1);
+  int dsty=dst->y*CH_TILESIZE+((dst->h*CH_TILESIZE)>>1);
+  int addx=dstx-x;
+  int addy=dsty-y;
+  for (i=4;i-->0;) {
+    struct rb_sprite *sprite=game->sprites->v[i];
+    sprite->x+=addx;
+    sprite->y+=addy;
+  }
 }
 
 /* Generate a new brick at the top of the tower, fossilize the old one.

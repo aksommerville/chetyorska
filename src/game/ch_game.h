@@ -34,6 +34,7 @@ struct ch_game {
   int input_blackout; // mask of (1<<CH_EVENTID_*), zeroed at update
   
   struct ch_gridder gridder;
+  struct rb_sprite_group *sprites;
   
   struct ch_brick brick;
   struct ch_brick nextbrick;
@@ -88,6 +89,7 @@ int ch_game_input(struct ch_game *game,int eventid);
 /* Create the initial grid and return a WEAK reference on success.
  */
 struct rb_grid *ch_game_generate_grid(struct ch_game *game);
+struct rb_sprite_group *ch_game_generate_sprites(struct ch_game *game);
 
 uint16_t ch_game_random_brick_shape(uint8_t *tileid,struct ch_game *game);
 uint16_t ch_game_rotate_shape(uint16_t shape,int d);

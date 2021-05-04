@@ -443,6 +443,10 @@ int ch_app_set_game(struct ch_app *app,struct ch_game *game) {
     app->vmgr->scrollx=-((RB_FB_W-CH_TILESIZE*grid->w)>>1);
     app->vmgr->scrolly=0;
     
+    struct rb_sprite_group *group=ch_game_generate_sprites(game);
+    if (!group) return -1;
+    if (rb_vmgr_set_sprites(app->vmgr,group)<0) return -1;
+    
     game->cb_get_phase=ch_app_get_phase;
     game->phase_userdata=app;
     game->cb_sound=ch_app_play_sound;

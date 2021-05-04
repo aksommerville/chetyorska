@@ -66,7 +66,7 @@ xxx Adjust music tempo according to speed?
 [ ] MIDI per-device running status
 [x] Clean up building the UI grid in game
 [ ] Some like "WOW!" temporary UI at each line -- show the one-line score
-[ ] Use sprites for "next brick", center in box
+[x] Use sprites for "next brick", center in box
 [x] Restrict input to one stroke per key per frame
 
 [ ] Rabbit: Some problem with sound effects. "rotate" was silent, restarted and then it's fine (no rebuild of archive).
