@@ -34,6 +34,7 @@ void ch_game_del(struct ch_game *game) {
   
   ch_gridder_cleanup(&game->gridder);
   rb_sprite_group_del(game->sprites);
+  if (game->strokeogram) free(game->strokeogram);
   
   free(game);
 }
@@ -112,6 +113,13 @@ struct rb_grid *ch_game_generate_grid(struct ch_game *game) {
   region->x=tframe.x-region->w;
   region->y=tframe.y;
   
+  // Metronome below Next.
+  if (!(region=ch_gridder_new_region(&game->gridder,CH_RGN_METRONOME))) return 0;
+  region->w=2;
+  region->h=2;
+  region->x=tframe.x-region->w-1;
+  region->y=tframe.y+7;
+  
   if (ch_gridder_validate_all(&game->gridder)<0) return 0;
   
   // Now draw everything...
@@ -127,6 +135,9 @@ struct rb_grid *ch_game_generate_grid(struct ch_game *game) {
   #define NUMBER(tag) ch_gridder_text_number( \
     &game->gridder,ch_gridder_get_region(&game->gridder,CH_RGN_##tag,0),6,0x56,0 \
   );
+  #define BULK(tag,tileid) ch_gridder_bulk_region( \
+    &game->gridder,ch_gridder_get_region(&game->gridder,CH_RGN_##tag,0),tileid \
+  );
   
   FF(TOWER_FRAME,0x20,0x00)
   FF(LINES,0x20,0x00)
@@ -137,11 +148,13 @@ struct rb_grid *ch_game_generate_grid(struct ch_game *game) {
   NUMBER(SCORE)
   CONT(RHYTHM,0x23)
   FF(NEXT,0x20,0x00)
+  BULK(METRONOME,0x9e)
   
   #undef FF
   #undef CONT
   #undef LABEL
   #undef NUMBER
+  #undef BULK
   
   ch_game_new_brick(game);
   
@@ -453,4 +466,50 @@ int ch_game_advance_level(struct ch_game *game) {
   }
   //TODO bells, whistles
   return 0;
+}
+
+/* Stroke-o-gram
+ */
+ 
+void ch_game_print_strokeogram(struct ch_game *game) {
+  if (game->strokeogramc<1) return;
+  
+  // output size in glyphs
+  int w=120;
+  int h=50;
+  if (w>game->strokeogramc) w=game->strokeogramc;
+  
+  // Aggregate the precise stroke times into buckets; no more than 1 bucket per time.
+  int *bucketv=calloc(sizeof(int),w);
+  if (!bucketv) return;
+  int srci=game->strokeogramc;
+  int ymax=0;
+  while (srci-->0) {
+    int dsti=(srci*w)/game->strokeogramc;
+    if (dsti<0) dsti=0; // not possible but play it safe, eh
+    else if (dsti>=w) dsti=w-1;
+    bucketv[dsti]+=game->strokeogram[srci];
+    if (bucketv[dsti]>ymax) ymax=bucketv[dsti];
+  }
+  
+  // Scale bucket values to 0..h-1
+  if (ymax>0) { // i guess it's possible that the whole stroke-o-gram was zero?
+    int i=w; while (i-->0) {
+      bucketv[i]=(bucketv[i]*h)/ymax;
+      if (bucketv[i]<0) bucketv[i]=0;
+      else if (bucketv[i]>=h) bucketv[i]=h-1;
+    }
+  }
+  
+  // Print the chart.
+  int y=h;
+  while (y-->0) {
+    int x=0; for (;x<w;x++) {
+      if (bucketv[x]>=y) fprintf(stderr,"X");
+      else fprintf(stderr," ");
+    }
+    fprintf(stderr,"\n");
+  }
+  
+  free(bucketv);
 }

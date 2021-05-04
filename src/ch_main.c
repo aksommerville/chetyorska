@@ -18,11 +18,12 @@ int main(int argc,char **argv) {
   if (ch_app_set_game(app,game)<0) return 1;
   
   while (1) {
-    if ((err=ch_game_update(game))<0) break;
+    if ((err=ch_game_update(game,app->beatp,app->beatc))<0) break;
     if ((err=ch_app_update(app))<=0) break;
     
     //XXX TEMP: Detect completion and reset.
     if (!game->gridder.grid) {
+      ch_game_print_strokeogram(game);
       ch_game_del(game);
       if (!(game=ch_game_new())) { err=-1; break; }
       if ((err=ch_app_set_game(app,game))<0) break;

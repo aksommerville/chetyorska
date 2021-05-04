@@ -10,6 +10,8 @@ struct ch_app {
   int quit; // nonzero if someone requested quit (eg close window)
   struct ch_game *game;
   int timing_bias;
+  int beatp,beatc; // song's beat, mapped to game cycles
+  int srcbeatp; // absolute beat
 };
 
 struct ch_app *ch_app_new(int argc,char **argv);

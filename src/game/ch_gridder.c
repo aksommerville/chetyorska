@@ -237,6 +237,23 @@ void ch_gridder_framefill_region(struct ch_gridder *gridder,const struct ch_grid
   }
 }
 
+/* Bulk copy into region.
+ */
+ 
+void ch_gridder_bulk_region(struct ch_gridder *gridder,const struct ch_gridder_region *region,uint8_t tileid) {
+  if (!region||!region->w||!region->h) return;
+  if (!gridder->grid) return;
+  uint8_t *row=gridder->grid->v+region->y*gridder->grid->w+region->x;
+  
+  int yi=region->h;
+  for (;yi-->0;row+=gridder->grid->w,tileid+=0x10) {
+    uint8_t *p=row;
+    uint8_t t=tileid;
+    int xi=region->w;
+    for (;xi-->0;p++,t++) *p=t;
+  }
+}
+
 /* Draw continuous-value progress bar.
  */
  

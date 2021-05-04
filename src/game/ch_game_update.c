@@ -1,6 +1,7 @@
 #include "ch_internal.h"
 #include "ch_game.h"
 #include <rabbit/rb_grid.h>
+#include <math.h>
 
 /* Fall the brick by one row.
  * Return >0 if fallen, <0 if stuck offscreen, or zero if it's at the ground and must bind.
@@ -142,9 +143,19 @@ static int ch_game_flash_eliminations(struct ch_game *game) {
 /* Update, main entry point.
  */
  
-int ch_game_update(struct ch_game *game) {
+int ch_game_update(struct ch_game *game,int beatp,int beatc) {
   game->input_blackout=0;
   if (!game->gridder.grid) return 0;
+  
+  game->beatp=beatp;
+  game->beatc=beatc;
+  int metronome_color=7; // 0=bright .. 7=dim
+  if (beatc>0) {
+    metronome_color=(beatp*16)/beatc;
+  }
+  if (metronome_color<0) metronome_color=0;
+  else if (metronome_color>7) metronome_color=7;
+  ch_gridder_bulk_region(&game->gridder,ch_gridder_get_region(&game->gridder,CH_RGN_METRONOME,0),0x90+metronome_color*2);
   
   if (game->eliminatecounter>0) {
     game->eliminatecounter--;
@@ -194,12 +205,40 @@ int ch_game_update(struct ch_game *game) {
  */
  
 static int ch_game_rate_timing(struct ch_game *game) {
+  if (game->beatc<1) return 0;
+  
+  double quality=0.0;
+  
+  // Perfect or very close. (beatc) is not necessarily the range of (beatp), there can be rounding errors.
+  if (!game->beatp||(game->beatp>=game->beatc-1)) {
+    quality=1.0;
+    
+  // Grade it like a triangle wave. 0 is the peak and 1/2 the floor.
+  } else {
+    double phase=(double)game->beatp/(double)game->beatc;
+    quality=fabs(0.5-phase)*4.0-1.0;
+  }
+  
+  int dscore=(int)(quality*100);
+  game->rhlopass+=dscore;
+  if (game->rhlopass<0) game->rhlopass=0;
+  else if (game->rhlopass>999) game->rhlopass=999;
+  
+  fprintf(stderr,"%d/%d quality=%f dscore=%d lopass=%d\n",game->beatp,game->beatc,quality,dscore,game->rhlopass);
+  
+  ch_game_print_rhythm_bar(game);
+  
+  return 0;
+}
+ 
+static int ch_game_rate_timing_XXX(struct ch_game *game) {
   if (!game->cb_get_phase) return 0;
   int p=0,c=0;
-  if (game->cb_get_phase(&p,&c,game->phase_userdata)<0) return 0;
-  if ((p<0)||(p>=c)) return 0;
+  if (game->cb_get_phase(&p,&c,game->phase_userdata)<0) return 0;//XXX move the song timing query out to app
+  if ((p<0)||(c<1)) return 0;
   
-  double norm=(double)p/(double)c;
+  int rel=p%c;
+  double norm=(double)rel/(double)c;
   
   /* Hardly any of the songs I've looked at so far use 1/3 notes, so we'll skip those.
    * 1/4 is a bit uncommon. I think still good to acknowledge them.
@@ -249,6 +288,15 @@ static int ch_game_rate_timing(struct ch_game *game) {
     p,c,norm,nearest,distance,windowsize,quality,game->rhlopass,judgment
   );
   /**/
+  
+  if (!game->strokeogramc) {
+    if (!(game->strokeogram=calloc(sizeof(int),c))) return -1;
+    game->strokeogramc=c;
+  } else if (game->strokeogramc!=c) {
+    fprintf(stderr,"WARNING: beat size changed %d != %d\n",game->strokeogramc,c);
+    return 0;
+  }
+  game->strokeogram[rel]++;
   
   return 0;
 }

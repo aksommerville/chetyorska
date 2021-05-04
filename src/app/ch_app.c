@@ -263,14 +263,14 @@ static int ch_app_init_audio(struct ch_app *app) {
     concerto-8-2.mid      dvorak-o96-3.mid  nobm.mid               scriabin_etude_2_1.mid  tuileries.mid
     dansenapolitaine.mid  Mvt3_Scherzo.mid  rach-prelude23-05.mid  turpin.mid
   */
-  if (ch_app_begin_song(app,"mid/data/anitrasdance.mid")<0) return -1;//Awesome
+  //if (ch_app_begin_song(app,"mid/data/anitrasdance.mid")<0) return -1;//Awesome
   //if (ch_app_begin_song(app,"mid/data/concerto-8-2.mid")<0) return -1;//Beautiful
   //if (ch_app_begin_song(app,"mid/data/dansenapolitaine.mid")<0) return -1;//OK, not crazy about the tune but the rhythm is irresistible
   //if (ch_app_begin_song(app,"mid/data/dvorak-o96-2.mid")<0) return -1;
   //if (ch_app_begin_song(app,"mid/data/dvorak-o96-3.mid")<0) return -1;
   //if (ch_app_begin_song(app,"mid/data/Mvt3_Scherzo.mid")<0) return -1;//oy not with these instruments
   //if (ch_app_begin_song(app,"mid/data/No03_Albumblatt.mid")<0) return -1;//Nice and silly
-  //if (ch_app_begin_song(app,"mid/data/nobm.mid")<0) return -1;//Great tune, kind of like In the Hall of the Mountain King
+  if (ch_app_begin_song(app,"mid/data/nobm.mid")<0) return -1;//Great tune, kind of like In the Hall of the Mountain King
   //if (ch_app_begin_song(app,"mid/data/rach-prelude23-05.mid")<0) return -1;// Beautiful and distinctive
   //if (ch_app_begin_song(app,"mid/data/rach-prelude23-09.mid")<0) return -1;
   //if (ch_app_begin_song(app,"mid/data/scriabin-etude_2_1.mid")<0) return -1;//XXX Doesn't play with current instruments
@@ -386,6 +386,25 @@ void ch_app_del(struct ch_app *app) {
  */
 
 int ch_app_update(struct ch_app *app) {
+
+  // One normally should lock audio when reading the synth context.
+  // I'm making an exception because we know that song changes can only be effected from this thread.
+  // This exception would be invalid if there's a chance we play songs without repeat, beware!
+  int songp,songc;
+  if ((rb_synth_get_song_phase(&songp,&songc,app->synth)>0)&&(songc>0)) {
+    int srcbeatp=songp/songc;
+    if (srcbeatp>app->srcbeatp) {
+      app->srcbeatp=srcbeatp;
+      app->beatc=app->beatp;
+      app->beatp=0;
+    } else {
+      app->beatp++;
+    }
+  } else {
+    app->beatp=0;
+    app->beatc=0;
+    app->srcbeatp=0;
+  }
   
   if (rb_audio_update(app->audio)<0) return -1;
   if (rb_inmgr_update(app->inmgr)<0) return -1;

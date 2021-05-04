@@ -49,12 +49,14 @@ void ch_gridder_fill(struct ch_gridder *gridder,uint8_t tileid);
 /* "fill" covers the region entirely with just one tile.
  * "frame" draw a 1-cell outline within the region, (tileid) is top-left corner of a 3x3 box image.
  * "framefill" does both.
+ * "bulk" copies a multi-tile image verbatim to the grid.
  * These are guaranteed safe for null (region), you can feed directly from ch_gridder_get_region().
  * Beyond that, (region) is presumed valid and we don't check.
  */
 void ch_gridder_fill_region(struct ch_gridder *gridder,const struct ch_gridder_region *region,uint8_t tileid);
 void ch_gridder_frame_region(struct ch_gridder *gridder,const struct ch_gridder_region *region,uint8_t tileid);
 void ch_gridder_framefill_region(struct ch_gridder *gridder,const struct ch_gridder_region *region,uint8_t frame,uint8_t fill);
+void ch_gridder_bulk_region(struct ch_gridder *gridder,const struct ch_gridder_region *region,uint8_t tileid);
 
 /* Draws a continuous-value progress bar, 1 cell tall and >2 width.
  * (tileid) is the left edge, from there, the ten source tiles are:

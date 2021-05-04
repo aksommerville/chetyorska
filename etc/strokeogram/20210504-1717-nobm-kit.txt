@@ -1,0 +1,52 @@
+*********** game over, lines=40, score=5228 **************
+                                                                                                        X               
+                                                                                                        X               
+                                                                                                        X               
+                                                                                                        X        X      
+                                                                                                        X        X      
+ X                                                                                                      X        X      
+ X                                                                                                      X        X      
+ X                                                                                                      X        XX     
+ X                                                                                                      X       XXX     
+ X                                                                                                      X       XXX     
+ X                                                                                                      X       XXX  X  
+ X                                                                                                      X       XXX  X  
+ X                                                                                                      X       XXX  XXX
+ X                                                                                                      X       XXX  XXX
+ XX  X                                                                                                  X    X  XXX  XXX
+ XX  X                                                                                                  X    X  XXX  XXX
+ XX XX                                                                                                  X   XX  XXX  XXX
+ XX XX    X                                                                                             X   XX  XXX  XXX
+ XX XX    X                                                                                             X   XX  XXX  XXX
+ XXXXX    X                                                                                             X XXXX  XXX  XXX
+ XXXXX    X                                                                                             X XXXX  XXX  XXX
+ XXXXX X  X                                        X      X                                          X  X XXXXX XXXX XXX
+ XXXXX X  X                                        X      X                                          X  X XXXXX XXXX XXX
+ XXXXX X  X                                     X XX     XX                                         XX  X XXXXXXXXXXXXXX
+XXXXXXXX  X                         X     X     XXXX     XX   X                                     XX  X XXXXXXXXXXXXXX
+XXXXXXXX  X                         X     X     XXXX     XX   X                                     XX  X XXXXXXXXXXXXXX
+XXXXXXXXXXX               X         X     X   X XXXX     XX   X X                                   XX  X XXXXXXXXXXXXXX
+XXXXXXXXXXX               X         X     X   X XXXX     XX   X X                                   XX  X XXXXXXXXXXXXXX
+XXXXXXXXXXX         X     X         X     X   XXXXXX    XXX X X X                                   XXX XXXXXXXXXXXXXXXX
+XXXXXXXXXXX         X     X         X     X   XXXXXX    XXX X X X                                   XXX XXXXXXXXXXXXXXXX
+XXXXXXXXXXXX X      X X   X    X    X   XXX X XXXXXX    XXXXX X X X X                            X  XXX XXXXXXXXXXXXXXXX
+XXXXXXXXXXXX X      X X   X    X    X   XXX X XXXXXX    XXXXX X X X X                            X  XXX XXXXXXXXXXXXXXXX
+XXXXXXXXXXXX XX     X X X X  X X    XX XXXX X XXXXXXXXX XXXXX X X X XX                         X XX XXX XXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXX X  XX X XXX  XXX    XX XXXXXX XXXXXXXXXXXXXXX X X X XXX   X                    X XX XXX XXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXX X  XX X XXX  XXX    XX XXXXXX XXXXXXXXXXXXXXX X X X XXX   X                    X XX XXX XXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXX X  XX X XXX  XXX    XX XXXXXXXXXXXXXXXXXXXXXX X X XXXXX   X                    XXXXXXXX XXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXX X  XX X XXX  XXX    XX XXXXXXXXXXXXXXXXXXXXXX X X XXXXX   X                    XXXXXXXX XXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXX XX XX X XXXX XXX   XXX XXXXXXXXXXXXXXXXXXXXXXXXXX XXXXXX  X X     X  X         XXXXXXXX XXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXX XX XX X XXXX XXX   XXX XXXXXXXXXXXXXXXXXXXXXXXXXX XXXXXX  X X     X  X         XXXXXXXX XXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXX XXXXX X XXXXXXXX   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX XXXXXX  X X XXX X  X      X  XXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXX XXXXX X XXXXXXXX   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX XXXXXX  X X XXX X  X      X  XXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXX XXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX XXXX XXXXX  X XXX  X  XXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX XXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX XXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+

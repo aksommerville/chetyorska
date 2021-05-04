@@ -18,6 +18,7 @@
 #define CH_RGN_LINES           4 /* 8+x4 Line count -- 8 + digitcount */
 #define CH_RGN_SCORE           5 /* 8+x4 Score '' */
 #define CH_RGN_RHYTHM          6 /* 2+x1 Rhythm bar -- 2 + barwidth */
+#define CH_RGN_METRONOME       7 /* 2x2 Lamp that pulses with the beat */
 
 #define CH_TOWER_W 10
 #define CH_TOWER_H 20
@@ -45,6 +46,7 @@ struct ch_game {
   int fallcounter;
   int dropping;
   int linescorev[4]; // how many points for each type of elimination
+  int beatp,beatc; // Copied at update, ch_app gets them for real
   
   // Eliminating rows stops the action temporarily:
   int eliminatecounter;
@@ -60,12 +62,18 @@ struct ch_game {
    * On success, (p,c) are populated with the current phase relative to a qnote in the song.
    * (p) in (0..c-1): 0 is the top of a qnote, c/2 is an eighth note, etc.
    */
-  int (*cb_get_phase)(int *p,int *c,void *phase_userdata);
+  int (*cb_get_phase)(int *p,int *c,void *phase_userdata);//XXX
   void *phase_userdata;
   
   int (*cb_sound)(int sfxid,void *sound_userdata);
   void *sound_userdata;
+  
+  // TEMP (?) build a report of timing of all strokes, so we can print it at game end.
+  int *strokeogram;
+  int strokeogramc;
 };
+
+void ch_game_print_strokeogram(struct ch_game *game);
 
 struct ch_game *ch_game_new();
 void ch_game_del(struct ch_game *game);
@@ -73,7 +81,7 @@ int ch_game_ref(struct ch_game *game);
 
 /* Advance time by one frame.
  */
-int ch_game_update(struct ch_game *game);
+int ch_game_update(struct ch_game *game,int beatp,int beatc);
 
 /* Deliver input events.
  * Inputs are stateless impulses, not buttons as usual.

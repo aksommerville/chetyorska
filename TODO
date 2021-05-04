@@ -69,7 +69,7 @@ xxx Adjust music tempo according to speed?
 [x] Use sprites for "next brick", center in box
 [x] Restrict input to one stroke per key per frame
 
-[ ] Rabbit: Some problem with sound effects. "rotate" was silent, restarted and then it's fine (no rebuild of archive).
+[x] Rabbit: Some problem with sound effects. "rotate" was silent, restarted and then it's fine (no rebuild of archive).
 
 [ ] Remove Rabbit.
   If not the whole thing, at least replace its synthesizer with Beepbot.
