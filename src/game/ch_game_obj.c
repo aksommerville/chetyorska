@@ -154,6 +154,7 @@ struct rb_grid *ch_game_generate_grid(struct ch_game *game) {
   #undef BULK
   
   ch_game_new_brick(game);
+  if (!game->gridder.grid) return 0; // must never happen, but in theory new_brick could end the game
   
   return grid;
 }
@@ -173,6 +174,7 @@ struct rb_sprite_group *ch_game_generate_sprites(struct ch_game *game) {
       rb_sprite_del(sprite);
       if (err<0) return 0;
     }
+    ch_game_redraw_next_brick(game);
   }
   return game->sprites;
 }
@@ -183,66 +185,23 @@ struct rb_sprite_group *ch_game_generate_sprites(struct ch_game *game) {
  */
 
 uint16_t ch_game_random_brick_shape(uint8_t *tileid,struct ch_game *game) {
-  switch (rand()%7) {
-    case 0: *tileid=0x01; return 0x0660;
-    case 1: *tileid=0x02; return 0x00f0;
-    case 2: *tileid=0x03; return 0x0446;
-    case 3: *tileid=0x04; return 0x0226;
-    case 4: *tileid=0x05; return 0x0720;
-    case 5: *tileid=0x06; return 0x0630;
-    case 6: *tileid=0x07; return 0x0360;
-  }
-  *tileid=0x01;
-  return 0x0660;
+  int p=rand()%CH_CANONICAL_SHAPE_COUNT;
+  if (p<0) p+=CH_CANONICAL_SHAPE_COUNT;
+  *tileid=ch_shape_metadata[p].tileid;
+  return ch_shape_metadata[p].shape;
 }
 
 /* Rotate a shape by 90 degrees.
  */
  
 uint16_t ch_game_rotate_shape(uint16_t shape,int d) {
-  if (d<0) {
-    switch (shape) {
-      case 0x0660: return 0x0660;
-      case 0x00f0: return 0x2222;
-      case 0x2222: return 0x00f0;
-      case 0x0446: return 0x0170;
-      case 0x0740: return 0x0446;
-      case 0x0622: return 0x0740;
-      case 0x0170: return 0x0622;
-      case 0x0226: return 0x0710;
-      case 0x0470: return 0x0226;
-      case 0x0644: return 0x0470;
-      case 0x0710: return 0x0644;
-      case 0x0720: return 0x0464;
-      case 0x0262: return 0x0720;
-      case 0x0270: return 0x0262;
-      case 0x0464: return 0x0270;
-      case 0x0630: return 0x0264;
-      case 0x0264: return 0x0630;
-      case 0x0360: return 0x0462;
-      case 0x0462: return 0x0360;
-    }
-  } else if (d>0) {
-    switch (shape) {
-      case 0x0660: return 0x0660;
-      case 0x00f0: return 0x2222;
-      case 0x2222: return 0x00f0;
-      case 0x0446: return 0x0740;
-      case 0x0740: return 0x0622;
-      case 0x0622: return 0x0170;
-      case 0x0170: return 0x0446;
-      case 0x0226: return 0x0470;
-      case 0x0470: return 0x0644;
-      case 0x0644: return 0x0710;
-      case 0x0710: return 0x0226;
-      case 0x0720: return 0x0262;
-      case 0x0262: return 0x0270;
-      case 0x0270: return 0x0464;
-      case 0x0464: return 0x0720;
-      case 0x0630: return 0x0264;
-      case 0x0264: return 0x0630;
-      case 0x0360: return 0x0462;
-      case 0x0462: return 0x0360;
+  if (!d) return shape;
+  const struct ch_shape_metadata *meta=ch_shape_metadata;
+  int i=CH_SHAPE_COUNT;
+  for (;i-->0;meta++) {
+    if (meta->shape==shape) {
+      if (d<0) return meta->counter;
+      else return meta->clock;
     }
   }
   return shape;
@@ -338,6 +297,12 @@ void ch_game_redraw_next_brick(struct ch_game *game) {
 /* Generate a new brick at the top of the tower, fossilize the old one.
  */
  
+static int ch_game_check_new_brick(int x,int y,void *userdata) {
+  struct ch_game *game=userdata;
+  if (ch_gridder_read(&game->gridder,ch_gridder_get_region(&game->gridder,CH_RGN_TOWER,0),x,y)) return 1;
+  return 0;
+}
+ 
 void ch_game_new_brick(struct ch_game *game) {
 
   if (game->nextbrick.shape) {
@@ -346,19 +311,20 @@ void ch_game_new_brick(struct ch_game *game) {
     game->brick.shape=ch_game_random_brick_shape(&game->brick.tileid,game);
   }
 
-  if (game->nextbrickdelay) {
-    game->nextbrick.shape=ch_game_random_brick_shape(&game->nextbrick.tileid,game);
-    ch_game_redraw_next_brick(game);
-  } else {
-    game->nextbrickdelay=1;
-  }
+  game->nextbrick.shape=ch_game_random_brick_shape(&game->nextbrick.tileid,game);
+  ch_game_redraw_next_brick(game);
 
   game->brick.x=(CH_TOWER_W>>1)-2;
-  // Position vertically so the brick's bottom edge is just above the tower.
-       if (game->brick.shape&0x000f) game->brick.y=-4;
-  else if (game->brick.shape&0x00f0) game->brick.y=-3;
-  else if (game->brick.shape&0x0f00) game->brick.y=-2;
-  else game->brick.y=-1;
+  // Align vertically to the top of the tower.
+       if (game->brick.shape&0xf000) game->brick.y=-0;
+  else if (game->brick.shape&0x0f00) game->brick.y=-1;
+  else if (game->brick.shape&0x00f0) game->brick.y=-2;
+  else game->brick.y=-3;
+  
+  if (ch_game_for_shape(game->brick.x,game->brick.y,game->brick.shape,ch_game_check_new_brick,game)) {
+    game->newoverlapped=1;
+  }
+  ch_game_print_brick_cells(game,&game->brick);
 }
 
 void ch_game_generate_next_brick(struct ch_game *game) {
@@ -455,81 +421,16 @@ int ch_game_sound(struct ch_game *game,int sfx) {
  */
  
 int ch_game_advance_level(struct ch_game *game) {
-  game->fallskip=1;
-  switch (game->lines/10) {
-    case 0: {
-        game->framesperfall=60;
-        game->tempo=1.20;
-      } break;
-    case 1: {
-        game->framesperfall=50;
-        game->tempo=1.15;
-      } break;
-    case 2: {
-        game->framesperfall=40;
-        game->tempo=1.10;
-      } break;
-    case 3: {
-        game->framesperfall=30;
-        game->tempo=1.05;
-      } break;
-    case 4: {
-        game->framesperfall=20;
-        game->tempo=1.00;
-      } break;
-    case 5: {
-        game->framesperfall=10;
-        game->tempo=0.9;
-      } break;
-    case 6: {
-        game->framesperfall=5;
-        game->tempo=0.8;
-      } break;
-    case 7: { // I reckon this is about the limit a realistic human can play at.
-        game->framesperfall=3;
-        game->tempo=0.7;
-      } break;
-    case 8: {
-        game->framesperfall=2;
-        game->tempo=0.7;
-      } break;
-    case 9: { // At this point I would not believe a human can play it (confident they are cheating).
-        game->framesperfall=1;
-        game->tempo=0.7;
-      } break;
-    case 10: {
-        game->framesperfall=1;
-        game->fallskip=2;
-        game->tempo=0.5;
-      } break;
-    case 11: {
-        game->framesperfall=1;
-        game->fallskip=3;
-        game->tempo=0.5;
-      } break;
-    case 12: {
-        game->framesperfall=1;
-        game->fallskip=4;
-        game->tempo=0.5;
-      } break;
-    case 13: {
-        game->framesperfall=1;
-        game->fallskip=5;
-        game->tempo=0.5;
-      } break;
-    case 14: {
-        game->framesperfall=1;
-        game->fallskip=6;
-        game->tempo=0.5;
-      } break;
-    case 15: { // By (before?) this point it is technically impossible to score lines anymore.
-        game->framesperfall=1;
-        game->fallskip=7;
-        game->tempo=0.5;
-      } break;
-  }
+
+  int level=game->lines/10;
+  if (level<0) level=0;
+  else if (level>=CH_LEVEL_COUNT) level=CH_LEVEL_COUNT-1;
+  game->framesperfall=ch_level_metadata[level].framesperfall;
+  game->fallskip=ch_level_metadata[level].fallskip;
+  game->tempo=ch_level_metadata[level].tempo;
   game->framesperfall_drop=1;
   game->fallcounter=game->framesperfall;
+  
   //TODO bells, whistles
   return 0;
 }

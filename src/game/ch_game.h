@@ -39,7 +39,6 @@ struct ch_game {
   
   struct ch_brick brick;
   struct ch_brick nextbrick;
-  int nextbrickdelay;
   int framesperfall;
   int framesperfall_drop;
   int fallskip; // How many rows to drop on each fall -- only >1 at ludicrous speed
@@ -48,6 +47,7 @@ struct ch_game {
   int linescorev[4]; // how many points for each type of elimination
   int beatp,beatc; // Copied at update, ch_app gets them for real
   double tempo; // Tempo multiplier (lower is faster), picked up by app between updates.
+  int newoverlapped;
   
   // Eliminating rows stops the action temporarily:
   int eliminatecounter;
@@ -132,5 +132,27 @@ int ch_game_advance_level(struct ch_game *game);
 
 void ch_game_redraw_next_brick(struct ch_game *game);
 void ch_game_generate_next_brick(struct ch_game *game);
+
+/* The first 7 shapes are the canonical ones, the way they should appear initially.
+ */
+#define CH_SHAPE_COUNT 19
+#define CH_CANONICAL_SHAPE_COUNT 7
+extern const struct ch_shape_metadata {
+  uint16_t shape;
+  uint16_t counter;
+  uint16_t clock;
+  uint8_t tileid;
+} ch_shape_metadata[CH_SHAPE_COUNT];
+
+/* Realistically, I believe only the first 8 are reachable by a human.
+ * Maybe 10.
+ * By the end of this list, the game is technically impossible.
+ */
+#define CH_LEVEL_COUNT 16
+extern const struct ch_level_metadata {
+  int framesperfall;
+  int fallskip;
+  double tempo;
+} ch_level_metadata[CH_LEVEL_COUNT];
 
 #endif

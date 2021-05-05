@@ -40,11 +40,32 @@
     * src/music/mutopia/unpack/dvorak-o96-3.mid: Very nice. Some triplets.
     * src/music/mutopia/unpack/anitrasdance.mid: Perfect, 0/1 and 1/2
 
-[ ] Rearrange the canonical shapes, eg the vertex of the T should always be in the same place.
-[ ] Should we nudge on rotation when blocked horizontally?
-  [ ] Does NES Tetris do anything like that?
-[ ] Eliminating a line way top, where the incoming brick is still partly offscreen, we discard the offscreen part.
-  [ ] Is this consistent with NES Tetris? Is the situation even possible there?
+[x] Rearrange the canonical shapes, eg the vertex of the T should always be in the same place.
+  How NES Tetris does it:
+   - Z: 2-cell column stays put. (remains at lowest point)
+   - S: Pivots on middle-top cell in horz orientation.
+   - I: Tall goes one row lower, pivots on the second tile from right.
+   - L: Middle of long bar stays put.
+   - L reverse: Same as L.
+   *** The Ls are canonically back-up, not feet-on-the-floor as I have them.
+   ...fwiw this means all except "I" are canonically two tiles tall.
+   - T: Central tile stays put.
+   - O: No rotation.
+   
+[x] Start with brick fully onscreen like NES.
+  [x] Does NES have a bit of a delay when a brick appears? NO not that i can measure
+  
+[x] Should we nudge on rotation when blocked horizontally?
+  [x] Does NES Tetris do anything like that?
+  NO
+  
+[x] Eliminating a line way top, where the incoming brick is still partly offscreen, we discard the offscreen part.
+  [x] Is this consistent with NES Tetris? Is the situation even possible there?
+  This is fantastically difficult to effect, it's not worth worrying about.
+  
+NB: NES Tetris permits bricks to overlap any existing brick that they touch initially.
+  I don't think we'll be able to pull that off without a pretty big re-think, and I don't think it's worth it.
+  For us, if a brick starts overlapped, game over.
 
 [x] MIDI In
 [x] Count lines
@@ -72,7 +93,7 @@ xxx Drop score -- not convinced we need this
 
 [x] Rabbit: Some problem with sound effects. "rotate" was silent, restarted and then it's fine (no rebuild of archive).
 
-[ ] Rabbit: Seems like events get dropped when playing at high speed.
+xxx Rabbit: Seems like events get dropped when playing at high speed.
 
 [ ] Remove Rabbit.
   If not the whole thing, at least replace its synthesizer with Beepbot.

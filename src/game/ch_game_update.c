@@ -105,6 +105,8 @@ static int ch_game_finalize_elimination(struct ch_game *game) {
   const struct ch_gridder_region *tower=ch_gridder_get_region(&game->gridder,CH_RGN_TOWER,0);
   if (!tower) return 0;
   uint8_t *cellv=game->gridder.grid->v+tower->y*game->gridder.grid->w+tower->x;
+  
+  ch_game_clear_brick_cells(game,&game->brick);
 
   const int *y=game->eliminatev;
   int i=game->eliminatec;
@@ -118,6 +120,9 @@ static int ch_game_finalize_elimination(struct ch_game *game) {
   }
   game->eliminatecounter=0;
   game->eliminatec=0;
+  
+  ch_game_print_brick_cells(game,&game->brick);
+  
   return 0;
 }
 
@@ -180,10 +185,6 @@ int ch_game_update(struct ch_game *game,int beatp,int beatc) {
     } else {
       game->fallcounter=game->framesperfall;
     }
-    if (game->nextbrickdelay>0) {
-      game->nextbrickdelay--;
-      if (!game->nextbrickdelay) ch_game_generate_next_brick(game);
-    }
     int err=ch_game_fall(game);
     if (err<0) {
       return ch_game_end(game);
@@ -192,6 +193,7 @@ int ch_game_update(struct ch_game *game,int beatp,int beatc) {
       // This both generates a new one and binds the old (bricks are kind of "always bound")
       int cktop=game->brick.y;
       ch_game_new_brick(game);
+      if (game->newoverlapped) return ch_game_end(game);
       game->dropping=0;
       game->fallcounter=game->framesperfall;
       ch_game_check_lines(game,cktop);
