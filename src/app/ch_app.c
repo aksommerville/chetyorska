@@ -406,6 +406,10 @@ int ch_app_update(struct ch_app *app) {
     app->srcbeatp=0;
   }
   
+  if (app->game&&app->synth->song) {
+    app->synth->song->tempomultiplier=app->game->tempo;
+  }
+  
   if (rb_audio_update(app->audio)<0) return -1;
   if (rb_inmgr_update(app->inmgr)<0) return -1;
   if (ch_ossmidi_update()<0) return -1;

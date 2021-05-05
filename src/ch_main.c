@@ -23,7 +23,6 @@ int main(int argc,char **argv) {
     
     //XXX TEMP: Detect completion and reset.
     if (!game->gridder.grid) {
-      ch_game_print_strokeogram(game);
       ch_game_del(game);
       if (!(game=ch_game_new())) { err=-1; break; }
       if ((err=ch_app_set_game(app,game))<0) break;

@@ -12,11 +12,9 @@ struct ch_game *ch_game_new() {
   if (!game) return 0;
   
   game->refc=1;
-  
-  game->framesperfall=60;
-  game->framesperfall_drop=1;
-  game->fallskip=1;
-  game->fallcounter=game->framesperfall;
+
+  game->lines=0;
+  ch_game_advance_level(game);
   game->linescorev[0]=100;
   game->linescorev[1]=300;
   game->linescorev[2]=500;
@@ -34,7 +32,6 @@ void ch_game_del(struct ch_game *game) {
   
   ch_gridder_cleanup(&game->gridder);
   rb_sprite_group_del(game->sprites);
-  if (game->strokeogram) free(game->strokeogram);
   
   free(game);
 }
@@ -458,58 +455,81 @@ int ch_game_sound(struct ch_game *game,int sfx) {
  */
  
 int ch_game_advance_level(struct ch_game *game) {
-  if (game->framesperfall>1) {
-    game->framesperfall>>=1;
-  } else {
-    // Seriously?
-    game->fallskip++;
+  game->fallskip=1;
+  switch (game->lines/10) {
+    case 0: {
+        game->framesperfall=60;
+        game->tempo=1.20;
+      } break;
+    case 1: {
+        game->framesperfall=50;
+        game->tempo=1.15;
+      } break;
+    case 2: {
+        game->framesperfall=40;
+        game->tempo=1.10;
+      } break;
+    case 3: {
+        game->framesperfall=30;
+        game->tempo=1.05;
+      } break;
+    case 4: {
+        game->framesperfall=20;
+        game->tempo=1.00;
+      } break;
+    case 5: {
+        game->framesperfall=10;
+        game->tempo=0.9;
+      } break;
+    case 6: {
+        game->framesperfall=5;
+        game->tempo=0.8;
+      } break;
+    case 7: { // I reckon this is about the limit a realistic human can play at.
+        game->framesperfall=3;
+        game->tempo=0.7;
+      } break;
+    case 8: {
+        game->framesperfall=2;
+        game->tempo=0.7;
+      } break;
+    case 9: { // At this point I would not believe a human can play it (confident they are cheating).
+        game->framesperfall=1;
+        game->tempo=0.7;
+      } break;
+    case 10: {
+        game->framesperfall=1;
+        game->fallskip=2;
+        game->tempo=0.5;
+      } break;
+    case 11: {
+        game->framesperfall=1;
+        game->fallskip=3;
+        game->tempo=0.5;
+      } break;
+    case 12: {
+        game->framesperfall=1;
+        game->fallskip=4;
+        game->tempo=0.5;
+      } break;
+    case 13: {
+        game->framesperfall=1;
+        game->fallskip=5;
+        game->tempo=0.5;
+      } break;
+    case 14: {
+        game->framesperfall=1;
+        game->fallskip=6;
+        game->tempo=0.5;
+      } break;
+    case 15: { // By (before?) this point it is technically impossible to score lines anymore.
+        game->framesperfall=1;
+        game->fallskip=7;
+        game->tempo=0.5;
+      } break;
   }
+  game->framesperfall_drop=1;
+  game->fallcounter=game->framesperfall;
   //TODO bells, whistles
   return 0;
-}
-
-/* Stroke-o-gram
- */
- 
-void ch_game_print_strokeogram(struct ch_game *game) {
-  if (game->strokeogramc<1) return;
-  
-  // output size in glyphs
-  int w=120;
-  int h=50;
-  if (w>game->strokeogramc) w=game->strokeogramc;
-  
-  // Aggregate the precise stroke times into buckets; no more than 1 bucket per time.
-  int *bucketv=calloc(sizeof(int),w);
-  if (!bucketv) return;
-  int srci=game->strokeogramc;
-  int ymax=0;
-  while (srci-->0) {
-    int dsti=(srci*w)/game->strokeogramc;
-    if (dsti<0) dsti=0; // not possible but play it safe, eh
-    else if (dsti>=w) dsti=w-1;
-    bucketv[dsti]+=game->strokeogram[srci];
-    if (bucketv[dsti]>ymax) ymax=bucketv[dsti];
-  }
-  
-  // Scale bucket values to 0..h-1
-  if (ymax>0) { // i guess it's possible that the whole stroke-o-gram was zero?
-    int i=w; while (i-->0) {
-      bucketv[i]=(bucketv[i]*h)/ymax;
-      if (bucketv[i]<0) bucketv[i]=0;
-      else if (bucketv[i]>=h) bucketv[i]=h-1;
-    }
-  }
-  
-  // Print the chart.
-  int y=h;
-  while (y-->0) {
-    int x=0; for (;x<w;x++) {
-      if (bucketv[x]>=y) fprintf(stderr,"X");
-      else fprintf(stderr," ");
-    }
-    fprintf(stderr,"\n");
-  }
-  
-  free(bucketv);
 }

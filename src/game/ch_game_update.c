@@ -214,9 +214,10 @@ static int ch_game_rate_timing(struct ch_game *game) {
     quality=1.0;
     
   // Grade it like a triangle wave. 0 is the peak and 1/2 the floor.
+  // Also a 0.5 downward bias -- The field of possible quality is biased low.
   } else {
     double phase=(double)game->beatp/(double)game->beatc;
-    quality=fabs(0.5-phase)*4.0-1.0;
+    quality=fabs(0.5-phase)*4.0-1.5;
   }
   
   int dscore=(int)(quality*100);
@@ -224,79 +225,9 @@ static int ch_game_rate_timing(struct ch_game *game) {
   if (game->rhlopass<0) game->rhlopass=0;
   else if (game->rhlopass>999) game->rhlopass=999;
   
-  fprintf(stderr,"%d/%d quality=%f dscore=%d lopass=%d\n",game->beatp,game->beatc,quality,dscore,game->rhlopass);
+  //fprintf(stderr,"%d/%d quality=%f dscore=%d lopass=%d\n",game->beatp,game->beatc,quality,dscore,game->rhlopass);
   
   ch_game_print_rhythm_bar(game);
-  
-  return 0;
-}
- 
-static int ch_game_rate_timing_XXX(struct ch_game *game) {
-  if (!game->cb_get_phase) return 0;
-  int p=0,c=0;
-  if (game->cb_get_phase(&p,&c,game->phase_userdata)<0) return 0;//XXX move the song timing query out to app
-  if ((p<0)||(c<1)) return 0;
-  
-  int rel=p%c;
-  double norm=(double)rel/(double)c;
-  
-  /* Hardly any of the songs I've looked at so far use 1/3 notes, so we'll skip those.
-   * 1/4 is a bit uncommon. I think still good to acknowledge them.
-   * But that is getting very close to the margin of error.
-   * OK so like, there are 4 positions that are worth something, and we should allow a wider window at 0/1 and 1/2.
-   * - First determine which interval is closest (0/4, 1/4, 2/4, 3/4), and get the absolute distance to it.
-   */
-  int nearest=(int)((norm+1.0/8.0)*4.0);
-  if (nearest>=4) nearest=0;
-  if (!nearest&&(norm>0.5)) norm-=1.0; // wrap into negative if 0 is nearest (approaching it from the high end)
-  double nearestf=0.25*nearest;
-  double distance=norm-nearestf;
-  if (distance<0.0) distance=-distance;
-  
-  double windowsize;
-  switch (nearest) {
-    case 0: windowsize=1.0/8.0; break;
-    case 1: windowsize=1.0/16.0; break;
-    case 2: windowsize=1.0/12.0; break;
-    case 3: windowsize=1.0/16.0; break;
-    default: return 0;//oops
-  }
-  double quality=1.0-distance/windowsize;
-  if (quality<0.0) quality=0.0;
-  
-  const char *judgment="";
-       if (quality>=0.99) judgment="GREAT!";
-  else if (quality>=0.80) judgment="GOOD";
-  else if (quality>=0.20) judgment="Satisfactory";
-  else                    judgment="BAAAAAAAAAAAD";
-  
-  if (quality>=0.85) {
-    game->rhlopass+=100;
-  } else if (quality>=0.50) {
-    game->rhlopass+=50;
-  } else if (quality<=0.01) {
-    game->rhlopass-=10;
-  }
-  if (game->rhlopass<0) game->rhlopass=0;
-  else if (game->rhlopass>999) game->rhlopass=999;
-  
-  ch_game_print_rhythm_bar(game);
-  
-  /**/
-  fprintf(stderr,
-    "STROKE AT %5d/%d norm=%+f nearest=%d distance=%f win=%f quality=%f %5d %s\n",
-    p,c,norm,nearest,distance,windowsize,quality,game->rhlopass,judgment
-  );
-  /**/
-  
-  if (!game->strokeogramc) {
-    if (!(game->strokeogram=calloc(sizeof(int),c))) return -1;
-    game->strokeogramc=c;
-  } else if (game->strokeogramc!=c) {
-    fprintf(stderr,"WARNING: beat size changed %d != %d\n",game->strokeogramc,c);
-    return 0;
-  }
-  game->strokeogram[rel]++;
   
   return 0;
 }

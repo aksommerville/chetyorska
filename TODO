@@ -60,16 +60,19 @@ xxx Drop score -- not convinced we need this
 [x] Initial speed, and speed advancement
   Idea: Allow the game to become technically impossible due to speed, and make that limit reachable, like 50 or 100 lines.
   The challenge is to squeeze in as many points as you can in the limited time available.
-xxx Adjust music tempo according to speed?
+[x] Adjust music tempo according to speed?
 [x] Full graphics -- fixed tile per shape?
 [ ] Pause -- try to sabotage pause-as-slow-motion
 [ ] MIDI per-device running status
 [x] Clean up building the UI grid in game
 [ ] Some like "WOW!" temporary UI at each line -- show the one-line score
+[ ] Likewise some per-stroke feedback re timing, the bar isn't enough.
 [x] Use sprites for "next brick", center in box
 [x] Restrict input to one stroke per key per frame
 
 [x] Rabbit: Some problem with sound effects. "rotate" was silent, restarted and then it's fine (no rebuild of archive).
+
+[ ] Rabbit: Seems like events get dropped when playing at high speed.
 
 [ ] Remove Rabbit.
   If not the whole thing, at least replace its synthesizer with Beepbot.

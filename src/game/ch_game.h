@@ -47,6 +47,7 @@ struct ch_game {
   int dropping;
   int linescorev[4]; // how many points for each type of elimination
   int beatp,beatc; // Copied at update, ch_app gets them for real
+  double tempo; // Tempo multiplier (lower is faster), picked up by app between updates.
   
   // Eliminating rows stops the action temporarily:
   int eliminatecounter;
@@ -67,13 +68,7 @@ struct ch_game {
   
   int (*cb_sound)(int sfxid,void *sound_userdata);
   void *sound_userdata;
-  
-  // TEMP (?) build a report of timing of all strokes, so we can print it at game end.
-  int *strokeogram;
-  int strokeogramc;
 };
-
-void ch_game_print_strokeogram(struct ch_game *game);
 
 struct ch_game *ch_game_new();
 void ch_game_del(struct ch_game *game);
