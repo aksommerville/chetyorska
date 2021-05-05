@@ -1,5 +1,6 @@
 #include "ch_internal.h"
 #include "ch_game.h"
+#include "ch_sprites.h"
 #include <rabbit/rb_grid.h>
 #include <rabbit/rb_image.h>
 #include <rabbit/rb_sprite.h>
@@ -432,5 +433,26 @@ int ch_game_advance_level(struct ch_game *game) {
   game->fallcounter=game->framesperfall;
   
   //TODO bells, whistles
+  return 0;
+}
+
+/* Add score sprite.
+ */
+ 
+int ch_game_add_score_sprite(struct ch_game *game,int score,int x,int y) {
+
+  struct rb_sprite *sprite=rb_sprite_new(&ch_sprite_type_score);
+  if (!sprite) return -1;
+  int err=rb_sprite_group_add(game->sprites,sprite);
+  rb_sprite_del(sprite);
+  if (err<0) return -1;
+  
+  const struct ch_gridder_region *region=ch_gridder_get_region(&game->gridder,CH_RGN_TOWER,0);
+  if (!region) return -1;
+  
+  sprite->x=region->x*CH_TILESIZE+x;
+  sprite->y=region->y*CH_TILESIZE+y;
+  ((struct ch_sprite_score*)sprite)->score=score;
+
   return 0;
 }

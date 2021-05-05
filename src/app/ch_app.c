@@ -9,7 +9,9 @@
 #include <rabbit/rb_synth.h>
 #include <rabbit/rb_synth_event.h>
 #include <rabbit/rb_grid.h>
-#include <rabbit/rb_fs.h>//XXX
+#include <rabbit/rb_fs.h>
+
+struct rb_image *ch_tilesheet=0;//XXX organize
 
 int ch_app_configure_synth(struct ch_app *app);
 
@@ -311,6 +313,7 @@ static int ch_app_init_video(struct ch_app *app) {
     int err=rb_vmgr_set_image_serial(app->vmgr,1,serial,serialc);
     free(serial);
     if (err<0) return -1;
+    ch_tilesheet=app->vmgr->imagev[1];//XXX
   }
   
   return 0;

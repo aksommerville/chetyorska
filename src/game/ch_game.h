@@ -133,6 +133,8 @@ int ch_game_advance_level(struct ch_game *game);
 void ch_game_redraw_next_brick(struct ch_game *game);
 void ch_game_generate_next_brick(struct ch_game *game);
 
+int ch_game_add_score_sprite(struct ch_game *game,int score,int x,int y);
+
 /* The first 7 shapes are the canonical ones, the way they should appear initially.
  */
 #define CH_SHAPE_COUNT 19

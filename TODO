@@ -86,7 +86,7 @@ xxx Drop score -- not convinced we need this
 [ ] Pause -- try to sabotage pause-as-slow-motion
 [ ] MIDI per-device running status
 [x] Clean up building the UI grid in game
-[ ] Some like "WOW!" temporary UI at each line -- show the one-line score
+[x] Some like "WOW!" temporary UI at each line -- show the one-line score
 [ ] Likewise some per-stroke feedback re timing, the bar isn't enough.
 [x] Use sprites for "next brick", center in box
 [x] Restrict input to one stroke per key per frame
@@ -97,11 +97,13 @@ xxx Rabbit: Seems like events get dropped when playing at high speed.
 
 [ ] Remove Rabbit.
   If not the whole thing, at least replace its synthesizer with Beepbot.
+  ...hold off on this, i'm kind of digging rabbit now
   
 [ ] Automated speed testing. I need to see game->fallskip in motion.
   [ ] Verify input restriction.
 
 [ ] Clean loading of music
+[ ] Decent sound effects
 [ ] Game over screen -- esp we want to see the score please!
 [ ] Lobby
 [ ] High scores

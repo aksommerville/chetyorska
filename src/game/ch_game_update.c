@@ -1,6 +1,7 @@
 #include "ch_internal.h"
 #include "ch_game.h"
 #include <rabbit/rb_grid.h>
+#include <rabbit/rb_sprite.h>
 #include <math.h>
 
 /* Fall the brick by one row.
@@ -74,11 +75,13 @@ static int ch_game_check_lines(struct ch_game *game,int y) {
   int pvlevel=game->lines/10;
   game->lines+=game->eliminatec;
   int level=game->lines/10;
+  int linescore;
   if (game->rhlopass>=900) {
-    game->score+=game->linescorev[game->eliminatec-1]*2;
+    linescore=game->linescorev[game->eliminatec-1]*2;
   } else {
-    game->score+=(game->linescorev[game->eliminatec-1]*game->rhlopass)/900;
+    linescore=(game->linescorev[game->eliminatec-1]*game->rhlopass)/900;
   }
+  game->score+=linescore;
   
   if (level>pvlevel) {
     ch_game_advance_level(game);
@@ -92,6 +95,14 @@ static int ch_game_check_lines(struct ch_game *game,int y) {
     &game->gridder,ch_gridder_get_region(&game->gridder,CH_RGN_SCORE,0),
     6,0x56,game->score
   );
+  
+  int sprx=(tower->w*CH_TILESIZE)>>1;
+  int spry=(y-2)*CH_TILESIZE;
+  if (linescore>=1000) sprx-=2*CH_TILESIZE;
+  else if (linescore>=100) sprx-=(3*CH_TILESIZE)>>1;
+  else if (linescore>=10) sprx-=CH_TILESIZE;
+  else sprx-=CH_TILESIZE>>1;
+  ch_game_add_score_sprite(game,linescore,sprx,spry);
   
   return 0;
 }
@@ -151,6 +162,16 @@ static int ch_game_flash_eliminations(struct ch_game *game) {
 int ch_game_update(struct ch_game *game,int beatp,int beatc) {
   game->input_blackout=0;
   if (!game->gridder.grid) return 0;
+  
+  if (game->sprites) {
+    int i=game->sprites->c;
+    while (i-->0) {
+      struct rb_sprite *sprite=game->sprites->v[i];
+      if (sprite->type->update) {
+        if (sprite->type->update(sprite)<0) return -1;
+      }
+    }
+  }
   
   game->beatp=beatp;
   game->beatc=beatc;
