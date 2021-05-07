@@ -1,0 +1,17 @@
+// CH_SFX_ROTATE
+instrument {
+  env main~2 mode=set {
+    level=800;
+    00 c0;
+    10 40;
+    60 ff;
+  }
+  fm main~0 rate~2 mod1=4 range=2;
+  env {
+    time=1;
+    level=0.20;
+    0a ff 30;
+    08 18 0;
+    40 00 100;
+  }
+}

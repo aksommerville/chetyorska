@@ -1,0 +1,17 @@
+// CH_SFX_THUD
+instrument {
+  osc main~1 shape=noise;
+  env main~1 {
+    level=3;
+    00 ff;
+    10 00;
+  }
+  fm rate=100 mod1=0.5 range~1;
+  env {
+    time=1;
+    level=0.08;
+    04 ff 0;
+    08 20 0;
+    30 00 100;
+  }
+}

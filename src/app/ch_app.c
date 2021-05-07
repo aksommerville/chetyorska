@@ -10,10 +10,9 @@
 #include <rabbit/rb_synth_event.h>
 #include <rabbit/rb_grid.h>
 #include <rabbit/rb_fs.h>
+#include <rabbit/rb_archive.h>
 
 struct rb_image *ch_tilesheet=0;//XXX organize
-
-int ch_app_configure_synth(struct ch_app *app);
 
 /* Audio PCM callback.
  */
@@ -99,6 +98,7 @@ static int ch_app_cb_mwheel(struct rb_video *video,int dx,int dy) {
  
 static int ch_app_cb_input(struct rb_inmgr *inmgr,const struct rb_input_event *event) {
   struct ch_app *app=inmgr->delegate.userdata;
+  rb_video_suppress_screensaver(app->video);
   if (app->game) {
     if (event->value&&!event->plrid) switch (event->btnid) {
       case RB_BTNID_LEFT: return ch_game_input(app->game,CH_EVENTID_LEFT);
@@ -122,6 +122,7 @@ static int ch_app_cb_input(struct rb_inmgr *inmgr,const struct rb_input_event *e
  
 static int ch_app_midi_note_on(struct ch_app *app,uint8_t noteid,uint8_t velocity) {
   if (!velocity) return 0; // actually note off
+  rb_video_suppress_screensaver(app->video);
   if (app->game) {
     //fprintf(stderr,"Note On %02x\n",noteid);
     switch (noteid) {
@@ -215,36 +216,6 @@ static int ch_app_cb_midi(void *userdata,int devid,const void *src,int srcc) {
   return 0;
 }
 
-/* Play song.
- */
- 
-static int ch_app_begin_song(struct ch_app *app,const char *path) {
-  void *src=0;
-  int srcc=rb_file_read(&src,path);
-  if (srcc<0) {
-    fprintf(stderr,"%s: Failed to read MIDI file\n",path);
-    return 0;
-  }
-  struct rb_song *song=rb_song_new(src,srcc,app->audio->delegate.rate);
-  free(src);
-  if (!song) {
-    fprintf(stderr,"%s: Failed to decode MIDI file\n",path);
-    return 0;
-  }
-  if (rb_audio_lock(app->audio)<0) {
-    rb_song_del(song);
-    return 0;
-  }
-  int err=rb_synth_play_song(app->synth,song,1);
-  rb_audio_unlock(app->audio);
-  rb_song_del(song);
-  if (err<0) {
-    fprintf(stderr,"%s: Failed to begin song\n",path);
-    return 0;
-  }
-  return 0;
-}
-
 /* Init audio.
  */
  
@@ -258,28 +229,6 @@ static int ch_app_init_audio(struct ch_app *app) {
   };
   if (!(app->audio=rb_audio_new(rb_audio_type_by_index(0),&delegate))) return -1;
   if (!(app->synth=rb_synth_new(app->audio->delegate.rate,app->audio->delegate.chanc))) return -1;
-  if (ch_app_configure_synth(app)<0) return -1;
-  
-  /*
-    anitrasdance.mid      dvorak-o96-2.mid  No03_Albumblatt.mid    rach-prelude23-09.mid   Troldtog.mid
-    concerto-8-2.mid      dvorak-o96-3.mid  nobm.mid               scriabin_etude_2_1.mid  tuileries.mid
-    dansenapolitaine.mid  Mvt3_Scherzo.mid  rach-prelude23-05.mid  turpin.mid
-  */
-  //if (ch_app_begin_song(app,"mid/data/anitrasdance.mid")<0) return -1;//Awesome
-  //if (ch_app_begin_song(app,"mid/data/concerto-8-2.mid")<0) return -1;//Beautiful
-  //if (ch_app_begin_song(app,"mid/data/dansenapolitaine.mid")<0) return -1;//OK, not crazy about the tune but the rhythm is irresistible
-  //if (ch_app_begin_song(app,"mid/data/dvorak-o96-2.mid")<0) return -1;
-  //if (ch_app_begin_song(app,"mid/data/dvorak-o96-3.mid")<0) return -1;
-  //if (ch_app_begin_song(app,"mid/data/Mvt3_Scherzo.mid")<0) return -1;//oy not with these instruments
-  //if (ch_app_begin_song(app,"mid/data/No03_Albumblatt.mid")<0) return -1;//Nice and silly
-  if (ch_app_begin_song(app,"mid/data/nobm.mid")<0) return -1;//Great tune, kind of like In the Hall of the Mountain King
-  //if (ch_app_begin_song(app,"mid/data/rach-prelude23-05.mid")<0) return -1;// Beautiful and distinctive
-  //if (ch_app_begin_song(app,"mid/data/rach-prelude23-09.mid")<0) return -1;
-  //if (ch_app_begin_song(app,"mid/data/scriabin-etude_2_1.mid")<0) return -1;//XXX Doesn't play with current instruments
-  //if (ch_app_begin_song(app,"mid/data/turpin.mid")<0) return -1;
-  //if (ch_app_begin_song(app,"mid/data/Troldtog.mid")<0) return -1;//Mmm nice n trolly
-  //if (ch_app_begin_song(app,"mid/data/tuileries.mid")<0) return -1;
-
   return 0;
 }
 
@@ -305,17 +254,6 @@ static int ch_app_init_video(struct ch_app *app) {
   };
   if (!(app->video=rb_video_new(rb_video_type_by_index(0),&delegate))) return -1;
   if (!(app->vmgr=rb_vmgr_new())) return -1;
-  
-  //TODO get organized about loading data
-  { void *serial=0;
-    int serialc=rb_file_read(&serial,"mid/data/tiles");
-    if (serialc<0) return -1;
-    int err=rb_vmgr_set_image_serial(app->vmgr,1,serial,serialc);
-    free(serial);
-    if (err<0) return -1;
-    ch_tilesheet=app->vmgr->imagev[1];//XXX
-  }
-  
   return 0;
 }
 
@@ -333,6 +271,97 @@ static int ch_app_init_input(struct ch_app *app) {
   if (rb_inmgr_connect_all(app->inmgr)<0) return -1;
   
   if (ch_ossmidi_init(ch_app_cb_midi,app)<0) return -1;
+  
+  return 0;
+}
+
+/* Song list primitives.
+ */
+ 
+static int ch_app_songv_search(const struct ch_app *app,int id) {
+  int lo=0,hi=app->songc;
+  while (lo<hi) {
+    int ck=(lo+hi)>>1;
+         if (id<app->songv[ck].id) hi=ck;
+    else if (id>app->songv[ck].id) lo=ck+1;
+    else return ck;
+  }
+  return -lo-1;
+}
+
+static struct ch_song *ch_app_songv_insert(struct ch_app *app,int p,int id) {
+  if ((p<0)||(p>app->songc)) return 0;
+  if (p&&(id<=app->songv[p-1].id)) return 0;
+  if ((p<app->songc)&&(id>=app->songv[p].id)) return 0;
+  
+  if (app->songc>=app->songa) {
+    int na=app->songa+8;
+    if (na>INT_MAX/sizeof(struct ch_song)) return 0;
+    void *nv=realloc(app->songv,sizeof(struct ch_song)*na);
+    if (!nv) return 0;
+    app->songv=nv;
+    app->songa=na;
+  }
+  
+  struct ch_song *song=app->songv+p;
+  memmove(song+1,song,sizeof(struct ch_song)*(app->songc-p));
+  app->songc++;
+  memset(song,0,sizeof(struct ch_song));
+  song->id=id;
+  return song;
+}
+
+/* Load a song -- Rabbit doesn't store these, we do it.
+ */
+ 
+static int ch_app_load_song(struct ch_app *app,int id,const void *src,int srcc) {
+
+  struct rb_song *song=rb_song_new(src,srcc,app->audio->delegate.rate);
+  if (!song) return -1;
+
+  int p=ch_app_songv_search(app,id);
+  struct ch_song *wrapper;
+  if (p>=0) {
+    wrapper=app->songv+p;
+  } else {
+    if (!(wrapper=ch_app_songv_insert(app,-p-1,id))) {
+      rb_song_del(song);
+      return -1;
+    }
+  }
+  
+  rb_song_del(wrapper->song);
+  wrapper->song=song;
+  
+  return 0;
+}
+
+/* Load resources.
+ */
+ 
+static int ch_app_archive_cb(uint32_t type,int id,const void *src,int srcc,void *userdata) {
+  struct ch_app *app=userdata;
+  switch (type) {
+    case RB_RES_TYPE_imag: return rb_vmgr_set_image_serial(app->vmgr,id,src,srcc);
+    case RB_RES_TYPE_song: return ch_app_load_song(app,id,src,srcc);
+    case RB_RES_TYPE_snth: return rb_synth_load_program(app->synth,id,src,srcc);
+  }
+  return 0;
+}
+ 
+static int ch_app_load_archive(struct ch_app *app,const char *path) {
+
+  // If we cared about underrunning the PCM out, we could lock on individual snth resources instead of the whole archive.
+  // We don't care, because playback hasn't started yet.
+  if (rb_audio_lock(app->audio)<0) return -1;
+  int err=rb_archive_read(path,ch_app_archive_cb,app);
+  rb_audio_unlock(app->audio);
+  if (err<0) return -1;
+
+  if (!(ch_tilesheet=app->vmgr->imagev[1])) {
+    fprintf(stderr,"%s: Data archive did not contain a tilesheet.\n",path);
+    return -1;
+  }
   
   return 0;
 }
@@ -365,11 +394,22 @@ struct ch_app *ch_app_new(int argc,char **argv) {
     return 0;
   }
   
+  const char *datapath="out/data";//TODO data path
+  if (ch_app_load_archive(app,datapath)<0) {
+    fprintf(stderr,"%s: Failed to load data.\n",datapath);
+    ch_app_del(app);
+    return 0;
+  }
+  
   return app;
 }
 
 /* Delete.
  */
+ 
+static void ch_song_cleanup(struct ch_song *song) {
+  rb_song_del(song->song);
+}
  
 void ch_app_del(struct ch_app *app) {
   if (!app) return;
@@ -381,6 +421,11 @@ void ch_app_del(struct ch_app *app) {
   rb_synth_del(app->synth);
   ch_ossmidi_quit();
   ch_game_del(app->game);
+  
+  if (app->songv) {
+    while (app->songc-->0) ch_song_cleanup(app->songv+app->songc);
+    free(app->songv);
+  }
   
   free(app);
 }
@@ -481,5 +526,31 @@ int ch_app_set_game(struct ch_app *app,struct ch_game *game) {
   } else {
     if (rb_vmgr_set_grid(app->vmgr,0)<0) return -1;
   }
+  return 0;
+}
+
+/* Play song.
+ */
+ 
+int ch_app_play_song(struct ch_app *app,int songid) {
+  struct rb_song *song=0;
+  if (app->songc>=1) switch (songid) {
+    case CH_SONGID_SILENCE: break;
+    case CH_SONGID_RANDOM: {
+        int p=rand()%app->songc;
+        if (p<0) p+=app->songc;
+        song=app->songv[p].song;
+        fprintf(stderr,"Randomly selected song %d\n",app->songv[p].id);
+      } break;
+    default: {
+        int p=ch_app_songv_search(app,songid);
+        if (p>=0) song=app->songv[p].song;
+        fprintf(stderr,"Begin song %d\n",songid);
+      }
+  }
+  if (rb_audio_lock(app->audio)<0) return -1;
+  int err=rb_synth_play_song(app->synth,song,1);
+  rb_audio_unlock(app->audio);
+  if (err<0) return -1;
   return 0;
 }

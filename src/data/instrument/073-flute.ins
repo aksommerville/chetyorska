@@ -1,0 +1,11 @@
+instrument {
+  osc shape=sine, rate note;
+  harm rate note, { ff 40 10 08 }
+  env {
+    time=1;
+    level=0.08;
+    0c ff 0;
+    10 40 0;
+    50 00 50;
+  }
+}

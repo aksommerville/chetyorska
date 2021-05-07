@@ -1,0 +1,24 @@
+// CH_SFX_MOVE
+instrument {
+  osc main~1 shape=sawdown;
+  add main~1 arg=1.0;
+  env main~1 {
+    level=0.5;
+    00 ff;
+    80 00;
+  }
+  env main~2 mode=set {
+    level=600;
+    00 80;
+    40 ff;
+    60 80;
+  }
+  fm main~0 rate~2 mod0=290 range~1;
+  env {
+    time=1;
+    level=0.20;
+    0a ff 30;
+    08 18 0;
+    40 00 100;
+  }
+}

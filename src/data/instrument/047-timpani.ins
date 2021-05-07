@@ -1,0 +1,14 @@
+instrument {
+  osc main~1, shape=triangle rate=6;
+  add main~1, arg=1.5;
+  mlt main~1, arg=0.8;
+  fm rate note mod1=0.33 range~1;
+  env {
+    time=2;
+    level=0.09;
+    01 ff 0;
+    04 50 0;
+    0c 10 -80;
+    c0 00 100;
+  }
+}

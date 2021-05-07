@@ -12,6 +12,11 @@ struct ch_app {
   int timing_bias;
   int beatp,beatc; // song's beat, mapped to game cycles
   int srcbeatp; // absolute beat
+  struct ch_song {
+    int id;
+    struct rb_song *song;
+  } *songv;
+  int songc,songa;
 };
 
 struct ch_app *ch_app_new(int argc,char **argv);
@@ -21,5 +26,9 @@ void ch_app_del(struct ch_app *app);
 int ch_app_update(struct ch_app *app);
 
 int ch_app_set_game(struct ch_app *app,struct ch_game *game);
+
+int ch_app_play_song(struct ch_app *app,int songid);
+#define CH_SONGID_SILENCE -1
+#define CH_SONGID_RANDOM  -2
 
 #endif

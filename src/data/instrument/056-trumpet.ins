@@ -1,0 +1,22 @@
+instrument {
+  env = {
+    main~1;
+    mode=set;
+    content {
+      time=1;
+      level=5.0;
+      00 40;
+      05 ff;
+      10 80;
+      60 60;
+    }
+  }
+  fm rate note mod1=4 range~1;
+  env {
+    time=1;
+    level=0.06;
+    0a ff -50;
+    10 a0 0;
+    50 00 50;
+  }
+}

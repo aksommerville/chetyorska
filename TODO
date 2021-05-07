@@ -95,15 +95,14 @@ xxx Drop score -- not convinced we need this
 
 xxx Rabbit: Seems like events get dropped when playing at high speed.
 
-[ ] Remove Rabbit.
+xxx Remove Rabbit.
   If not the whole thing, at least replace its synthesizer with Beepbot.
   ...hold off on this, i'm kind of digging rabbit now
   
 [ ] Automated speed testing. I need to see game->fallskip in motion.
   [ ] Verify input restriction.
 
-[ ] Clean loading of music
-[ ] Decent sound effects
+[x] Clean loading of music
 [ ] Game over screen -- esp we want to see the score please!
 [ ] Lobby
 [ ] High scores
@@ -112,6 +111,36 @@ xxx Rabbit: Seems like events get dropped when playing at high speed.
 [ ] MacOS MIDI in
 [ ] MS Windows MIDI in
 [ ] Video, audio, input drivers for non-linux host (Rabbit?)
+[ ] Preprocess MIDI files, remove redundant cruft. In Rabbit CLI.
+  NB: The Rabbit internal song format is not stored in the archive, it will be MIDI to MIDI.
+[ ] Hide cursor: Rabbit
+[ ] Custom mapping of MIDI events? See ch_app_midi_note_on
+[ ] At least one of these songs is abombinably slow. Not useable as is.
+
+[x] Decent sound effects.
+  Getting a line should kind of Royal Fanfare.
+[x] Determine which programs are needed.
+    0 Acoustic Grand Piano (6,9,10,12) (implicit: 3,4,5,7,8,11,13)
+    3 Honky Tonk Piano (14)
+    6 Harpsichord (2)
+   40 Violin (1,2)
+   45 Pizzicato Strings (1)
+   47 Timpani (6)
+   48 String Ensemble 1 (6)
+   56 Trumpet (6)
+   60 French Horn (6)
+   68 Oboe (2,6)
+   70 Bassoon (6)
+   71 Clarinet (6)
+   73 Flute (6)
+  112 Tinkle Bell (1)
+[ ] Good set of songs.
+  - Eliminate 6, it makes no sense.
+  - 14 switches phase halfway thru. Fix that or eliminate it.
+  - 12 i think does the same? tempo goes a little nuts sometimes
+  - 10 i absolutely love and can't live without, but can we maybe double the tempo?
+
+[ ] What does Rabbit do when a song does not emit Program Change? eg 7(No03_Albmblatt) and 8(nobm) do not.
 
 Configure MPK225 and document steps.
   Using Preset 30 "Generic".

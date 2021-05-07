@@ -1,0 +1,17 @@
+// CH_SFX_DROP
+instrument {
+  env main~2 mode=set {
+    level=800;
+    00 c0;
+    10 ff;
+    a0 00;
+  }
+  fm main~0 rate~2 mod1=4 range=2;
+  env {
+    time=1;
+    level=0.20;
+    07 ff 0;
+    10 18 0;
+    90 00 100;
+  }
+}
