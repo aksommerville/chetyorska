@@ -435,6 +435,8 @@ void ch_app_del(struct ch_app *app) {
 
 int ch_app_update(struct ch_app *app) {
 
+  if (!app->synth->song) return -1;//XXX Force termination when song ends.
+
   // One normally should lock audio when reading the synth context.
   // I'm making an exception because we know that song changes can only be effected from this thread.
   // This exception would be invalid if there's a chance we play songs without repeat, beware!
@@ -552,5 +554,9 @@ int ch_app_play_song(struct ch_app *app,int songid) {
   int err=rb_synth_play_song(app->synth,song,1);
   rb_audio_unlock(app->audio);
   if (err<0) return -1;
+  
+  //XXX Force termination when the song ends.
+  //app->synth->song->repeat=0;
+  
   return 0;
 }

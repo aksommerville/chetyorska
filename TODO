@@ -99,6 +99,229 @@ xxx Remove Rabbit.
   If not the whole thing, at least replace its synthesizer with Beepbot.
   ...hold off on this, i'm kind of digging rabbit now
   
+[x] !!! Tempo going haywire, noticed especially in song 9.
+  First beat is long but i think that's to be expected.
+A little nuts around 1:15:
+beatc  39 ---------------------------------------
+beatc  39 ---------------------------------------
+beatc  39 ---------------------------------------
+beatc  20 --------------------
+beatc  59 -----------------------------------------------------------
+beatc  19 -------------------
+beatc  59 -----------------------------------------------------------
+beatc  18 ------------------
+beatc  59 -----------------------------------------------------------
+beatc  39 ---------------------------------------
+beatc  39 ---------------------------------------
+[x] Does that happen consistently? ...YES
+frame  4294, beatc  39 ---------------------------------------
+frame  4334, beatc  39 ---------------------------------------
+frame  4374, beatc  39 ---------------------------------------
+frame  4414, beatc  39 ---------------------------------------
+frame  4434, beatc  19 -------------------
+frame  4494, beatc  59 -----------------------------------------------------------
+frame  4514, beatc  19 -------------------
+frame  4574, beatc  59 -----------------------------------------------------------
+frame  4594, beatc  19 -------------------
+frame  4654, beatc  59 -----------------------------------------------------------
+frame  4694, beatc  39 ---------------------------------------
+frame  4734, beatc  39 ---------------------------------------
+frame  4774, beatc  39 ---------------------------------------
+frame  4814, beatc  39 ---------------------------------------
+...once more...
+frame  4288, beatc  38 --------------------------------------
+frame  4328, beatc  39 ---------------------------------------
+frame  4369, beatc  40 ----------------------------------------
+frame  4409, beatc  39 ---------------------------------------
+frame  4429, beatc  19 -------------------
+frame  4489, beatc  59 -----------------------------------------------------------
+frame  4509, beatc  19 -------------------
+frame  4569, beatc  59 -----------------------------------------------------------
+frame  4588, beatc  18 ------------------
+frame  4648, beatc  59 -----------------------------------------------------------
+frame  4688, beatc  39 ---------------------------------------
+frame  4728, beatc  39 ---------------------------------------
+frame  4768, beatc  39 ---------------------------------------
+...and another for safety...
+frame  4365, beatc  38 --------------------------------------
+frame  4406, beatc  40 ----------------------------------------
+frame  4446, beatc  39 ---------------------------------------
+frame  4466, beatc  19 -------------------
+frame  4525, beatc  58 ----------------------------------------------------------
+frame  4546, beatc  20 --------------------
+frame  4606, beatc  59 -----------------------------------------------------------
+frame  4626, beatc  19 -------------------
+frame  4686, beatc  59 -----------------------------------------------------------
+frame  4726, beatc  39 ---------------------------------------
+frame  4765, beatc  38 --------------------------------------
+[x] What's happening in the event stream around here?
+frame  4365, beatc  38 --------------------------------------
+song cmd 0bf6
+...delay 3062 * 1.200000 => 3674
+song cmd 05fb
+...delay 1531 * 1.200000 => 1837
+song cmd 803c
+...note 00 3c
+song cmd 8030
+...note 00 30
+song cmd 17ec
+...delay 6124 * 1.200000 => 7348
+song cmd 17ec
+...delay 6124 * 1.200000 => 7348
+song cmd 8032
+...note 00 32
+song cmd 801a
+...note 00 1a
+song cmd 8026
+...note 00 26
+song cmd 2fd9
+...delay 12249 * 1.200000 => 14698
+frame  4405, beatc  39 ---------------------------------------
+song cmd 804b
+...note 00 4b
+song cmd 8045
+...note 00 45
+song cmd 803f
+...note 00 3f
+song cmd 8042
+...note 00 42
+song cmd 8030
+...note 00 30
+song cmd 8036
+...note 00 36
+song cmd 8039
+...note 00 39
+song cmd 803c
+...note 00 3c
+song cmd 3fff
+...delay 16383 * 1.200000 => 19659
+frame  4425, beatc  19 -------------------
+song cmd 0dc2
+...delay 3522 * 1.200000 => 4226
+song cmd 05fb
+...delay 1531 * 1.200000 => 1837
+song cmd 0bf6
+...delay 3062 * 1.200000 => 3674
+song cmd 803b
+...note 00 3b
+song cmd 802f
+...note 00 2f
+song cmd 17ec
+...delay 6124 * 1.200000 => 7348
+song cmd 17ec
+...delay 6124 * 1.200000 => 7348
+song cmd 8032
+...note 00 32
+song cmd 801a
+...note 00 1a
+song cmd 8026
+...note 00 26
+song cmd 2fd9
+...delay 12249 * 1.200000 => 14698
+frame  4485, beatc  59 -----------------------------------------------------------
+song cmd 803f
+...note 00 3f
+song cmd 8043
+...note 00 43
+song cmd 8047
+...note 00 47
+song cmd 804b
+...note 00 4b
+song cmd 803b
+...note 00 3b
+song cmd 8033
+...note 00 33
+song cmd 802f
+...note 00 2f
+song cmd 8037
+...note 00 37
+song cmd 3fff
+...delay 16383 * 1.200000 => 19659
+frame  4506, beatc  20 --------------------
+song cmd 0dc2
+...delay 3522 * 1.200000 => 4226
+song cmd 05fb
+...delay 1531 * 1.200000 => 1837
+song cmd 0bf6
+...delay 3062 * 1.200000 => 3674
+song cmd 803a
+...note 00 3a
+song cmd 802e
+...note 00 2e
+song cmd 17ec
+...delay 6124 * 1.200000 => 7348
+song cmd 17ec
+...delay 6124 * 1.200000 => 7348
+song cmd 8032
+...note 00 32
+song cmd 801a
+...note 00 1a
+song cmd 8026
+...note 00 26
+song cmd 2fd9
+...delay 12249 * 1.200000 => 14698
+frame  4565, beatc  58 ----------------------------------------------------------
+song cmd 8043
+...note 00 43
+song cmd 804a
+...note 00 4a
+song cmd 803e
+...note 00 3e
+song cmd 802e
+...note 00 2e
+song cmd 8032
+...note 00 32
+song cmd 8037
+...note 00 37
+song cmd 803a
+...note 00 3a
+song cmd 3fff
+...delay 16383 * 1.200000 => 19659
+frame  4585, beatc  19 -------------------
+song cmd 0dc2
+...delay 3522 * 1.200000 => 4226
+song cmd 05fb
+...delay 1531 * 1.200000 => 1837
+song cmd 0bf6
+...delay 3062 * 1.200000 => 3674
+song cmd 8039
+...note 00 39
+song cmd 802d
+...note 00 2d
+song cmd 17ec
+...delay 6124 * 1.200000 => 7348
+song cmd 17ec
+...delay 6124 * 1.200000 => 7348
+song cmd 8032
+...note 00 32
+song cmd 801a
+...note 00 1a
+song cmd 8026
+...note 00 26
+song cmd 2fd9
+...delay 12249 * 1.200000 => 14698
+frame  4645, beatc  59 -----------------------------------------------------------
+...rb_song_player_update(): We jump player->elapsedsourceframes immediately upon consuming a DELAY event.
+  That could throw the timing off.
+  There's no good solution here. Actual song time elapsed is at rb_song_player_advance(), in scaled output frames.
+  [x] Try diving that by tempomultiplier, but sync the source time when delay reaches zero each time.
+  ...steady as a rock, hell yeah.
+[x] As long as I've got this beat measurement set up, check all the songs:
+  1 perfect
+  2 perfect
+  3 long beats (~59 at 1.2), not usable like that, and i'm not crazy about this song either, drop it. (steady as a rock tho)
+  4 short beats (~19 at 1.2), steady enough
+  5 perfect
+  6 short beats (~17 at 1.2), apparent tempo shifts, i feel not usable. weak beat anyway.
+  7 long beats (~38 at 1.2) and they trigger 1/2 out of phase, then switch. unusable
+  8 beats a bit short (~23 at 1.2), love this song tho so i think it's ok. long too: 12 minutes at 1.2
+  9 -- beats are consistent length now but they do seem to drift over time. like 1/2 out of phase by the end
+  10 long beats (~47 at 1.2). if it's possible at all to salvage this let's do because it is just perfect musically
+  11 very long beats (~71 at 1.2), also perceptually very slow at 1.2, probly not worth salvaging
+  12 a hair long (~33 at 1.2) and there's a few places the tempo breaks down. i like this one so much i'm tempted to rewrite it
+  13 a bit long (~35 at 1.2) and total length short (1:09 at 1.2), but nothing to complain about
+  14 long beats (~44 at 1.2), some rough patches, eg right off the bat, but overall nice
+  
 [ ] Automated speed testing. I need to see game->fallskip in motion.
   [ ] Verify input restriction.
 
@@ -140,7 +363,8 @@ xxx Remove Rabbit.
   - 12 i think does the same? tempo goes a little nuts sometimes
   - 10 i absolutely love and can't live without, but can we maybe double the tempo?
 
-[ ] What does Rabbit do when a song does not emit Program Change? eg 7(No03_Albmblatt) and 8(nobm) do not.
+[x] What does Rabbit do when a song does not emit Program Change? eg 7(No03_Albmblatt) and 8(nobm) do not.
+  Doesn't matter. They get pressed into a format with per-note program, and default to zero.
 
 Configure MPK225 and document steps.
   Using Preset 30 "Generic".
