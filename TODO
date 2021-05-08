@@ -308,7 +308,7 @@ frame  4645, beatc  59 ---------------------------------------------------------
   ...steady as a rock, hell yeah.
 [x] As long as I've got this beat measurement set up, check all the songs:
   1 perfect
-  2 perfect
+  2 perfect (but short, it gets annoying in real life)
   3 long beats (~59 at 1.2), not usable like that, and i'm not crazy about this song either, drop it. (steady as a rock tho)
   4 short beats (~19 at 1.2), steady enough
   5 perfect
@@ -321,6 +321,8 @@ frame  4645, beatc  59 ---------------------------------------------------------
   12 a hair long (~33 at 1.2) and there's a few places the tempo breaks down. i like this one so much i'm tempted to rewrite it
   13 a bit long (~35 at 1.2) and total length short (1:09 at 1.2), but nothing to complain about
   14 long beats (~44 at 1.2), some rough patches, eg right off the bat, but overall nice
+  
+[x] Script to double MIDI file's qnote intervals without changing the output.
   
 [ ] Automated speed testing. I need to see game->fallskip in motion.
   [ ] Verify input restriction.

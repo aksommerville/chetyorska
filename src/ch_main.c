@@ -12,7 +12,6 @@ int main(int argc,char **argv) {
   struct ch_app *app=ch_app_new(argc,argv);
   if (!app) return 1;
   if (ch_app_play_song(app,CH_SONGID_RANDOM)<0) return 1;
-  //if (ch_app_play_song(app,14)<0) return 1;
   
   //XXX TEMP: Eventually games can come and go, and there will be some lobby UI outside it.
   struct ch_game *game=ch_game_new();
