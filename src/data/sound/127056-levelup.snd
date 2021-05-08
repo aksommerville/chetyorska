@@ -1,0 +1,53 @@
+// CH_SFX_LEVELUP
+instrument {
+
+  env main~1, mode=set, {
+    level=1500;
+    00 10;
+    ff ff;
+  }
+  
+  fm main~0 rate~1 mod1=2 range=1;
+  env main~0, {
+    level=0.05;
+    10 ff;
+    10 00;
+    10 00;
+    10 ff;
+    10 00;
+    10 00;
+    10 ff;
+    10 00;
+  }
+
+  osc main~2 phase~1 shape=sawup;//TODO need a "copy" op!
+  mlt main~2 arg=1.5;
+  fm main~3 rate~2 mod1=0.25 range=2.5;
+  env main~3 {
+    level=0.05;
+    10 00;
+    10 ff;
+    10 00;
+    10 00;
+    10 ff;
+    10 00;
+    10 00;
+    10 ff;
+    10 00;
+  }
+  add main~0 arg~3;
+
+  osc main~2 phase~1 shape=sawup;//TODO need a "copy" op!
+  mlt main~2 arg=0.7;
+  fm main~3 rate~2 mod1=0.5 range=2;
+  env main~3 {
+    level=0.05;
+    50 00;
+    10 ff;
+    10 00;
+    10 00;
+    10 ff;
+    10 00;
+  }
+  add main~0 arg~3;
+}

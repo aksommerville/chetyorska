@@ -5,7 +5,6 @@ TODO here:
 [ ] Per-stroke feedback re timing, the bar isn't enough.
 [ ] Automated speed testing. I need to see game->fallskip in motion.
   [ ] Verify input restriction.
-[ ] Allow rotate and move during elimination blackout. But not drop!
 [ ] !!! timing went out of sync: song 13
   I'm pretty confident this is a defect in the song. It happens predictably at a noticeable point.
 [ ] High scores
@@ -19,9 +18,11 @@ Rabbit:
 [ ] Video, audio, input drivers for non-linux host (Rabbit?)
 [ ] Hide cursor: Rabbit
 [ ] Rabbit CLI: "play" command to preview a MIDI file
+[ ] synth: copy and dc ops
 
 ----- COMPLETED OR DECLINED
 
+[x] Allow rotate and move during elimination blackout. But not drop!
 [x] Some feedback on level changes.
 [x] Lobby: If we're keeping it at two options, don't wrap around.
 [x] Prettier font.

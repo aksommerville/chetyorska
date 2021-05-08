@@ -310,6 +310,7 @@ static int ch_game_rotate(struct ch_game *game,int d) {
  */
  
 static int ch_game_drop(struct ch_game *game) {
+  if (game->eliminatecounter) return 0;
   if (ch_game_rate_timing(game)<0) return -1;
   ch_game_sound(game,CH_SFX_DROP);
   game->fallcounter=0;
@@ -323,7 +324,6 @@ static int ch_game_drop(struct ch_game *game) {
 int ch_game_input(struct ch_game *game,int eventid) {
   if (!game->gridder.grid) return 0;
   if (game->finished) return 0;
-  if (game->eliminatecounter) return 0;//TODO allow rotation during the elimination blackout
   if (game->input_blackout&(1<<eventid)) return 0;
   game->input_blackout|=1<<eventid;
   switch (eventid) {

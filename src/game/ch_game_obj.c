@@ -403,7 +403,6 @@ void ch_game_print_rhythm_bar(struct ch_game *game) {
  */
 
 int ch_game_end(struct ch_game *game) {
-  //TODO
   fprintf(stderr,"*********** game over, lines=%d, score=%d **************\n",game->lines,game->score);
   ch_game_sound(game,CH_SFX_GAMEOVER);
   game->finished=1;
