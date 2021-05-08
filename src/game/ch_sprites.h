@@ -17,4 +17,13 @@ struct ch_sprite_score {
   struct rb_image *image;
 };
 
+extern const struct rb_sprite_type ch_sprite_type_fireworks;
+
+struct ch_sprite_fireworks {
+  struct rb_sprite hdr;
+  int ttl;
+  double x,y;
+  double dx,dy;
+};
+
 #endif

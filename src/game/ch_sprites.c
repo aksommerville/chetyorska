@@ -82,3 +82,47 @@ const struct rb_sprite_type ch_sprite_type_score={
 };
 
 #undef SPRITE
+
+/* Fireworks.
+ *********************************************************/
+ 
+#define SPRITE ((struct ch_sprite_fireworks*)sprite)
+
+static int _ch_fireworks_init(struct rb_sprite *sprite) {
+  
+  sprite->imageid=3;
+  sprite->tileid=0x00+(rand()%8);
+  sprite->xform=(rand()&7);
+  
+  SPRITE->ttl=180;
+  
+  SPRITE->x=RB_FB_W>>1;
+  SPRITE->y=RB_FB_H/3;
+  SPRITE->dx=((rand()&0xff)-128)/80.0;
+  SPRITE->dy=((rand()&0xff)-128)/80.0-1.5;
+  
+  return 0;
+}
+
+static int _ch_fireworks_update(struct rb_sprite *sprite) {
+
+  if (--(SPRITE->ttl)<=0) return rb_sprite_kill(sprite);
+
+  SPRITE->x+=SPRITE->dx;
+  SPRITE->y+=SPRITE->dy;
+  sprite->x=(int)SPRITE->x;
+  sprite->y=(int)SPRITE->y;
+  
+  SPRITE->dy+=0.10;
+
+  return 0;
+}
+
+const struct rb_sprite_type ch_sprite_type_fireworks={
+  .name="fireworks",
+  .objlen=sizeof(struct ch_sprite_fireworks),
+  .init=_ch_fireworks_init,
+  .update=_ch_fireworks_update,
+};
+
+#undef SPRITE

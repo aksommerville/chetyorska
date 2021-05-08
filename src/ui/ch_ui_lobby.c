@@ -110,10 +110,17 @@ int ch_ui_lobby_draw(struct rb_image *fb,struct ch_ui *ui) {
  
 static int ch_ui_move_optionp(struct ch_ui *ui,int d) {
   ch_app_play_sound(ui->app,CH_SFX_MOVE);
-  const int optionc=2;
-  ui->optionp+=d;
-  if (ui->optionp<0) ui->optionp=optionc-1;
-  else if (ui->optionp>=optionc) ui->optionp=0;
+  
+  if (0) { // General case, if we add more options.
+    const int optionc=2;
+    ui->optionp+=d;
+    if (ui->optionp<0) ui->optionp=optionc-1;
+    else if (ui->optionp>=optionc) ui->optionp=0;
+  } else { // Since there's only two, make it absolute, snare=Play and tom=Quit
+    if (d<0) ui->optionp=0;
+    else if (d>0) ui->optionp=1;
+  }
+  
   return 0;
 }
 

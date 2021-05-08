@@ -121,6 +121,7 @@ int ch_game_sound(struct ch_game *game,int sndid);
 #define CH_SFX_MOVE        0x7f35
 #define CH_SFX_ROTATE      0x7f36
 #define CH_SFX_DROP        0x7f37
+#define CH_SFX_LEVELUP     0x7f38/*TODO*/
 
 int ch_game_advance_level(struct ch_game *game);
 
@@ -128,6 +129,7 @@ void ch_game_redraw_next_brick(struct ch_game *game);
 void ch_game_generate_next_brick(struct ch_game *game);
 
 int ch_game_add_score_sprite(struct ch_game *game,int score,int x,int y);
+int ch_game_start_fireworks(struct ch_game *game);
 
 /* The first 7 shapes are the canonical ones, the way they should appear initially.
  */

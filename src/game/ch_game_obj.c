@@ -437,7 +437,9 @@ int ch_game_advance_level(struct ch_game *game) {
   game->framesperfall_drop=1;
   game->fallcounter=game->framesperfall;
   
-  //TODO bells, whistles
+  ch_game_sound(game,CH_SFX_LEVELUP);
+  if (ch_game_start_fireworks(game)<0) return -1;
+  
   return 0;
 }
 
@@ -459,5 +461,20 @@ int ch_game_add_score_sprite(struct ch_game *game,int score,int x,int y) {
   sprite->y=region->y*CH_TILESIZE+y;
   ((struct ch_sprite_score*)sprite)->score=score;
 
+  return 0;
+}
+
+/* Add a bunch of fireworks sprites.
+ */
+ 
+int ch_game_start_fireworks(struct ch_game *game) {
+  const int count=100;
+  int i=count; while (i-->0) {
+    struct rb_sprite *sprite=rb_sprite_new(&ch_sprite_type_fireworks);
+    if (!sprite) return -1;
+    int err=rb_sprite_group_add(game->sprites,sprite);
+    rb_sprite_del(sprite);
+    if (err<0) return -1;
+  }
   return 0;
 }

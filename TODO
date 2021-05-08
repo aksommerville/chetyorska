@@ -22,6 +22,8 @@ Rabbit:
 
 ----- COMPLETED OR DECLINED
 
+[x] Some feedback on level changes.
+[x] Lobby: If we're keeping it at two options, don't wrap around.
 [x] Prettier font.
 8x8 tiles yields a 32x18 grid.
 [x] Is that big enough? 8x16 or 9x18 if we can tolerate no header or footer
