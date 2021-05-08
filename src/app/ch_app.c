@@ -316,7 +316,7 @@ static struct ch_song *ch_app_songv_insert(struct ch_app *app,int p,int id) {
  
 static int ch_app_load_song(struct ch_app *app,int id,const void *src,int srcc) {
 
-  struct rb_song *song=rb_song_new(src,srcc,app->audio->delegate.rate);
+  struct rb_song *song=rb_song_new(src,srcc);
   if (!song) return -1;
 
   int p=ch_app_songv_search(app,id);
@@ -457,7 +457,7 @@ int ch_app_update(struct ch_app *app) {
   }
   
   if (app->game&&app->synth->song) {
-    app->synth->song->tempomultiplier=app->game->tempo;
+    rb_song_player_adjust_tempo(app->synth->song,app->game->tempo);
   }
   
   if (rb_audio_update(app->audio)<0) return -1;

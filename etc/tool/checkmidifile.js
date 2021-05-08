@@ -9,6 +9,7 @@ const MidiFile = require("./MidiFile.js");
 function reportTempo(midiFile) {
   let phase = 0;
   let brokePhase = false;
+  let tempo = 0;
   const phaseBuckets = [];
   for (let i=128; i-->0; ) phaseBuckets.push(0);
   for (const event of midiFile.iterateEvents()) {
@@ -21,7 +22,14 @@ function reportTempo(midiFile) {
         throw new Error(`oops, phase=${phase} buckets=${phaseBuckets.length} p=${p}, ${event.reprLog()}`);
       }
       phaseBuckets[p]++;
-    } else if (event.opcode >= 0xf0) {
+    } else if ((event.opcode === 0xff) && (event.a === 0x51)) {
+      if (!event.v || (event.v.length !== 3)) throw new Error(`invalid Set Tempo event`);
+      const ntempo = (event.v[0] << 16) | (event.v[1] << 8) | event.v[2];
+      if (!tempo) {
+        tempo=ntempo;
+      } else if (tempo !== ntempo) {
+        throw new Error(`Tempo change from ${tempo} to ${ntempo} us/qnote. We require a fixed tempo.`);
+      }
     }
   }
   const topCount = Math.max(...phaseBuckets);
