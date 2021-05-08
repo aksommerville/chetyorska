@@ -6,7 +6,6 @@ TODO here:
 [ ] Automated speed testing. I need to see game->fallskip in motion.
   [ ] Verify input restriction.
 [ ] Allow rotate and move during elimination blackout. But not drop!
-[ ] Prettier font.
 [ ] !!! timing went out of sync: song 13
   I'm pretty confident this is a defect in the song. It happens predictably at a noticeable point.
 [ ] High scores
@@ -14,6 +13,7 @@ TODO here:
 [ ] MacOS MIDI in
 [ ] MS Windows MIDI in
 [ ] Custom mapping of MIDI events? See ch_app_midi_note_on
+[ ] "Select song" or some orderly auto-selection, don't leave it random.
 
 Rabbit:
 [ ] Video, audio, input drivers for non-linux host (Rabbit?)
@@ -22,6 +22,7 @@ Rabbit:
 
 ----- COMPLETED OR DECLINED
 
+[x] Prettier font.
 8x8 tiles yields a 32x18 grid.
 [x] Is that big enough? 8x16 or 9x18 if we can tolerate no header or footer
   [x] What is the size of NES Tetris's playable area? 10x20

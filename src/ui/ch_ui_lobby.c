@@ -4,15 +4,22 @@
 #include "app/ch_app.h"
 #include <rabbit/rb_image.h>
 #include <rabbit/rb_font.h>
+#include <rabbit/rb_vmgr.h>
 
 /* Generate font and labels if we don't have them yet.
  */
  
 static int ch_ui_init_font(struct ch_ui *ui) {
-  //TODO nicer font
-  if (!(ui->font=rb_font_generate_minimal())) return -1;
-  ui->fontcontent=RB_FONTCONTENT_G0;
-  ui->fontflags=RB_FONT_FLAG_MARGINL|RB_FONT_FLAG_MARGINT;
+  struct rb_image *image=ui->app->vmgr->imagev[2];
+  if (rb_image_ref(image)>=0) {
+    ui->font=image;
+    ui->fontcontent=RB_FONTCONTENT_G0;
+    ui->fontflags=RB_FONT_FLAG_MARGINL|RB_FONT_FLAG_MARGINT;
+  } else {
+    if (!(ui->font=rb_font_generate_minimal())) return -1;
+    ui->fontcontent=RB_FONTCONTENT_G0;
+    ui->fontflags=RB_FONT_FLAG_MARGINL|RB_FONT_FLAG_MARGINT;
+  }
   return 0;
 }
 
@@ -27,7 +34,7 @@ static int ch_ui_init_labels(struct ch_ui *ui) {
   _(quit,"Quit")
   _(directions,"<-- Snare | Floor Tom -->")
   _(select,"Crash to select")
-  _(copyright,"(c) 2021 AK Sommerville")
+  _(copyright,"(C) 2021 AK Sommerville")
   
   #undef _
   return 0;
@@ -89,7 +96,7 @@ int ch_ui_lobby_draw(struct rb_image *fb,struct ch_ui *ui) {
     }
     ui->label_recap=rb_font_printf(
       ui->font,ui->fontcontent,ui->fontflags,0,
-      "Score: %d, Lines: %d, Average: %.1f",
+      "Score: %d, Lines: %d, Avg: %.1f",
       ui->game->score,ui->game->lines,average
     );
   }
