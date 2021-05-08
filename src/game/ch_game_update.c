@@ -162,6 +162,7 @@ static int ch_game_flash_eliminations(struct ch_game *game) {
 int ch_game_update(struct ch_game *game,int beatp,int beatc) {
   game->input_blackout=0;
   if (!game->gridder.grid) return 0;
+  if (game->finished) return 0;
   
   if (game->sprites) {
     int i=game->sprites->c;
@@ -321,7 +322,8 @@ static int ch_game_drop(struct ch_game *game) {
  
 int ch_game_input(struct ch_game *game,int eventid) {
   if (!game->gridder.grid) return 0;
-  if (game->eliminatecounter) return 0;
+  if (game->finished) return 0;
+  if (game->eliminatecounter) return 0;//TODO allow rotation during the elimination blackout
   if (game->input_blackout&(1<<eventid)) return 0;
   game->input_blackout|=1<<eventid;
   switch (eventid) {

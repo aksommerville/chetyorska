@@ -1,20 +1,154 @@
+TODO here:
+
+[ ] Pause -- try to sabotage pause-as-slow-motion
+[ ] MIDI per-device running status
+[ ] Per-stroke feedback re timing, the bar isn't enough.
+[ ] Automated speed testing. I need to see game->fallskip in motion.
+  [ ] Verify input restriction.
+[ ] Allow rotate and move during elimination blackout. But not drop!
+[ ] Prettier font.
+[ ] !!! timing went out of sync: song 13
+  I'm pretty confident this is a defect in the song. It happens predictably at a noticeable point.
+[ ] High scores
+[ ] Optionalize ossmidi
+[ ] MacOS MIDI in
+[ ] MS Windows MIDI in
+[ ] Custom mapping of MIDI events? See ch_app_midi_note_on
+
+Rabbit:
+[ ] Video, audio, input drivers for non-linux host (Rabbit?)
+[ ] Hide cursor: Rabbit
+[ ] Rabbit CLI: "play" command to preview a MIDI file
+
+----- COMPLETED OR DECLINED
+
 8x8 tiles yields a 32x18 grid.
 [x] Is that big enough? 8x16 or 9x18 if we can tolerate no header or footer
   [x] What is the size of NES Tetris's playable area? 10x20
   [x] Can we handle non-power-of-two tile sizes? YES
 ...6x6
-
 [x] End game
 [x] Shuffle new brick low edge to y=-1
 [x] Movement
 [x] Rotation
 [x] Line elimination
 [x] Drop
-
 [x] I've seen bricks get stuck at the top, how did that happen?
   Seems only to be immediately after clearing a line.
   ch_game_update(), I was allowing some frames to execute during the elimination blink
-  
+[x] Rearrange the canonical shapes, eg the vertex of the T should always be in the same place.
+  How NES Tetris does it:
+   - Z: 2-cell column stays put. (remains at lowest point)
+   - S: Pivots on middle-top cell in horz orientation.
+   - I: Tall goes one row lower, pivots on the second tile from right.
+   - L: Middle of long bar stays put.
+   - L reverse: Same as L.
+   *** The Ls are canonically back-up, not feet-on-the-floor as I have them.
+   ...fwiw this means all except "I" are canonically two tiles tall.
+   - T: Central tile stays put.
+   - O: No rotation.
+[x] Start with brick fully onscreen like NES.
+  [x] Does NES have a bit of a delay when a brick appears? NO not that i can measure
+[x] Should we nudge on rotation when blocked horizontally?
+  [x] Does NES Tetris do anything like that?
+  NO
+[x] Eliminating a line way top, where the incoming brick is still partly offscreen, we discard the offscreen part.
+  [x] Is this consistent with NES Tetris? Is the situation even possible there?
+  This is fantastically difficult to effect, it's not worth worrying about.
+NB: NES Tetris permits bricks to overlap any existing brick that they touch initially.
+  I don't think we'll be able to pull that off without a pretty big re-think, and I don't think it's worth it.
+  For us, if a brick starts overlapped, game over.
+[x] MIDI In
+[x] Count lines
+xxx Drop score -- not convinced we need this
+[x] Rhythm score
+  [x] Rabbit: Add (framesperqnote) to rb_song, and (elapsedframes) to rb_song_player.
+    Then a public "get_song_phase()" returning (p,c) from the synth context.
+[x] Display lines and score
+[x] Background music
+[x] Get tempo from song
+[x] Sound effects
+[x] "Next brick"
+[x] Initial speed, and speed advancement
+  Idea: Allow the game to become technically impossible due to speed, and make that limit reachable, like 50 or 100 lines.
+  The challenge is to squeeze in as many points as you can in the limited time available.
+[x] Adjust music tempo according to speed?
+[x] Full graphics -- fixed tile per shape?
+[x] Clean up building the UI grid in game
+[x] Some like "WOW!" temporary UI at each line -- show the one-line score
+[x] Use sprites for "next brick", center in box
+[x] Restrict input to one stroke per key per frame
+[x] Rabbit: Some problem with sound effects. "rotate" was silent, restarted and then it's fine (no rebuild of archive).
+xxx Rabbit: Seems like events get dropped when playing at high speed.
+xxx Remove Rabbit.
+  If not the whole thing, at least replace its synthesizer with Beepbot.
+  ...hold off on this, i'm kind of digging rabbit now
+
+[x] !!! Tempo going haywire, noticed especially in song 9.
+  First beat is long but i think that's to be expected.
+A little nuts around 1:15:
+beatc  39 ---------------------------------------
+beatc  39 ---------------------------------------
+beatc  39 ---------------------------------------
+beatc  20 --------------------
+beatc  59 -----------------------------------------------------------
+beatc  19 -------------------
+beatc  59 -----------------------------------------------------------
+beatc  18 ------------------
+beatc  59 -----------------------------------------------------------
+beatc  39 ---------------------------------------
+beatc  39 ---------------------------------------
+[x] Does that happen consistently? ...YES
+...rb_song_player_update(): We jump player->elapsedsourceframes immediately upon consuming a DELAY event.
+  That could throw the timing off.
+  There's no good solution here. Actual song time elapsed is at rb_song_player_advance(), in scaled output frames.
+  [x] Try diving that by tempomultiplier, but sync the source time when delay reaches zero each time.
+  ...steady as a rock, hell yeah.
+[x] As long as I've got this beat measurement set up, check all the songs:
+  1 perfect
+  2 perfect (but short, it gets annoying in real life)
+  3 FIXED: long beats (~47 at 1.2). if it's possible at all to salvage this let's do because it is just perfect musically
+  4 short beats (~19 at 1.2), steady enough
+  5 perfect
+  8 beats a bit short (~23 at 1.2), love this song tho so i think it's ok. long too: 12 minutes at 1.2
+  12 a hair long (~33 at 1.2) and there's a few places the tempo breaks down. i like this one so much i'm tempted to rewrite it
+  13 a bit long (~35 at 1.2) and total length short (1:09 at 1.2), but nothing to complain about
+  14 long beats (~44 at 1.2), some rough patches, eg right off the bat, but overall nice
+
+[x] Script to double MIDI file's qnote intervals without changing the output.
+[x] Dim the rhythm lamp and zero rhythm bar when game ends.
+[x] Clean loading of music
+[x] Game over screen -- esp we want to see the score please!
+[x] Lobby
+xxx Enumerate shapes instead of generalizing (ch_game_obj.c)
+[x] Preprocess MIDI files, remove redundant cruft. In Rabbit CLI.
+xxx At least one of these songs is abombinably slow. Not useable as is.
+
+[x] Decent sound effects.
+  Getting a line should kind of Royal Fanfare.
+[x] Determine which programs are needed.
+    0 Acoustic Grand Piano (6,9,10,12) (implicit: 3,4,5,7,8,11,13)
+    3 Honky Tonk Piano (14)
+    6 Harpsichord (2)
+   40 Violin (1,2)
+   45 Pizzicato Strings (1)
+   47 Timpani (6)
+   48 String Ensemble 1 (6)
+   56 Trumpet (6)
+   60 French Horn (6)
+   68 Oboe (2,6)
+   70 Bassoon (6)
+   71 Clarinet (6)
+   73 Flute (6)
+  112 Tinkle Bell (1)
+xxx Good set of songs.
+  - Eliminate 6, it makes no sense.
+  - 14 switches phase halfway thru. Fix that or eliminate it.
+  - 12 i think does the same? tempo goes a little nuts sometimes
+  - 10 i absolutely love and can't live without, but can we maybe double the tempo?
+
+[x] What does Rabbit do when a song does not emit Program Change? eg 7(No03_Albmblatt) and 8(nobm) do not.
+  Doesn't matter. They get pressed into a format with per-note program, and default to zero.
 [x] dvorak-o96-1.mid: I love this song, it's perfect but the timing is screwy.
   A few seconds in, notes start appearing at +5-tick phase and they stay that way.
   [x] Is the file wrong, or am I?
@@ -39,334 +173,6 @@
     * src/music/mutopia/unpack/dvorak-o96-2.mid: Great! Much more consistent than o96-1, all 0/1 1/2 3/4
     * src/music/mutopia/unpack/dvorak-o96-3.mid: Very nice. Some triplets.
     * src/music/mutopia/unpack/anitrasdance.mid: Perfect, 0/1 and 1/2
-
-[x] Rearrange the canonical shapes, eg the vertex of the T should always be in the same place.
-  How NES Tetris does it:
-   - Z: 2-cell column stays put. (remains at lowest point)
-   - S: Pivots on middle-top cell in horz orientation.
-   - I: Tall goes one row lower, pivots on the second tile from right.
-   - L: Middle of long bar stays put.
-   - L reverse: Same as L.
-   *** The Ls are canonically back-up, not feet-on-the-floor as I have them.
-   ...fwiw this means all except "I" are canonically two tiles tall.
-   - T: Central tile stays put.
-   - O: No rotation.
-   
-[x] Start with brick fully onscreen like NES.
-  [x] Does NES have a bit of a delay when a brick appears? NO not that i can measure
-  
-[x] Should we nudge on rotation when blocked horizontally?
-  [x] Does NES Tetris do anything like that?
-  NO
-  
-[x] Eliminating a line way top, where the incoming brick is still partly offscreen, we discard the offscreen part.
-  [x] Is this consistent with NES Tetris? Is the situation even possible there?
-  This is fantastically difficult to effect, it's not worth worrying about.
-  
-NB: NES Tetris permits bricks to overlap any existing brick that they touch initially.
-  I don't think we'll be able to pull that off without a pretty big re-think, and I don't think it's worth it.
-  For us, if a brick starts overlapped, game over.
-
-[x] MIDI In
-[x] Count lines
-xxx Drop score -- not convinced we need this
-[x] Rhythm score
-  [x] Rabbit: Add (framesperqnote) to rb_song, and (elapsedframes) to rb_song_player.
-    Then a public "get_song_phase()" returning (p,c) from the synth context.
-[x] Display lines and score
-[x] Background music
-[x] Get tempo from song
-[x] Sound effects
-[x] "Next brick"
-[x] Initial speed, and speed advancement
-  Idea: Allow the game to become technically impossible due to speed, and make that limit reachable, like 50 or 100 lines.
-  The challenge is to squeeze in as many points as you can in the limited time available.
-[x] Adjust music tempo according to speed?
-[x] Full graphics -- fixed tile per shape?
-[ ] Pause -- try to sabotage pause-as-slow-motion
-[ ] MIDI per-device running status
-[x] Clean up building the UI grid in game
-[x] Some like "WOW!" temporary UI at each line -- show the one-line score
-[ ] Likewise some per-stroke feedback re timing, the bar isn't enough.
-[x] Use sprites for "next brick", center in box
-[x] Restrict input to one stroke per key per frame
-
-[x] Rabbit: Some problem with sound effects. "rotate" was silent, restarted and then it's fine (no rebuild of archive).
-
-xxx Rabbit: Seems like events get dropped when playing at high speed.
-
-xxx Remove Rabbit.
-  If not the whole thing, at least replace its synthesizer with Beepbot.
-  ...hold off on this, i'm kind of digging rabbit now
-  
-[x] !!! Tempo going haywire, noticed especially in song 9.
-  First beat is long but i think that's to be expected.
-A little nuts around 1:15:
-beatc  39 ---------------------------------------
-beatc  39 ---------------------------------------
-beatc  39 ---------------------------------------
-beatc  20 --------------------
-beatc  59 -----------------------------------------------------------
-beatc  19 -------------------
-beatc  59 -----------------------------------------------------------
-beatc  18 ------------------
-beatc  59 -----------------------------------------------------------
-beatc  39 ---------------------------------------
-beatc  39 ---------------------------------------
-[x] Does that happen consistently? ...YES
-frame  4294, beatc  39 ---------------------------------------
-frame  4334, beatc  39 ---------------------------------------
-frame  4374, beatc  39 ---------------------------------------
-frame  4414, beatc  39 ---------------------------------------
-frame  4434, beatc  19 -------------------
-frame  4494, beatc  59 -----------------------------------------------------------
-frame  4514, beatc  19 -------------------
-frame  4574, beatc  59 -----------------------------------------------------------
-frame  4594, beatc  19 -------------------
-frame  4654, beatc  59 -----------------------------------------------------------
-frame  4694, beatc  39 ---------------------------------------
-frame  4734, beatc  39 ---------------------------------------
-frame  4774, beatc  39 ---------------------------------------
-frame  4814, beatc  39 ---------------------------------------
-...once more...
-frame  4288, beatc  38 --------------------------------------
-frame  4328, beatc  39 ---------------------------------------
-frame  4369, beatc  40 ----------------------------------------
-frame  4409, beatc  39 ---------------------------------------
-frame  4429, beatc  19 -------------------
-frame  4489, beatc  59 -----------------------------------------------------------
-frame  4509, beatc  19 -------------------
-frame  4569, beatc  59 -----------------------------------------------------------
-frame  4588, beatc  18 ------------------
-frame  4648, beatc  59 -----------------------------------------------------------
-frame  4688, beatc  39 ---------------------------------------
-frame  4728, beatc  39 ---------------------------------------
-frame  4768, beatc  39 ---------------------------------------
-...and another for safety...
-frame  4365, beatc  38 --------------------------------------
-frame  4406, beatc  40 ----------------------------------------
-frame  4446, beatc  39 ---------------------------------------
-frame  4466, beatc  19 -------------------
-frame  4525, beatc  58 ----------------------------------------------------------
-frame  4546, beatc  20 --------------------
-frame  4606, beatc  59 -----------------------------------------------------------
-frame  4626, beatc  19 -------------------
-frame  4686, beatc  59 -----------------------------------------------------------
-frame  4726, beatc  39 ---------------------------------------
-frame  4765, beatc  38 --------------------------------------
-[x] What's happening in the event stream around here?
-frame  4365, beatc  38 --------------------------------------
-song cmd 0bf6
-...delay 3062 * 1.200000 => 3674
-song cmd 05fb
-...delay 1531 * 1.200000 => 1837
-song cmd 803c
-...note 00 3c
-song cmd 8030
-...note 00 30
-song cmd 17ec
-...delay 6124 * 1.200000 => 7348
-song cmd 17ec
-...delay 6124 * 1.200000 => 7348
-song cmd 8032
-...note 00 32
-song cmd 801a
-...note 00 1a
-song cmd 8026
-...note 00 26
-song cmd 2fd9
-...delay 12249 * 1.200000 => 14698
-frame  4405, beatc  39 ---------------------------------------
-song cmd 804b
-...note 00 4b
-song cmd 8045
-...note 00 45
-song cmd 803f
-...note 00 3f
-song cmd 8042
-...note 00 42
-song cmd 8030
-...note 00 30
-song cmd 8036
-...note 00 36
-song cmd 8039
-...note 00 39
-song cmd 803c
-...note 00 3c
-song cmd 3fff
-...delay 16383 * 1.200000 => 19659
-frame  4425, beatc  19 -------------------
-song cmd 0dc2
-...delay 3522 * 1.200000 => 4226
-song cmd 05fb
-...delay 1531 * 1.200000 => 1837
-song cmd 0bf6
-...delay 3062 * 1.200000 => 3674
-song cmd 803b
-...note 00 3b
-song cmd 802f
-...note 00 2f
-song cmd 17ec
-...delay 6124 * 1.200000 => 7348
-song cmd 17ec
-...delay 6124 * 1.200000 => 7348
-song cmd 8032
-...note 00 32
-song cmd 801a
-...note 00 1a
-song cmd 8026
-...note 00 26
-song cmd 2fd9
-...delay 12249 * 1.200000 => 14698
-frame  4485, beatc  59 -----------------------------------------------------------
-song cmd 803f
-...note 00 3f
-song cmd 8043
-...note 00 43
-song cmd 8047
-...note 00 47
-song cmd 804b
-...note 00 4b
-song cmd 803b
-...note 00 3b
-song cmd 8033
-...note 00 33
-song cmd 802f
-...note 00 2f
-song cmd 8037
-...note 00 37
-song cmd 3fff
-...delay 16383 * 1.200000 => 19659
-frame  4506, beatc  20 --------------------
-song cmd 0dc2
-...delay 3522 * 1.200000 => 4226
-song cmd 05fb
-...delay 1531 * 1.200000 => 1837
-song cmd 0bf6
-...delay 3062 * 1.200000 => 3674
-song cmd 803a
-...note 00 3a
-song cmd 802e
-...note 00 2e
-song cmd 17ec
-...delay 6124 * 1.200000 => 7348
-song cmd 17ec
-...delay 6124 * 1.200000 => 7348
-song cmd 8032
-...note 00 32
-song cmd 801a
-...note 00 1a
-song cmd 8026
-...note 00 26
-song cmd 2fd9
-...delay 12249 * 1.200000 => 14698
-frame  4565, beatc  58 ----------------------------------------------------------
-song cmd 8043
-...note 00 43
-song cmd 804a
-...note 00 4a
-song cmd 803e
-...note 00 3e
-song cmd 802e
-...note 00 2e
-song cmd 8032
-...note 00 32
-song cmd 8037
-...note 00 37
-song cmd 803a
-...note 00 3a
-song cmd 3fff
-...delay 16383 * 1.200000 => 19659
-frame  4585, beatc  19 -------------------
-song cmd 0dc2
-...delay 3522 * 1.200000 => 4226
-song cmd 05fb
-...delay 1531 * 1.200000 => 1837
-song cmd 0bf6
-...delay 3062 * 1.200000 => 3674
-song cmd 8039
-...note 00 39
-song cmd 802d
-...note 00 2d
-song cmd 17ec
-...delay 6124 * 1.200000 => 7348
-song cmd 17ec
-...delay 6124 * 1.200000 => 7348
-song cmd 8032
-...note 00 32
-song cmd 801a
-...note 00 1a
-song cmd 8026
-...note 00 26
-song cmd 2fd9
-...delay 12249 * 1.200000 => 14698
-frame  4645, beatc  59 -----------------------------------------------------------
-...rb_song_player_update(): We jump player->elapsedsourceframes immediately upon consuming a DELAY event.
-  That could throw the timing off.
-  There's no good solution here. Actual song time elapsed is at rb_song_player_advance(), in scaled output frames.
-  [x] Try diving that by tempomultiplier, but sync the source time when delay reaches zero each time.
-  ...steady as a rock, hell yeah.
-[x] As long as I've got this beat measurement set up, check all the songs:
-  1 perfect
-  2 perfect (but short, it gets annoying in real life)
-  3 long beats (~59 at 1.2), not usable like that, and i'm not crazy about this song either, drop it. (steady as a rock tho)
-  4 short beats (~19 at 1.2), steady enough
-  5 perfect
-  6 short beats (~17 at 1.2), apparent tempo shifts, i feel not usable. weak beat anyway.
-  7 long beats (~38 at 1.2) and they trigger 1/2 out of phase, then switch. unusable
-  8 beats a bit short (~23 at 1.2), love this song tho so i think it's ok. long too: 12 minutes at 1.2
-  9 -- beats are consistent length now but they do seem to drift over time. like 1/2 out of phase by the end
-  10 long beats (~47 at 1.2). if it's possible at all to salvage this let's do because it is just perfect musically
-  11 very long beats (~71 at 1.2), also perceptually very slow at 1.2, probly not worth salvaging
-  12 a hair long (~33 at 1.2) and there's a few places the tempo breaks down. i like this one so much i'm tempted to rewrite it
-  13 a bit long (~35 at 1.2) and total length short (1:09 at 1.2), but nothing to complain about
-  14 long beats (~44 at 1.2), some rough patches, eg right off the bat, but overall nice
-  
-[x] Script to double MIDI file's qnote intervals without changing the output.
-  
-[ ] Automated speed testing. I need to see game->fallskip in motion.
-  [ ] Verify input restriction.
-
-[x] Clean loading of music
-[ ] Game over screen -- esp we want to see the score please!
-[ ] Lobby
-[ ] High scores
-[ ] Enumerate shapes instead of generalizing (ch_game_obj.c)
-[ ] Optionalize ossmidi
-[ ] MacOS MIDI in
-[ ] MS Windows MIDI in
-[ ] Video, audio, input drivers for non-linux host (Rabbit?)
-[ ] Preprocess MIDI files, remove redundant cruft. In Rabbit CLI.
-  NB: The Rabbit internal song format is not stored in the archive, it will be MIDI to MIDI.
-[ ] Hide cursor: Rabbit
-[ ] Custom mapping of MIDI events? See ch_app_midi_note_on
-[ ] At least one of these songs is abombinably slow. Not useable as is.
-
-[x] Decent sound effects.
-  Getting a line should kind of Royal Fanfare.
-[x] Determine which programs are needed.
-    0 Acoustic Grand Piano (6,9,10,12) (implicit: 3,4,5,7,8,11,13)
-    3 Honky Tonk Piano (14)
-    6 Harpsichord (2)
-   40 Violin (1,2)
-   45 Pizzicato Strings (1)
-   47 Timpani (6)
-   48 String Ensemble 1 (6)
-   56 Trumpet (6)
-   60 French Horn (6)
-   68 Oboe (2,6)
-   70 Bassoon (6)
-   71 Clarinet (6)
-   73 Flute (6)
-  112 Tinkle Bell (1)
-[ ] Good set of songs.
-  - Eliminate 6, it makes no sense.
-  - 14 switches phase halfway thru. Fix that or eliminate it.
-  - 12 i think does the same? tempo goes a little nuts sometimes
-  - 10 i absolutely love and can't live without, but can we maybe double the tempo?
-
-[x] What does Rabbit do when a song does not emit Program Change? eg 7(No03_Albmblatt) and 8(nobm) do not.
-  Doesn't matter. They get pressed into a format with per-note program, and default to zero.
 
 Configure MPK225 and document steps.
   Using Preset 30 "Generic".

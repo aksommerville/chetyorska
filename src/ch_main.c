@@ -1,6 +1,6 @@
 #include "ch_internal.h"
 #include "app/ch_app.h"
-#include "game/ch_game.h"
+#include "ui/ch_ui.h"
 #include <time.h>
 
 int main(int argc,char **argv) {
@@ -11,26 +11,17 @@ int main(int argc,char **argv) {
   
   struct ch_app *app=ch_app_new(argc,argv);
   if (!app) return 1;
-  if (ch_app_play_song(app,CH_SONGID_RANDOM)<0) return 1;
+  if (ch_app_play_song(app,CH_SONGID_LOBBY)<0) return 1;
   
-  //XXX TEMP: Eventually games can come and go, and there will be some lobby UI outside it.
-  struct ch_game *game=ch_game_new();
-  if (!game) return 1;
-  if (ch_app_set_game(app,game)<0) return 1;
+  struct ch_ui *ui=ch_ui_new(app);
+  if (!ui) return 1;
   
   while (1) {
-    if ((err=ch_game_update(game,app->beatp,app->beatc))<0) break;
     if ((err=ch_app_update(app))<=0) break;
-    
-    //XXX TEMP: Detect completion and reset.
-    if (!game->gridder.grid) {
-      ch_game_del(game);
-      if (!(game=ch_game_new())) { err=-1; break; }
-      if ((err=ch_app_set_game(app,game))<0) break;
-    }
+    if ((err=ch_ui_update(ui))<=0) break;
   }
   
-  ch_game_del(game);
+  ch_ui_del(ui);
   ch_app_del(app);
   return (err<0)?1:0;
 }

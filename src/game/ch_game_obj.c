@@ -406,7 +406,12 @@ int ch_game_end(struct ch_game *game) {
   //TODO
   fprintf(stderr,"*********** game over, lines=%d, score=%d **************\n",game->lines,game->score);
   ch_game_sound(game,CH_SFX_GAMEOVER);
-  ch_gridder_set_grid(&game->gridder,0);
+  game->finished=1;
+  game->rhlopass=0;
+  game->beatp=0;
+  game->beatc=0;
+  ch_game_print_rhythm_bar(game);
+  ch_gridder_bulk_region(&game->gridder,ch_gridder_get_region(&game->gridder,CH_RGN_METRONOME,0),0x9e);
   return 0;
 }
 

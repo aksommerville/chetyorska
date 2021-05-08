@@ -33,6 +33,7 @@ struct ch_brick {
 struct ch_game {
   int refc;
   int input_blackout; // mask of (1<<CH_EVENTID_*), zeroed at update
+  int finished;
   
   struct ch_gridder gridder;
   struct rb_sprite_group *sprites;
@@ -58,13 +59,6 @@ struct ch_game {
   int lines;
   int score;
   int rhlopass; // running state of rhythm quality, 0..999
-  
-  /* Caller must provide this to enable rhythm rating.
-   * On success, (p,c) are populated with the current phase relative to a qnote in the song.
-   * (p) in (0..c-1): 0 is the top of a qnote, c/2 is an eighth note, etc.
-   */
-  int (*cb_get_phase)(int *p,int *c,void *phase_userdata);//XXX
-  void *phase_userdata;
   
   int (*cb_sound)(int sfxid,void *sound_userdata);
   void *sound_userdata;
