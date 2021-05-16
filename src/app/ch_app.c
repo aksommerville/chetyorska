@@ -255,6 +255,10 @@ int ch_app_update(struct ch_app *app) {
       app->srcbeatp=srcbeatp;
       app->beatc=app->beatp;
       app->beatp=0;
+    } else if (srcbeatp<app->srcbeatp) { // reset
+      app->srcbeatp=srcbeatp;
+      app->beatc=app->beatp;
+      app->beatp=0;
     } else {
       app->beatp++;
     }

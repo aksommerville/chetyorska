@@ -10,12 +10,14 @@ function reportTempo(midiFile) {
   let phase = 0;
   let brokePhase = false;
   let tempo = 0;
+  let totalTimeTicks = 0;
   const phaseBuckets = [];
   for (let i=128; i-->0; ) phaseBuckets.push(0);
   for (const event of midiFile.iterateEvents()) {
     //console.log(`${event.reprLog()}`);
     if (event.isTimeMarker()) {
       phase = event.phase;
+      totalTimeTicks = event.a;
     } else if ((event.opcode === 0x90) && event.b) {
       const p = Math.floor(phase * phaseBuckets.length);
       if ((p < 0) || (p >= phaseBuckets.length)) {
@@ -32,6 +34,7 @@ function reportTempo(midiFile) {
       }
     }
   }
+  console.log(`division ${midiFile.division}`);
   const topCount = Math.max(...phaseBuckets);
   const height = 40;
   const viewBuckets = phaseBuckets.map(c => (c*height)/topCount);
@@ -48,6 +51,7 @@ function reportTempo(midiFile) {
   }
   legend[0] = '1'; // just [0], don't show us all the multiples of 1 :)
   console.log(legend.join(""));
+  console.log(`Total time ${totalTimeTicks} ticks, ending at phase ${phase}`);
 }
 
 /* --programs
@@ -86,12 +90,37 @@ function reportText(midiFile) {
   }
 }
 
+/* Dump the chunks TOC.
+ * Doesn't actually use the MidiFile object.
+ ******************************************************************/
+ 
+function reportChunks(midiFile, path) {
+  const src = fs.readFileSync(path);
+  let srcp = 0;
+  while (srcp < src.length) {
+    if (srcp > src.length - 8) {
+      console.log(`${path}:${srcp}/${src.length}:ERROR: short chunk header`);
+      break;
+    }
+    const type = src.slice(srcp, srcp + 4).toString();
+    const len = (src[srcp+4]<<24)|(src[srcp+5]<<16)|(src[srcp+6]<<8)|src[srcp+7];
+    console.log(`${path}:${srcp}/${src.length}: '${type}' ${len}`);
+    srcp += 8;
+    if ((len < 0) || (srcp > src.length - len)) {
+      console.log(`${path}:${srcp}/${src.length}:ERROR: chunk payload overruns input`);
+      break;
+    }
+    srcp += len;
+  }
+}
+
 /* Main.
  ******************************************************************/
  
 let checkTempo = false; // --tempo
 let checkPrograms = false; // --programs
 let checkText = false; // --text
+let checkChunks = false; // --chunks
 
 function printHelp() {
   console.log(`
@@ -101,6 +130,7 @@ TESTS:
   --tempo        Draw a histogram of where Note On occurs relative to the qnote.
   --programs     Report all programs used by the song.
   --text         Dump all text Meta events (typically title, composer, etc).
+  --chunks       Geometry of each chunk in file.
   
 Run with no tests to only decode the file for validation.
 `);
@@ -119,6 +149,7 @@ function checkFile(path) {
   if (checkTempo) reportTempo(midiFile);
   if (checkPrograms) reportPrograms(midiFile);
   if (checkText) reportText(midiFile);
+  if (checkChunks) reportChunks(midiFile, path);
 }
 
 for (const arg of process.argv.slice(2)) {
@@ -126,6 +157,7 @@ for (const arg of process.argv.slice(2)) {
   else if (arg === "--tempo") checkTempo = true;
   else if (arg === "--programs") checkPrograms = true;
   else if (arg === "--text") checkText = true;
+  else if (arg === "--chunks") checkChunks = true;
   else if (arg.startsWith("-")) throw new Error(`${process.argv[1]}: Unexpected argument '${arg}]`);
   else checkFile(arg);
 }

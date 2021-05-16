@@ -1,12 +1,12 @@
 TODO here:
 
+[ ] Can I make exactly 1/2-phase less damaging?
+[ ] Next Brick got corrupted somehow, sometimes shows multiple sprites or something?
 [ ] Pause -- try to sabotage pause-as-slow-motion
 [ ] MIDI per-device running status
 [ ] Per-stroke feedback re timing, the bar isn't enough.
 [ ] Automated speed testing. I need to see game->fallskip in motion.
   [ ] Verify input restriction.
-[ ] !!! timing went out of sync: song 13
-  I'm pretty confident this is a defect in the song. It happens predictably at a noticeable point.
 [ ] High scores
 [ ] Optionalize ossmidi
 [ ] MacOS MIDI in
@@ -22,6 +22,28 @@ Rabbit:
 
 ----- COMPLETED OR DECLINED
 
+[x] !!! timing went out of sync
+  I'm pretty confident this is a defect in the song. It happens predictably at a noticeable point.
+  Same problem in 14.
+  Since these are both a bit slow anyway, try doubling the rate.
+  [x] 13: Doubling helps a little, but now the lamp rate is really fast (makes it almost impossible at higher tempos).
+    Problem here is that the song is actually defective, you can hear it.
+    [x] Can I locate and repair the song's defect? YES
+      [x] Confirm it's just one defect and record the approximate time.
+        A revelation! It happens right at the end.
+        [x] Is that in the original song, or does it happen during Rabbit's reencoding?
+          ORIGINAL: Total time 44736 ticks, ending at phase 0.5
+      MTrk 1 and 2 (of 3) both end at phase 0.5, tick 44736.
+      [x] Add a dummy event on the end of MTrk 2. Starts at 3551 (incl header)
+        division 384
+        MTrk 2 ends with some Note Off and delay 0x81 0x40 -- easy! Change to 0x83 0x00, length doesn't change.
+    It now ends at 1/4 bar, a little bit jarring? But not a technical problem.
+  [x] 14
+    Again it happens right at the end: tick 55104, ending at phase 0.5
+    Division 384.
+    Ha, it's pretty much exactly like 14, do the same thing.
+    14 is still slow, it's difficult
+[x] Pretty confident now, so review all the remaining songs
 [x] Allow rotate and move during elimination blackout. But not drop!
 [x] Some feedback on level changes.
 [x] Lobby: If we're keeping it at two options, don't wrap around.
