@@ -81,13 +81,17 @@ static int ch_app_cb_input(struct rb_inmgr *inmgr,const struct rb_input_event *e
     case RB_BTNID_RIGHT: return app->cb_event(CH_EVENTID_RIGHT,app->event_userdata);
     case RB_BTNID_A:
     case RB_BTNID_B:
-    case RB_BTNID_R: return app->cb_event(CH_EVENTID_CLOCK,app->event_userdata);
+    /*case RB_BTNID_R:*/ return app->cb_event(CH_EVENTID_CLOCK,app->event_userdata);
     case RB_BTNID_C:
     case RB_BTNID_D:
-    case RB_BTNID_L: return app->cb_event(CH_EVENTID_CCLOCK,app->event_userdata);
+    /*case RB_BTNID_L:*/ return app->cb_event(CH_EVENTID_CCLOCK,app->event_userdata);
     case RB_BTNID_DOWN: return app->cb_event(CH_EVENTID_DROP,app->event_userdata);
     case RB_BTNID_START:
     case RB_BTNID_SELECT: return app->cb_event(CH_EVENTID_PAUSE,app->event_userdata);
+    
+    //XXX TEMP
+    case RB_BTNID_L: app->suspend=app->suspend?0:1; break;
+    case RB_BTNID_R: if (app->suspend) app->suspend=2; break;
   }
   return 0;
 }

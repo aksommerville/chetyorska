@@ -18,7 +18,9 @@ int main(int argc,char **argv) {
   
   while (1) {
     if ((err=ch_app_update(app))<=0) break;
-    if ((err=ch_ui_update(ui))<=0) break;
+    if (1||(app->suspend!=1)) {//XXX
+      if ((err=ch_ui_update(ui))<=0) break;
+    }
   }
   
   ch_ui_del(ui);

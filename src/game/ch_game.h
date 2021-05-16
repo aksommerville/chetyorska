@@ -37,6 +37,7 @@ struct ch_game {
   
   struct ch_gridder gridder;
   struct rb_sprite_group *sprites;
+  struct rb_sprite_group *nextsprites;
   
   struct ch_brick brick;
   struct ch_brick nextbrick;
@@ -143,10 +144,9 @@ extern const struct ch_shape_metadata {
 } ch_shape_metadata[CH_SHAPE_COUNT];
 
 /* Realistically, I believe only the first 8 are reachable by a human.
- * Maybe 10.
  * By the end of this list, the game is technically impossible.
  */
-#define CH_LEVEL_COUNT 16
+#define CH_LEVEL_COUNT 13
 extern const struct ch_level_metadata {
   int framesperfall;
   int fallskip;

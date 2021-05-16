@@ -25,21 +25,19 @@ const struct ch_shape_metadata ch_shape_metadata[CH_SHAPE_COUNT]={
 };
 
 const struct ch_level_metadata ch_level_metadata[CH_LEVEL_COUNT]={
-  //TODO tweak these. i'm not crazy about the tempo range, tighter might be better
-  {60,1,1.20},
-  {50,1,1.15},
-  {40,1,1.10},
-  {30,1,1.05},
-  {20,1,1.00},
-  {10,1,0.90},
-  { 5,1,0.80},
-  { 3,1,0.70},
-  { 2,1,0.60},
-  { 1,1,0.50},
-  { 1,2,0.50},
-  { 1,3,0.50},
-  { 1,4,0.50},
-  { 1,5,0.50},
-  { 1,6,0.50},
-  { 1,7,0.50},
+// 70 remains "pretty much impossible", that's where I normally die.
+// 100 I believe is technically impossible, even under automation (but haven't proven yet).
+  {50,1,1.20}, //   0
+  {40,1,1.15}, //  10
+  {30,1,1.10}, //  20
+  {20,1,1.05}, //  30
+  {10,1,1.00}, //  40
+  { 7,1,0.90}, //  50
+  { 5,1,0.80}, //  60
+  { 3,1,0.70}, //  70
+  { 2,1,0.60}, //  80
+  { 1,1,0.50}, //  90
+  { 1,2,0.50}, // 100: possible under automation
+  { 1,4,0.50}, // 110: might just barely be possible under automation -- i was not able to complete 10 lines
+  { 1,8,0.50}, // 100: definitely not possible
 };

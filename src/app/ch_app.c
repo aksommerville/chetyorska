@@ -272,6 +272,9 @@ int ch_app_update(struct ch_app *app) {
     rb_song_player_adjust_tempo(app->synth->song,app->game->tempo);
   }
   
+  //XXX TEMP
+  //if (app->suspend>1) app->suspend--;
+  
   if (rb_audio_update(app->audio)<0) return -1;
   if (rb_inmgr_update(app->inmgr)<0) return -1;
   if (ch_ossmidi_update()<0) return -1;

@@ -100,6 +100,8 @@ static int _ch_fireworks_init(struct rb_sprite *sprite) {
   SPRITE->y=RB_FB_H/3;
   SPRITE->dx=((rand()&0xff)-128)/80.0;
   SPRITE->dy=((rand()&0xff)-128)/80.0-1.5;
+  sprite->x=SPRITE->x;
+  sprite->y=SPRITE->y;
   
   return 0;
 }

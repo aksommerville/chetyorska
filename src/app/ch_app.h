@@ -18,6 +18,9 @@ struct ch_app {
   } *songv;
   int songc,songa;
   
+  //XXX TEMP suspension
+  int suspend;
+  
   // This must not be null. ch_app_cb_event_null to discard events.
   int (*cb_event)(int eventid,void *userdata);
   void *event_userdata;

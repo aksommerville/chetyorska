@@ -1,7 +1,7 @@
 TODO here:
 
 [ ] Can I make exactly 1/2-phase less damaging?
-[ ] Next Brick got corrupted somehow, sometimes shows multiple sprites or something?
+[ ] 50-point minimum per line, and 1000-point bonus at level-up.
 [ ] Pause -- try to sabotage pause-as-slow-motion
 [ ] MIDI per-device running status
 [ ] Per-stroke feedback re timing, the bar isn't enough.
@@ -22,6 +22,18 @@ Rabbit:
 
 ----- COMPLETED OR DECLINED
 
+[x] Next Brick got corrupted somehow, sometimes shows multiple sprites or something?
+  At level-up, there seems to be one frame with misplaced sprites -- you can see them top-left corner.
+  [x] Fireworks: ensure initial position
+  [x] Next can acquire fireworks tiles too. I bet we're using direct indices in a sprite group.
+    ...yep: ch_game_populate_sprites_for_shape
+  [x] Now I see Next showing the right tileid sometimes but the wrong shape... the hell?
+    ...oops missed one (game->sprites)
+[x] Use this suspend feature to confirm level 10 is impossible.
+  10 and 11 are just barely possible.
+  [x] 12 might be, if you can arrange to get only I bricks (no other brick can reach the left edge)
+    ...possible, possible to get all tetrisses in fact
+    Not possible with random bricks.
 [x] !!! timing went out of sync
   I'm pretty confident this is a defect in the song. It happens predictably at a noticeable point.
   Same problem in 14.

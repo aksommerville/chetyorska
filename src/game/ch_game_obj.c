@@ -33,6 +33,7 @@ void ch_game_del(struct ch_game *game) {
   
   ch_gridder_cleanup(&game->gridder);
   rb_sprite_group_del(game->sprites);
+  rb_sprite_group_del(game->nextsprites);
   
   free(game);
 }
@@ -166,6 +167,9 @@ struct rb_grid *ch_game_generate_grid(struct ch_game *game) {
 struct rb_sprite_group *ch_game_generate_sprites(struct ch_game *game) {
   if (!game->sprites) {
     if (!(game->sprites=rb_sprite_group_new(0))) return 0;
+  }
+  if (!game->nextsprites) {
+    if (!(game->nextsprites=rb_sprite_group_new(0))) return 0;
     int i=4; while (i-->0) {
       struct rb_sprite *sprite=rb_sprite_new(&rb_sprite_type_dummy);
       if (!sprite) return 0;
@@ -174,6 +178,7 @@ struct rb_sprite_group *ch_game_generate_sprites(struct ch_game *game) {
       int err=rb_sprite_group_add(game->sprites,sprite);
       rb_sprite_del(sprite);
       if (err<0) return 0;
+      if (rb_sprite_group_add(game->nextsprites,sprite)<0) return 0;
     }
     ch_game_redraw_next_brick(game);
   }
@@ -243,18 +248,19 @@ void ch_game_print_brick_cells(struct ch_game *game,const struct ch_brick *brick
  
 static void ch_game_populate_sprites_for_shape(
   struct rb_sprite **spritev,
+  int spritec,
   uint16_t shape
 ) {
-  int spritec=0;
   int y=0;
   for (;y<4;y++) {
     int x=0;
     for (;x<4;x++,shape<<=1) {
       if (shape&0x8000) {
+        if (spritec<1) return;
         (*spritev)->x=x*CH_TILESIZE;
         (*spritev)->y=y*CH_TILESIZE;
         spritev++;
-        if (++spritec>=4) return;
+        spritec--;
       }
     }
   }
@@ -264,17 +270,17 @@ static void ch_game_populate_sprites_for_shape(
  */
  
 void ch_game_redraw_next_brick(struct ch_game *game) {
-  if (!game->sprites||(game->sprites->c<4)) return;
+  if (!game->nextsprites||(game->nextsprites->c<4)) return;
   const struct ch_gridder_region *dst=ch_gridder_get_region(&game->gridder,CH_RGN_NEXT,0);
   if (!dst) return;
   
-  ch_game_populate_sprites_for_shape(game->sprites->v,game->nextbrick.shape);
-  int xlo=game->sprites->v[0]->x;
-  int ylo=game->sprites->v[0]->y;
+  ch_game_populate_sprites_for_shape(game->nextsprites->v,game->nextsprites->c,game->nextbrick.shape);
+  int xlo=game->nextsprites->v[0]->x;
+  int ylo=game->nextsprites->v[0]->y;
   int xhi=xlo,yhi=ylo;
   int i=4;
   while (i-->0) {
-    struct rb_sprite *sprite=game->sprites->v[i];
+    struct rb_sprite *sprite=game->nextsprites->v[i];
     if (sprite->x<xlo) xlo=sprite->x;
     else if (sprite->x>xhi) xhi=sprite->x;
     if (sprite->y<ylo) ylo=sprite->y;
@@ -288,10 +294,16 @@ void ch_game_redraw_next_brick(struct ch_game *game) {
   int dsty=dst->y*CH_TILESIZE+((dst->h*CH_TILESIZE)>>1);
   int addx=dstx-x;
   int addy=dsty-y;
-  for (i=4;i-->0;) {
-    struct rb_sprite *sprite=game->sprites->v[i];
-    sprite->x+=addx;
-    sprite->y+=addy;
+  
+  struct rb_sprite **sprite=game->nextsprites->v;
+  int spritec=game->nextsprites->c;
+  int visitedc=0;
+  while ((visitedc<4)&&(spritec>0)) {
+    (*sprite)->x+=addx;
+    (*sprite)->y+=addy;
+    sprite++;
+    spritec--;
+    visitedc++;
   }
 }
 
@@ -430,6 +442,7 @@ int ch_game_advance_level(struct ch_game *game) {
   int level=game->lines/10;
   if (level<0) level=0;
   else if (level>=CH_LEVEL_COUNT) level=CH_LEVEL_COUNT-1;
+  //level=12;//XXX
   game->framesperfall=ch_level_metadata[level].framesperfall;
   game->fallskip=ch_level_metadata[level].fallskip;
   game->tempo=ch_level_metadata[level].tempo;
