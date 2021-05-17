@@ -14,6 +14,7 @@ struct ch_game *ch_game_new() {
   
   game->refc=1;
 
+  game->pvshape=-1;
   game->lines=0;
   ch_game_advance_level(game);
   
@@ -194,8 +195,13 @@ struct rb_sprite_group *ch_game_generate_sprites(struct ch_game *game) {
  */
 
 uint16_t ch_game_random_brick_shape(uint8_t *tileid,struct ch_game *game) {
-  int p=rand()%CH_CANONICAL_SHAPE_COUNT;
-  if (p<0) p+=CH_CANONICAL_SHAPE_COUNT;
+
+  // If we draw the same shape twice in a row, try again, but only once.
+  // So the odds of back-to-back same shape are 1/49 instead of 1/7.
+  int p=(rand()&0xffff)%CH_CANONICAL_SHAPE_COUNT;
+  if (p==game->pvshape) p=(rand()&0xffff)%CH_CANONICAL_SHAPE_COUNT;
+  game->pvshape=p;
+  
   *tileid=ch_shape_metadata[p].tileid;
   return ch_shape_metadata[p].shape;
 }

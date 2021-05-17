@@ -53,6 +53,7 @@ struct ch_game {
   int beatp,beatc; // Copied at update, ch_app gets them for real
   double tempo; // Tempo multiplier (lower is faster), picked up by app between updates.
   int newoverlapped;
+  int pvshape; // 0..6, the last shape we selected
   
   // Eliminating rows stops the action temporarily:
   int eliminatecounter;
