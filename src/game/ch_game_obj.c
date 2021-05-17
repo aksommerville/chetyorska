@@ -16,10 +16,13 @@ struct ch_game *ch_game_new() {
 
   game->lines=0;
   ch_game_advance_level(game);
+  
+  // Still toying with the idea of bumping these at each level... not sure...
   game->linescorev[0]=100;
   game->linescorev[1]=300;
   game->linescorev[2]=500;
   game->linescorev[3]=800;
+  game->lineminpoints=50;
   
   return game;
 }
@@ -439,10 +442,17 @@ int ch_game_sound(struct ch_game *game,int sfx) {
  
 int ch_game_advance_level(struct ch_game *game) {
 
+  if (game->lines) {
+    game->score+=CH_LEVEL_BONUS;
+    ch_gridder_text_number(
+      &game->gridder,ch_gridder_get_region(&game->gridder,CH_RGN_SCORE,0),
+      6,0x56,game->score
+    );
+  }
+
   int level=game->lines/10;
   if (level<0) level=0;
   else if (level>=CH_LEVEL_COUNT) level=CH_LEVEL_COUNT-1;
-  //level=12;//XXX
   game->framesperfall=ch_level_metadata[level].framesperfall;
   game->fallskip=ch_level_metadata[level].fallskip;
   game->tempo=ch_level_metadata[level].tempo;

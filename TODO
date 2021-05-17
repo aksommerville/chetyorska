@@ -1,12 +1,9 @@
 TODO here:
 
 [ ] Can I make exactly 1/2-phase less damaging?
-[ ] 50-point minimum per line, and 1000-point bonus at level-up.
 [ ] Pause -- try to sabotage pause-as-slow-motion
 [ ] MIDI per-device running status
 [ ] Per-stroke feedback re timing, the bar isn't enough.
-[ ] Automated speed testing. I need to see game->fallskip in motion.
-  [ ] Verify input restriction.
 [ ] High scores
 [ ] Optionalize ossmidi
 [ ] MacOS MIDI in
@@ -22,6 +19,10 @@ Rabbit:
 
 ----- COMPLETED OR DECLINED
 
+[x] 50-point minimum per line, and 1000-point bonus at level-up.
+xxx Automated speed testing. I need to see game->fallskip in motion.
+  [x] Verify input restriction.
+  ...frame-step mode covers it
 [x] Next Brick got corrupted somehow, sometimes shows multiple sprites or something?
   At level-up, there seems to be one frame with misplaced sprites -- you can see them top-left corner.
   [x] Fireworks: ensure initial position

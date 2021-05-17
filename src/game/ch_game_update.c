@@ -81,6 +81,8 @@ static int ch_game_check_lines(struct ch_game *game,int y) {
   } else {
     linescore=(game->linescorev[game->eliminatec-1]*game->rhlopass)/900;
   }
+  int minscore=game->eliminatec*game->lineminpoints;
+  if (linescore<minscore) linescore=minscore;
   game->score+=linescore;
   
   if (level>pvlevel) {

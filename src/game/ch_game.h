@@ -23,6 +23,8 @@
 #define CH_TOWER_W 10
 #define CH_TOWER_H 20
 
+#define CH_LEVEL_BONUS 1000 /* +n points every ten lines */
+
 // The one moving piece. Always composed of four tiles.
 struct ch_brick {
   int x,y; // top-left of shape's 4x4 box, in tower space
@@ -47,6 +49,7 @@ struct ch_game {
   int fallcounter;
   int dropping;
   int linescorev[4]; // how many points for each type of elimination
+  int lineminpoints; // Minimum score per line, after applying rhythm.
   int beatp,beatc; // Copied at update, ch_app gets them for real
   double tempo; // Tempo multiplier (lower is faster), picked up by app between updates.
   int newoverlapped;
