@@ -23,7 +23,7 @@
 #define CH_TOWER_W 10
 #define CH_TOWER_H 20
 
-#define CH_LEVEL_BONUS 1000 /* +n points every ten lines */
+#define CH_LEVEL_BONUS 500 /* +n points every ten lines */
 
 // The one moving piece. Always composed of four tiles.
 struct ch_brick {
@@ -67,6 +67,10 @@ struct ch_game {
   
   int (*cb_sound)(int sfxid,void *sound_userdata);
   void *sound_userdata;
+  
+  // Probably temporary, record timing of each stroke.
+  double *qualityv;
+  int qualityc,qualitya;
 };
 
 struct ch_game *ch_game_new();
@@ -156,5 +160,7 @@ extern const struct ch_level_metadata {
   int fallskip;
   double tempo;
 } ch_level_metadata[CH_LEVEL_COUNT];
+
+void ch_game_report_quality(struct ch_game *game);
 
 #endif

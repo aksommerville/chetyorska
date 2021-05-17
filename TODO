@@ -1,6 +1,5 @@
 TODO here:
 
-[ ] Can I make exactly 1/2-phase less damaging?
 [ ] Pause -- try to sabotage pause-as-slow-motion
 [ ] MIDI per-device running status
 [ ] Per-stroke feedback re timing, the bar isn't enough.
@@ -19,6 +18,7 @@ Rabbit:
 
 ----- COMPLETED OR DECLINED
 
+[x] Can I make exactly 1/2-phase less damaging?
 [x] 50-point minimum per line, and 1000-point bonus at level-up.
 xxx Automated speed testing. I need to see game->fallskip in motion.
   [x] Verify input restriction.

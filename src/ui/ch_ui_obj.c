@@ -104,6 +104,7 @@ int ch_ui_begin_game(struct ch_ui *ui) {
 int ch_ui_end_game(struct ch_ui *ui) {
 
   if (ui->game) {
+    //ch_game_report_quality(ui->game);
     ui->game->tempo=1.0;
   }
   if (ch_app_play_song(ui->app,CH_SONGID_LOBBY)<0) return -1;

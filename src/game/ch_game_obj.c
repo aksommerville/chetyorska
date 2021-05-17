@@ -38,6 +38,7 @@ void ch_game_del(struct ch_game *game) {
   ch_gridder_cleanup(&game->gridder);
   rb_sprite_group_del(game->sprites);
   rb_sprite_group_del(game->nextsprites);
+  if (game->qualityv) free(game->qualityv);
   
   free(game);
 }
@@ -505,4 +506,41 @@ int ch_game_start_fireworks(struct ch_game *game) {
     if (err<0) return -1;
   }
   return 0;
+}
+
+/* Report quality (TEMP?)
+ */
+ 
+void ch_game_report_quality(struct ch_game *game) {
+  if (!game||(game->qualityc<1)) return;
+  
+  #define IMGW 100
+  #define IMGH  40
+  
+  // Split the gathered qualities into buckets, one per column.
+  int bucketv[IMGW]={0};
+  int top=0;
+  const double *v=game->qualityv;
+  int i=game->qualityc;
+  for (;i-->0;v++) {
+    int bucketp=(*v)*IMGW; // v should be in 0..1, but maybe could go oob
+    if (bucketp<=0) bucketp=0;
+    else if (bucketp>=IMGW) bucketp=IMGW-1;
+    bucketv[bucketp]++;
+    if (bucketv[bucketp]>top) top=bucketv[bucketp];
+  }
+  
+  // Render chart row by row.
+  fprintf(stderr,"---- stroke quality (count %d) ----\n",game->qualityc);
+  int y=IMGH;
+  for (;y-->0;) {
+    int threshold=(y*top)/IMGH;
+    fprintf(stderr,"  ");
+    int x=0; for (;x<IMGW;x++) {
+      if (bucketv[x]>=threshold) fprintf(stderr,"X");
+      else fprintf(stderr," ");
+    }
+    fprintf(stderr,"\n");
+  }
+  fprintf(stderr,"  <---- bad    |    good ---->\n");
 }

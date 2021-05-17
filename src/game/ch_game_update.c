@@ -234,17 +234,45 @@ static int ch_game_rate_timing(struct ch_game *game) {
   if (game->beatc<1) return 0;
   
   double quality=0.0;
+  double phase=0.0;
+  
+  // If within one frame of the half-beat, call it half-quality.
+  // (this is otherwise the worst possible position, and yet it makes musical sense).
+  //XXX too lenient! my bar stays pink with this
+  int dhalfbeat=100;
+  if (game->beatc>=10) {
+    int halfbeat=game->beatc>>1;
+    dhalfbeat=game->beatp-halfbeat;
+    if (dhalfbeat<0) dhalfbeat=-dhalfbeat;
+  }
+  if (!dhalfbeat) {
+    quality=0.5;
+    phase=0.5;
+  } else if (dhalfbeat<=1) {
+    quality=0.0;
+    phase=0.5;
   
   // Perfect or very close. (beatc) is not necessarily the range of (beatp), there can be rounding errors.
-  if (!game->beatp||(game->beatp>=game->beatc-1)) {
+  } else if (!game->beatp||(game->beatp>=game->beatc-1)) {
     quality=1.0;
     
   // Grade it like a triangle wave. 0 is the peak and 1/2 the floor.
   // Also a 0.5 downward bias -- The field of possible quality is biased low.
   } else {
-    double phase=(double)game->beatp/(double)game->beatc;
+    phase=(double)game->beatp/(double)game->beatc;
     quality=fabs(0.5-phase)*4.0-1.5;
   }
+  
+  // (TEMP?) Record quality for later analysis.
+  if (game->qualityc>=game->qualitya) {
+    int na=game->qualitya+128;
+    if (na>INT_MAX/sizeof(double)) return -1;
+    void *nv=realloc(game->qualityv,sizeof(double)*na);
+    if (!nv) return -1;
+    game->qualityv=nv;
+    game->qualitya=na;
+  }
+  game->qualityv[game->qualityc++]=quality;
   
   int dscore=(int)(quality*100);
   game->rhlopass+=dscore;
