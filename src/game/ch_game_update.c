@@ -340,7 +340,13 @@ static int ch_game_rotate(struct ch_game *game,int d) {
  */
  
 static int ch_game_drop(struct ch_game *game) {
-  if (game->eliminatecounter) return 0;
+
+  // If we're animating elimination, fast-forward it.
+  if (game->eliminatecounter>0) {
+    game->eliminatecounter=0;
+    if (ch_game_finalize_elimination(game)<0) return -1;
+  }
+  
   if (ch_game_rate_timing(game)<0) return -1;
   ch_game_sound(game,CH_SFX_DROP);
   game->fallcounter=0;
