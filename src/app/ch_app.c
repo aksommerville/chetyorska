@@ -38,7 +38,7 @@ static int ch_app_init_audio(struct ch_app *app) {
   //TODO configure drivertype,rate,chanc
   struct rb_audio_delegate delegate={
     .userdata=app,
-    .rate=44100,
+    .rate=48000,
     .chanc=1,
     .cb_pcm_out=ch_app_cb_pcm_out,
   };
