@@ -7,9 +7,15 @@ RABBITBIN:=$(RABBITROOT)/out/rabbit
 RABBITLIB:=$(RABBITROOT)/out/librabbit.a
 RABBITHDR:=$(RABBITROOT)/src
 
+ifeq (desktop-linux,)
 CC:=gcc -c -MMD -O2 -Isrc -I$(RABBITHDR) -Werror -Wimplicit
 LD:=gcc
 LDPOST:=$(RABBITLIB) -lX11 -lGLX -lGL -lpthread -lpulse -lpulse-simple -lm -lz
+else # raspi
+CC:=gcc -c -MMD -O2 -Isrc -I$(RABBITHDR) -Werror -Wimplicit
+LD:=gcc -L/opt/vc/lib
+LDPOST:=$(RABBITLIB) -lpthread -lasound -lbcm_host -lm -lz
+endif
 
 CFILES:=$(shell find src -name '*.c')
 OFILES:=$(patsubst src/%.c,mid/%.o,$(CFILES))
