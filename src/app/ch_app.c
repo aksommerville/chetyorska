@@ -176,6 +176,8 @@ static int ch_app_load_archive(struct ch_app *app,const char *path) {
     return -1;
   }
   
+  if (app->songc>0) app->seqsongp=rand()%app->songc;
+  
   return 0;
 }
 
@@ -367,6 +369,12 @@ int ch_app_play_song(struct ch_app *app,int songid) {
         if (p<0) p+=app->songc;
         song=app->songv[p].song;
         fprintf(stderr,"Randomly selected song %d\n",app->songv[p].id);
+      } break;
+    case CH_SONGID_SEQUENTIAL: {
+        if (app->seqsongp>=app->songc) app->seqsongp=0;
+        song=app->songv[app->seqsongp].song;
+        fprintf(stderr,"Song %d, next in sequence\n",app->songv[app->seqsongp].id);
+        app->seqsongp++;
       } break;
     default: {
         int p=ch_app_songv_search(app,songid);

@@ -17,6 +17,7 @@ struct ch_app {
     struct rb_song *song;
   } *songv;
   int songc,songa;
+  int seqsongp;
   
   //XXX TEMP suspension
   int suspend;
@@ -41,9 +42,10 @@ int ch_app_update(struct ch_app *app);
 int ch_app_set_game(struct ch_app *app,struct ch_game *game);
 
 int ch_app_play_song(struct ch_app *app,int songid);
-#define CH_SONGID_SILENCE -1
-#define CH_SONGID_RANDOM  -2
-#define CH_SONGID_LOBBY   14
+#define CH_SONGID_SILENCE    -1
+#define CH_SONGID_RANDOM     -2
+#define CH_SONGID_SEQUENTIAL -3
+#define CH_SONGID_LOBBY      14
 
 int ch_app_play_sound(struct ch_app *app,int sfx);
 

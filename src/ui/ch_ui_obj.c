@@ -80,7 +80,7 @@ int ch_ui_update(struct ch_ui *ui) {
  
 int ch_ui_begin_game(struct ch_ui *ui) {
 
-  if (ch_app_play_song(ui->app,CH_SONGID_RANDOM)<0) return -1;//TODO game song
+  if (ch_app_play_song(ui->app,CH_SONGID_SEQUENTIAL)<0) return -1;
   
   rb_image_del(ui->label_recap);
   ui->label_recap=0;

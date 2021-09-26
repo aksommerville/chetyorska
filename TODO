@@ -8,14 +8,14 @@ TODO here:
 [ ] MacOS MIDI in
 [ ] MS Windows MIDI in
 [ ] Custom mapping of MIDI events? See ch_app_midi_note_on
-[ ] "Select song" or some orderly auto-selection, don't leave it random.
+[x] "Select song" or some orderly auto-selection, don't leave it random.
 
 Rabbit:
 [ ] Video, audio, input drivers for non-linux host (Rabbit?)
 [ ] Hide cursor: Rabbit
 [ ] Rabbit CLI: "play" command to preview a MIDI file
 [ ] synth: copy and dc ops
-[ ] Cache PCMs
+[x] Cache PCMs
 [ ] Do something about the %#@ latency!
 [ ] Expose LIBS and CFLAGS for client app
 
