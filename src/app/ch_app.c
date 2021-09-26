@@ -34,6 +34,10 @@ static int ch_app_cb_pcm_out(int16_t *v,int c,struct rb_audio *audio) {
 /* Init audio.
  */
  
+#ifndef CH_SYNTH_CACHE
+  #define CH_SYNTH_CACHE 0
+#endif
+ 
 static int ch_app_init_audio(struct ch_app *app) {
   //TODO configure drivertype,rate,chanc
   struct rb_audio_delegate delegate={
@@ -44,6 +48,7 @@ static int ch_app_init_audio(struct ch_app *app) {
   };
   if (!(app->audio=rb_audio_new(rb_audio_type_by_index(0),&delegate))) return -1;
   if (!(app->synth=rb_synth_new(app->audio->delegate.rate,app->audio->delegate.chanc))) return -1;
+  app->synth->cachedir=CH_SYNTH_CACHE;
   return 0;
 }
 
