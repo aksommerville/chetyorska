@@ -15,7 +15,7 @@ int main(int argc,char **argv) {
   
   struct ch_ui *ui=ch_ui_new(app);
   if (!ui) return 1;
-  
+
   while (1) {
     if ((err=ch_app_update(app))<=0) break;
     if (1||(app->suspend!=1)) {//XXX
