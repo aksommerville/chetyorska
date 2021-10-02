@@ -25,6 +25,8 @@
 
 #define CH_LEVEL_BONUS 500 /* +n points every ten lines */
 
+#define CH_LINES_PER_LEVEL 5
+
 // The one moving piece. Always composed of four tiles.
 struct ch_brick {
   int x,y; // top-left of shape's 4x4 box, in tower space

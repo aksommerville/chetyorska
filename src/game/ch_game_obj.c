@@ -457,7 +457,7 @@ int ch_game_advance_level(struct ch_game *game) {
     );
   }
 
-  int level=game->lines/10;
+  int level=game->lines/CH_LINES_PER_LEVEL;
   if (level<0) level=0;
   else if (level>=CH_LEVEL_COUNT) level=CH_LEVEL_COUNT-1;
   game->framesperfall=ch_level_metadata[level].framesperfall;

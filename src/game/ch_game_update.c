@@ -72,9 +72,9 @@ static int ch_game_check_lines(struct ch_game *game,int y) {
   
   game->eliminatecounter=60;//TODO how long?
   
-  int pvlevel=game->lines/10;
+  int pvlevel=game->lines/CH_LINES_PER_LEVEL;
   game->lines+=game->eliminatec;
-  int level=game->lines/10;
+  int level=game->lines/CH_LINES_PER_LEVEL;
   int linescore;
   if (game->rhlopass>=900) {
     linescore=game->linescorev[game->eliminatec-1]*2;
