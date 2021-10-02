@@ -6,6 +6,11 @@
 
 struct rb_image;
 
+// Set in Makefile.
+#ifndef CH_KIOSK
+  #define CH_KIOSK 0
+#endif
+
 #define CH_UI_MODE_INTRO     1 /* Lobby, on startup only. */
 #define CH_UI_MODE_LOBBY     2 /* Lobby, with a completed game (report scores etc) */
 #define CH_UI_MODE_PLAY      3 /* Game in progress. */

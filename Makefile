@@ -9,7 +9,7 @@ RABBITHDR:=$(RABBITROOT)/src
 
 UNAMEN:=$(shell uname -n)
 ifeq ($(UNAMEN),raspberrypi)
-CC:=gcc -c -MMD -O2 -Isrc -I$(RABBITHDR) -Werror -Wimplicit -DCH_SYNTH_CACHE=\"/home/pi/.chetyorskcache\"
+CC:=gcc -c -MMD -O2 -Isrc -I$(RABBITHDR) -Werror -Wimplicit -DCH_SYNTH_CACHE=\"/home/pi/.chetyorskacache\" -DCH_KIOSK=1
 LD:=gcc -L/opt/vc/lib
 LDPOST:=$(RABBITLIB) -lpthread -lasound -lbcm_host -lm -lz
 else # assume desktop linux

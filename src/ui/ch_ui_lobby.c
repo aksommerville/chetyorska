@@ -30,10 +30,14 @@ static int ch_ui_init_labels(struct ch_ui *ui) {
   ))) return -1;
   
   _(chetyorska,"Chetyorska!")
-  _(play,"Play")
-  _(quit,"Quit")
-  _(directions,"<-- Snare | Floor Tom -->")
-  _(select,"Crash to select")
+  #if CH_KIOSK
+    _(directions,"Crash cymbal to begin")
+  #else
+    _(play,"Play")
+    _(quit,"Quit")
+    _(directions,"<-- Snare | Floor Tom -->")
+    _(select,"Crash to select")
+  #endif
   _(copyright,"(C) 2021 AK Sommerville")
   
   #undef _
@@ -69,15 +73,18 @@ int ch_ui_intro_draw(struct rb_image *fb,struct ch_ui *ui) {
   
   int optioncplus1=3,p=0;
   int optiony=90;
-  #define OPTION(tag) rb_image_blit_recolor( \
-    fb,((p+1)*RB_FB_W)/optioncplus1,optiony,ui->label_##tag,RB_ALIGN_CENTER,(p==ui->optionp)?0xffffe0a0:0xff805030 \
-  ); p++;
-  OPTION(play)
-  OPTION(quit)
+  #define OPTION(tag) { \
+    rb_image_blit_recolor( \
+      fb,((p+1)*RB_FB_W)/optioncplus1,optiony,ui->label_##tag,RB_ALIGN_CENTER,(p==ui->optionp)?0xffffe0a0:0xff805030 \
+    ); \
+    p++; \
+  }
+  if (ui->label_play) OPTION(play)
+  if (ui->label_quit) OPTION(quit)
   #undef OPTION
   
-  rb_image_blit_recolor(fb,RB_FB_W>>1,105,ui->label_directions,RB_ALIGN_CENTER,0xff808080);
-  rb_image_blit_recolor(fb,RB_FB_W>>1,115,ui->label_select,RB_ALIGN_CENTER,0xff808080);
+  if (ui->label_directions) rb_image_blit_recolor(fb,RB_FB_W>>1,105,ui->label_directions,RB_ALIGN_CENTER,0xff808080);
+  if (ui->label_select) rb_image_blit_recolor(fb,RB_FB_W>>1,115,ui->label_select,RB_ALIGN_CENTER,0xff808080);
   
   rb_image_blit_recolor(fb,1,RB_FB_H-1,ui->label_copyright,RB_ALIGN_SW,0xff808080);
   
@@ -130,12 +137,16 @@ static int ch_ui_move_optionp(struct ch_ui *ui,int d) {
 int ch_ui_intro_event(int eventid,void *userdata) {
   struct ch_ui *ui=userdata;
   switch (eventid) {
-    case CH_EVENTID_PAUSE: switch (ui->optionp) {
-        case 0: return ch_ui_begin_game(ui);
-        case 1: ui->quit_requested=1; break;
-      } break;
-    case CH_EVENTID_LEFT: return ch_ui_move_optionp(ui,-1);
-    case CH_EVENTID_RIGHT: return ch_ui_move_optionp(ui,1);
+    #if CH_KIOSK
+      case CH_EVENTID_PAUSE: return ch_ui_begin_game(ui);
+    #else
+      case CH_EVENTID_PAUSE: switch (ui->optionp) {
+          case 0: return ch_ui_begin_game(ui);
+          case 1: ui->quit_requested=1; break;
+        } break;
+      case CH_EVENTID_LEFT: return ch_ui_move_optionp(ui,-1);
+      case CH_EVENTID_RIGHT: return ch_ui_move_optionp(ui,1);
+    #endif
   }
   return 0;
 }
