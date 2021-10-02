@@ -21,6 +21,9 @@ struct ch_app {
   
   //XXX TEMP suspension
   int suspend;
+
+  // For this session only. TODO list and persistence
+  int highscore;
   
   // This must not be null. ch_app_cb_event_null to discard events.
   int (*cb_event)(int eventid,void *userdata);

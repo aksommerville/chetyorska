@@ -25,6 +25,7 @@ struct ch_ui {
   int fontflags;
   struct rb_image *label_chetyorska;
   struct rb_image *label_recap;
+  struct rb_image *label_highscore;
   struct rb_image *label_play;
   struct rb_image *label_quit;
   struct rb_image *label_directions;

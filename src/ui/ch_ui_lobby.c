@@ -70,6 +70,9 @@ int ch_ui_intro_draw(struct rb_image *fb,struct ch_ui *ui) {
   if (ui->label_recap) {
     rb_image_blit_recolor(fb,RB_FB_W>>1,50,ui->label_recap,RB_ALIGN_CENTER,0xffffffff);
   }
+  if (ui->label_highscore) {
+    rb_image_blit_recolor(fb,RB_FB_W>>1,70,ui->label_highscore,RB_ALIGN_CENTER,0xffc0c0c0);
+  }
   
   int optioncplus1=3,p=0;
   int optiony=90;
@@ -105,6 +108,14 @@ int ch_ui_lobby_draw(struct rb_image *fb,struct ch_ui *ui) {
       ui->font,ui->fontcontent,ui->fontflags,0,
       "Score: %d, Lines: %d, Avg: %.1f",
       ui->game->score,ui->game->lines,average
+    );
+  }
+
+  if (!ui->label_highscore&&ui->app&&ui->app->highscore) {
+    ui->label_highscore=rb_font_printf(
+      ui->font,ui->fontcontent,ui->fontflags,0,
+      "High score: %d",
+      ui->app->highscore
     );
   }
 

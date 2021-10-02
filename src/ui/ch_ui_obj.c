@@ -15,6 +15,7 @@ void ch_ui_del(struct ch_ui *ui) {
   rb_image_del(ui->font);
   rb_image_del(ui->label_chetyorska);
   rb_image_del(ui->label_recap);
+  rb_image_del(ui->label_highscore);
   rb_image_del(ui->label_play);
   rb_image_del(ui->label_quit);
   rb_image_del(ui->label_directions);
@@ -84,6 +85,8 @@ int ch_ui_begin_game(struct ch_ui *ui) {
   
   rb_image_del(ui->label_recap);
   ui->label_recap=0;
+  rb_image_del(ui->label_highscore);
+  ui->label_highscore=0;
 
   ch_game_del(ui->game);
   if (!(ui->game=ch_game_new())) return -1;
@@ -115,6 +118,10 @@ int ch_ui_end_game(struct ch_ui *ui) {
   ui->app->event_userdata=ui; 
   ui->app->cb_postrender=ch_ui_cb_postrender;
   ui->app->postrender_userdata=ui;
+
+  if (ui->app&&ui->game&&(ui->game->score>ui->app->highscore)) {
+    ui->app->highscore=ui->game->score;
+  }
   
   return 0;
 }
