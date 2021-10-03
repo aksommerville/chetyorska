@@ -155,7 +155,13 @@ static int ch_app_midi_event(struct ch_app *app,const uint8_t *src,int srcc) {
     case 0x80: SKIP(2) break;
     case 0x90: REQUIRE(2) if (ch_app_midi_note_on(app,src[srcp],src[srcp+1])<0) return -1; srcp+=2; break;
     case 0xa0: SKIP(2) break;
-    case 0xb0: SKIP(2) break;
+    case 0xb0: REQUIRE(2) switch (src[srcp]) {
+        case 0x40: if (src[srcp+1]>=0x40) {
+            if (app->cb_event(CH_EVENTID_DROP_ON,app->event_userdata)<0) return -1;
+          } else {
+            if (app->cb_event(CH_EVENTID_DROP_OFF,app->event_userdata)<0) return -1;
+          } break;
+      } break;
     case 0xc0: SKIP(1) break;
     case 0xd0: SKIP(1) break;
     case 0xe0: SKIP(1) break;

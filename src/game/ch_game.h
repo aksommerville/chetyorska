@@ -90,13 +90,15 @@ int ch_game_update(struct ch_game *game,int beatp,int beatc);
  * Inputs are stateless impulses, not buttons as usual.
  */
 int ch_game_input(struct ch_game *game,int eventid);
-#define CH_EVENTID_LEFT    0x01 /* Move left */
-#define CH_EVENTID_RIGHT   0x02 /* Move right */
-#define CH_EVENTID_CCLOCK  0x03 /* Rotate counter-clockwise */
-#define CH_EVENTID_CLOCK   0x04 /* Rotate clockwise */
-#define CH_EVENTID_DROP    0x05 /* Drop the piece */
-#define CH_EVENTID_PAUSE   0x06 /* Pause or resume */
-#define CH_EVENTID_SWAP    0x07 /* Swap Next and Hold. */
+#define CH_EVENTID_LEFT     0x01 /* Move left */
+#define CH_EVENTID_RIGHT    0x02 /* Move right */
+#define CH_EVENTID_CCLOCK   0x03 /* Rotate counter-clockwise */
+#define CH_EVENTID_CLOCK    0x04 /* Rotate clockwise */
+#define CH_EVENTID_DROP     0x05 /* Drop the piece all the way.*/
+#define CH_EVENTID_PAUSE    0x06 /* Pause or resume */
+#define CH_EVENTID_SWAP     0x07 /* Swap Next and Hold. */
+#define CH_EVENTID_DROP_ON  0x08 /* Drop, cancellable. */
+#define CH_EVENTID_DROP_OFF 0x09 /* Cancel drop. */
 
 /* Create the initial grid and return a WEAK reference on success.
  */

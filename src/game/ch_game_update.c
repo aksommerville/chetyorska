@@ -354,6 +354,14 @@ static int ch_game_drop(struct ch_game *game) {
   return 0;
 }
 
+/* End dropping.
+ */
+ 
+static int ch_game_cancel_drop(struct ch_game *game) {
+  game->dropping=0;
+  return 0;
+}
+
 /* Receive input.
  */
  
@@ -370,6 +378,8 @@ int ch_game_input(struct ch_game *game,int eventid) {
     case CH_EVENTID_DROP: return ch_game_drop(game);
     case CH_EVENTID_PAUSE: break;//TODO
     case CH_EVENTID_SWAP: ch_game_swap_bricks(game); return 0;
+    case CH_EVENTID_DROP_ON: return ch_game_drop(game);
+    case CH_EVENTID_DROP_OFF: return ch_game_cancel_drop(game);
   }
   return 0;
 }
