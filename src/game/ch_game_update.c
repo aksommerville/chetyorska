@@ -369,6 +369,7 @@ int ch_game_input(struct ch_game *game,int eventid) {
     case CH_EVENTID_CCLOCK: return ch_game_rotate(game,-1);
     case CH_EVENTID_DROP: return ch_game_drop(game);
     case CH_EVENTID_PAUSE: break;//TODO
+    case CH_EVENTID_SWAP: ch_game_swap_bricks(game); return 0;
   }
   return 0;
 }

@@ -38,6 +38,7 @@ void ch_game_del(struct ch_game *game) {
   ch_gridder_cleanup(&game->gridder);
   rb_sprite_group_del(game->sprites);
   rb_sprite_group_del(game->nextsprites);
+  rb_sprite_group_del(game->holdsprites);
   if (game->qualityv) free(game->qualityv);
   
   free(game);
@@ -113,7 +114,7 @@ struct rb_grid *ch_game_generate_grid(struct ch_game *game) {
   // Next brick aligned with tower's top, flush against its left. Fixed size 6x6.
   if (!(region=ch_gridder_new_region(&game->gridder,CH_RGN_NEXT))) return 0;
   region->w=6;
-  region->h=6;
+  region->h=7;
   region->x=tframe.x-region->w;
   region->y=tframe.y;
   
@@ -123,6 +124,13 @@ struct rb_grid *ch_game_generate_grid(struct ch_game *game) {
   region->h=2;
   region->x=tframe.x-region->w-1;
   region->y=tframe.y+7;
+  
+  // Hold aside Next.
+  if (!(region=ch_gridder_new_region(&game->gridder,CH_RGN_HOLD))) return 0;
+  region->w=6;
+  region->h=7;
+  region->x=tframe.x-region->w-6;
+  region->y=tframe.y;
   
   if (ch_gridder_validate_all(&game->gridder)<0) return 0;
   
@@ -142,6 +150,9 @@ struct rb_grid *ch_game_generate_grid(struct ch_game *game) {
   #define BULK(tag,tileid) ch_gridder_bulk_region( \
     &game->gridder,ch_gridder_get_region(&game->gridder,CH_RGN_##tag,0),tileid \
   );
+  #define LBOX(tag,frame,label) ch_gridder_labelbox_region( \
+    &game->gridder,ch_gridder_get_region(&game->gridder,CH_RGN_##tag,0),frame,label \
+  );
   
   FF(TOWER_FRAME,0x20,0x00)
   FF(LINES,0x20,0x00)
@@ -151,14 +162,16 @@ struct rb_grid *ch_game_generate_grid(struct ch_game *game) {
   LABEL(SCORE,0x70)
   NUMBER(SCORE)
   CONT(RHYTHM,0x23)
-  FF(NEXT,0x20,0x00)
+  LBOX(NEXT,0x20,0xb4)
   BULK(METRONOME,0x9e)
+  LBOX(HOLD,0x20,0xb0)
   
   #undef FF
   #undef CONT
   #undef LABEL
   #undef NUMBER
   #undef BULK
+  #undef LBOX
   
   ch_game_new_brick(game);
   if (!game->gridder.grid) return 0; // must never happen, but in theory new_brick could end the game
@@ -186,6 +199,20 @@ struct rb_sprite_group *ch_game_generate_sprites(struct ch_game *game) {
       if (rb_sprite_group_add(game->nextsprites,sprite)<0) return 0;
     }
     ch_game_redraw_next_brick(game);
+  }
+  if (!game->holdsprites) {
+    if (!(game->holdsprites=rb_sprite_group_new(0))) return 0;
+    int i=4; while (i-->0) {
+      struct rb_sprite *sprite=rb_sprite_new(&rb_sprite_type_dummy);
+      if (!sprite) return 0;
+      sprite->imageid=1;
+      sprite->x=-100; // we can't make them transparent, so go offscreen when invisible
+      int err=rb_sprite_group_add(game->sprites,sprite);
+      rb_sprite_del(sprite);
+      if (err<0) return 0;
+      if (rb_sprite_group_add(game->holdsprites,sprite)<0) return 0;
+    }
+    ch_game_redraw_hold_brick(game);
   }
   return game->sprites;
 }
@@ -301,7 +328,7 @@ void ch_game_redraw_next_brick(struct ch_game *game) {
   int y=(ylo+yhi)>>1;
   
   int dstx=dst->x*CH_TILESIZE+((dst->w*CH_TILESIZE)>>1);
-  int dsty=dst->y*CH_TILESIZE+((dst->h*CH_TILESIZE)>>1);
+  int dsty=(dst->y+1)*CH_TILESIZE+(((dst->h-1)*CH_TILESIZE)>>1); // +1 for the label
   int addx=dstx-x;
   int addy=dsty-y;
   
@@ -315,6 +342,62 @@ void ch_game_redraw_next_brick(struct ch_game *game) {
     spritec--;
     visitedc++;
   }
+}
+
+/* Hold brick UI.
+ */
+ 
+void ch_game_redraw_hold_brick(struct ch_game *game) {
+  if (!game->holdsprites||(game->holdsprites->c<4)) return;
+  const struct ch_gridder_region *dst=ch_gridder_get_region(&game->gridder,CH_RGN_HOLD,0);
+  if (!dst) return;
+  
+  ch_game_populate_sprites_for_shape(game->holdsprites->v,game->holdsprites->c,game->holdbrick.shape);
+  int xlo=game->holdsprites->v[0]->x;
+  int ylo=game->holdsprites->v[0]->y;
+  int xhi=xlo,yhi=ylo;
+  int i=4;
+  while (i-->0) {
+    struct rb_sprite *sprite=game->holdsprites->v[i];
+    if (sprite->x<xlo) xlo=sprite->x;
+    else if (sprite->x>xhi) xhi=sprite->x;
+    if (sprite->y<ylo) ylo=sprite->y;
+    else if (sprite->y>yhi) yhi=sprite->y;
+    sprite->tileid=game->holdbrick.tileid;
+  }
+  int x=(xlo+xhi)>>1;
+  int y=(ylo+yhi)>>1;
+  
+  int dstx=dst->x*CH_TILESIZE+((dst->w*CH_TILESIZE)>>1);
+  int dsty=(dst->y+1)*CH_TILESIZE+(((dst->h-1)*CH_TILESIZE)>>1);
+  int addx=dstx-x;
+  int addy=dsty-y;
+  
+  struct rb_sprite **sprite=game->holdsprites->v;
+  int spritec=game->holdsprites->c;
+  int visitedc=0;
+  while ((visitedc<4)&&(spritec>0)) {
+    (*sprite)->x+=addx;
+    (*sprite)->y+=addy;
+    sprite++;
+    spritec--;
+    visitedc++;
+  }
+}
+
+/* Swap next and hold bricks.
+ */
+ 
+void ch_game_swap_bricks(struct ch_game *game) {
+  struct ch_brick pvhold=game->holdbrick;
+  game->holdbrick=game->nextbrick;
+  if (pvhold.shape) {
+    game->nextbrick=pvhold;
+  } else {
+    game->nextbrick.shape=ch_game_random_brick_shape(&game->nextbrick.tileid,game);
+  }
+  ch_game_redraw_next_brick(game);
+  ch_game_redraw_hold_brick(game);
 }
 
 /* Generate a new brick at the top of the tower, fossilize the old one.

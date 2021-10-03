@@ -237,6 +237,19 @@ void ch_gridder_framefill_region(struct ch_gridder *gridder,const struct ch_grid
   }
 }
 
+void ch_gridder_labelbox_region(struct ch_gridder *gridder,const struct ch_gridder_region *region,uint8_t frame,uint8_t label) {
+  if (!region||!region->w||!region->h) return;
+  if (!gridder->grid) return;
+  ch_gridder_framefill_region(gridder,region,frame,0x00);
+  if (region->h>2) {
+    int labelw=region->w-2;
+    if (labelw>0) {
+      uint8_t *dst=gridder->grid->v+(region->y+1)*gridder->grid->w+region->x+1;
+      int i=labelw; for (;i-->0;dst++,label++) *dst=label;
+    }
+  }
+}
+
 /* Bulk copy into region.
  */
  

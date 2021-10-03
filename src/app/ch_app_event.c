@@ -96,8 +96,8 @@ static int ch_app_cb_input(struct rb_inmgr *inmgr,const struct rb_input_event *e
     case RB_BTNID_D:
     /*case RB_BTNID_L:*/ return app->cb_event(CH_EVENTID_CCLOCK,app->event_userdata);
     case RB_BTNID_DOWN: return app->cb_event(CH_EVENTID_DROP,app->event_userdata);
-    case RB_BTNID_START:
-    case RB_BTNID_SELECT: return app->cb_event(CH_EVENTID_PAUSE,app->event_userdata);
+    case RB_BTNID_SELECT: return app->cb_event(CH_EVENTID_SWAP,app->event_userdata);
+    case RB_BTNID_START: return app->cb_event(CH_EVENTID_PAUSE,app->event_userdata);
     
     //XXX TEMP
     case RB_BTNID_L: app->suspend=app->suspend?0:1; break;
@@ -129,13 +129,13 @@ static int ch_app_midi_note_on(struct ch_app *app,uint8_t noteid,uint8_t velocit
     case 0x30: return app->cb_event(CH_EVENTID_CCLOCK,app->event_userdata); // Hi Mid Tom
     case 0x31: return app->cb_event(CH_EVENTID_PAUSE,app->event_userdata); // Crash Cymbal 1
     case 0x32: return app->cb_event(CH_EVENTID_CCLOCK,app->event_userdata); // Hi Tom
-    case 0x33: return app->cb_event(CH_EVENTID_PAUSE,app->event_userdata); // Ride Cymbal 1
+    case 0x33: return app->cb_event(CH_EVENTID_SWAP,app->event_userdata); // Ride Cymbal 1
     case 0x34: return app->cb_event(CH_EVENTID_PAUSE,app->event_userdata); // Chinese Cymbal
-    case 0x35: return app->cb_event(CH_EVENTID_PAUSE,app->event_userdata); // Ride Bell
+    case 0x35: return app->cb_event(CH_EVENTID_SWAP,app->event_userdata); // Ride Bell
     case 0x36: return app->cb_event(CH_EVENTID_PAUSE,app->event_userdata); // Tambourine
     case 0x37: return app->cb_event(CH_EVENTID_PAUSE,app->event_userdata); // Splash Cymbal
     case 0x39: return app->cb_event(CH_EVENTID_PAUSE,app->event_userdata); // Crash Cymbal 2
-    case 0x3b: return app->cb_event(CH_EVENTID_PAUSE,app->event_userdata); // Ride Cymbal 2
+    case 0x3b: return app->cb_event(CH_EVENTID_SWAP,app->event_userdata); // Ride Cymbal 2
   }
   return 0;
 }

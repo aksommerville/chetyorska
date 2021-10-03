@@ -19,6 +19,7 @@
 #define CH_RGN_SCORE           5 /* 8+x4 Score '' */
 #define CH_RGN_RHYTHM          6 /* 2+x1 Rhythm bar -- 2 + barwidth */
 #define CH_RGN_METRONOME       7 /* 2x2 Lamp that pulses with the beat */
+#define CH_RGN_HOLD            8 /* 6x6 Hold brick. */
 
 #define CH_TOWER_W 10
 #define CH_TOWER_H 20
@@ -42,9 +43,11 @@ struct ch_game {
   struct ch_gridder gridder;
   struct rb_sprite_group *sprites;
   struct rb_sprite_group *nextsprites;
+  struct rb_sprite_group *holdsprites;
   
   struct ch_brick brick;
   struct ch_brick nextbrick;
+  struct ch_brick holdbrick;
   int framesperfall;
   int framesperfall_drop;
   int fallskip; // How many rows to drop on each fall -- only >1 at ludicrous speed
@@ -93,6 +96,7 @@ int ch_game_input(struct ch_game *game,int eventid);
 #define CH_EVENTID_CLOCK   0x04 /* Rotate clockwise */
 #define CH_EVENTID_DROP    0x05 /* Drop the piece */
 #define CH_EVENTID_PAUSE   0x06 /* Pause or resume */
+#define CH_EVENTID_SWAP    0x07 /* Swap Next and Hold. */
 
 /* Create the initial grid and return a WEAK reference on success.
  */
@@ -138,6 +142,8 @@ int ch_game_advance_level(struct ch_game *game);
 
 void ch_game_redraw_next_brick(struct ch_game *game);
 void ch_game_generate_next_brick(struct ch_game *game);
+void ch_game_redraw_hold_brick(struct ch_game *game);
+void ch_game_swap_bricks(struct ch_game *game);
 
 int ch_game_add_score_sprite(struct ch_game *game,int score,int x,int y);
 int ch_game_start_fireworks(struct ch_game *game);
