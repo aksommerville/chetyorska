@@ -76,14 +76,11 @@ static int ch_app_cb_mwheel(struct rb_video *video,int dx,int dy) {
 static int ch_app_cb_input(struct rb_inmgr *inmgr,const struct rb_input_event *event) {
   struct ch_app *app=inmgr->delegate.userdata;
 
-  #if CH_KIOSK
-    //fprintf(stderr,"ch_app_cb_input %d.%d=%d\n",event->plrid,event->btnid,event->value);
-    if (event->value&&(event->btnid==RB_BTNID_START)) {
-      fprintf(stderr,"quit due to ENTER key\n");
-      app->quit=1;
-      return 0;
-    }
-  #endif
+  if (event->value&&(event->btnid==RB_BTNID_START)) {
+    fprintf(stderr,"quit due to ENTER key\n");
+    app->quit=1;
+    return 0;
+  }
 
   rb_video_suppress_screensaver(app->video);
   if (event->value&&!event->plrid) switch (event->btnid) {

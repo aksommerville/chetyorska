@@ -211,7 +211,12 @@ struct ch_app *ch_app_new(int argc,char **argv) {
     return 0;
   }
   
-  const char *datapath="out/data";//TODO data path
+  const char *datapath="out/data";
+  int i=1; for (;i<argc;i++) {
+    if (memcmp(argv[i],"--data=",7)) continue;
+    datapath=argv[i]+7;
+    break;
+  }
   if (ch_app_load_archive(app,datapath)<0) {
     fprintf(stderr,"%s: Failed to load data.\n",datapath);
     ch_app_del(app);
