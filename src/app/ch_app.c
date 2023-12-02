@@ -5,6 +5,7 @@
 #include <rabbit/rb_video.h>
 #include <rabbit/rb_audio.h>
 #include <rabbit/rb_inmgr.h>
+#include <rabbit/rb_inmap.h>
 #include <rabbit/rb_vmgr.h>
 #include <rabbit/rb_synth.h>
 #include <rabbit/rb_synth_event.h>
@@ -17,6 +18,34 @@ struct rb_image *ch_tilesheet=0;//XXX organize
 void ch_app_set_video_callbacks(struct rb_video_delegate *delegate);
 void ch_app_set_inmgr_callbacks(struct rb_inmgr_delegate *delegate);
 int ch_app_cb_midi(void *userdata,int devid,const void *src,int srcc);
+
+/* Argv.
+ */
+ 
+static int ch_argc=0;
+static char **ch_argv=0;
+
+static const char *ch_arg_string(const char *k,const char *fallback) {
+  int kc=0; while (k[kc]) kc++;
+  int i=1; for (;i<ch_argc;i++) {
+    if (memcmp(ch_argv[i],k,kc)) continue;
+    if (ch_argv[i][kc]!='=') continue;
+    return ch_argv[i]+kc+1;
+  }
+  return fallback;
+}
+
+static int ch_arg_int(const char *k,int fallback) {
+  const char *src=ch_arg_string(k,0);
+  if (!src) return fallback;
+  int v=0;
+  for (;*src;src++) {
+    if ((*src<'0')||(*src>='9')) return fallback;
+    v*=10;
+    v+=(*src)-'0';
+  }
+  return v;
+}
 
 /* Audio PCM callback.
  */
@@ -39,11 +68,11 @@ static int ch_app_cb_pcm_out(int16_t *v,int c,struct rb_audio *audio) {
 #endif
  
 static int ch_app_init_audio(struct ch_app *app) {
-  //TODO configure drivertype,rate,chanc
   struct rb_audio_delegate delegate={
     .userdata=app,
-    .rate=44100,
-    .chanc=2,
+    .rate=ch_arg_int("--audio-rate",44100),
+    .chanc=ch_arg_int("--audio-chanc",2),
+    .device=ch_arg_string("--audio-device",0),
     .cb_pcm_out=ch_app_cb_pcm_out,
   };
   if (!(app->audio=rb_audio_new(rb_audio_type_by_index(0),&delegate))) return -1;
@@ -63,9 +92,10 @@ static int ch_app_init_video(struct ch_app *app) {
     .winh=675,
     .fullscreen=0,
     .title="Chetyorska",
+    .device=ch_arg_string("--video-device",0),
   };
   ch_app_set_video_callbacks(&delegate);
-  if (!(app->video=rb_video_new(rb_video_type_by_index(0),&delegate))) return -1;
+  if (!(app->video=rb_video_new(0,&delegate))) return -1;
   if (!(app->vmgr=rb_vmgr_new())) return -1;
   return 0;
 }
@@ -82,6 +112,22 @@ static int ch_app_init_input(struct ch_app *app) {
   if (!(app->inmgr=rb_inmgr_new(&delegate))) return -1;
   if (rb_inmgr_use_system_keyboard(app->inmgr)<0) return -1;
   if (rb_inmgr_connect_all(app->inmgr)<0) return -1;
+  
+  const char *incfg_path=ch_arg_string("--input-config",0);
+  if (incfg_path) {
+    void *serial=0;
+    int serialc=rb_file_read(&serial,incfg_path);
+    if (serialc>=0) {
+      if (rb_inmap_store_decode(app->inmgr->store,serial,serialc)<0) {
+        fprintf(stderr,"%s: Error applying input cofnig.\n",incfg_path);
+      } else {
+        fprintf(stderr,"%s: Applied input config.\n",incfg_path);
+      }
+      free(serial);
+    } else {
+      fprintf(stderr,"%s: Read failed. Input mapping unconfigured.\n",incfg_path);
+    }
+  }
   
   if (ch_ossmidi_init(ch_app_cb_midi,app)<0) return -1;
   
@@ -185,6 +231,8 @@ static int ch_app_load_archive(struct ch_app *app,const char *path) {
  */
  
 struct ch_app *ch_app_new(int argc,char **argv) {
+  ch_argc=argc;
+  ch_argv=argv;
   struct ch_app *app=calloc(1,sizeof(struct ch_app));
   if (!app) return 0;
   

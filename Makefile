@@ -15,7 +15,7 @@ LDPOST:=$(RABBITLIB) -lpthread -lasound -lbcm_host -lm -lz
 else # assume desktop linux
 CC:=gcc -c -MMD -O2 -Isrc -I$(RABBITHDR) -Werror -Wimplicit -DCH_SYNTH_CACHE=\"/home/andy/.chetyorskacache\"
 LD:=gcc
-LDPOST:=$(RABBITLIB) -lX11 -lGLX -lGL -lpthread -lasound -lpulse -lpulse-simple -lm -lz
+LDPOST:=$(RABBITLIB) -lX11 -lGLX -lGL -lpthread -lasound -lpulse -lpulse-simple -lm -lz -ldrm -lgbm -lEGL -lGLESv2
 endif
 
 CFILES:=$(shell find src -name '*.c')
@@ -39,7 +39,7 @@ EXE_MAIN:=out/chetyorska
 all:$(EXE_MAIN)
 $(EXE_MAIN):$(OFILES);$(PRECMD) $(LD) -o $@ $^ $(LDPOST)
 
-run:$(EXE_MAIN) $(DATADST);$(EXE_MAIN)
+run:$(EXE_MAIN) $(DATADST);$(EXE_MAIN) --input-config=etc/input.cfg
 
 clean:;rm -rf mid out
 
