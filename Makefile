@@ -7,8 +7,12 @@ RABBITBIN:=$(RABBITROOT)/out/rabbit
 RABBITLIB:=$(RABBITROOT)/out/librabbit.a
 RABBITHDR:=$(RABBITROOT)/src
 
-UNAMEN:=$(shell uname -n)
-ifeq ($(UNAMEN),raspberrypi)
+UNAMENM:=$(shell uname -nm)
+ifeq ($(UNAMENM),raspberrypi aarch64)
+CC:=gcc -c -MMD -O2 -Isrc -I$(RABBITHDR) -Werror -Wimplicit -DCH_SYNTH_CACHE=\"/home/kiddo/.chetyorskacache\"
+LD:=gcc
+LDPOST:=$(RABBITLIB) -lpthread -lasound -lm -lz -ldrm -lgbm -lEGL -lGLESv2
+else ifneq (,$(strip $(filter raspberrypi,$(UNAMENM))))
 CC:=gcc -c -MMD -O2 -Isrc -I$(RABBITHDR) -Werror -Wimplicit -DCH_SYNTH_CACHE=\"/home/pi/.chetyorskacache\" -DCH_KIOSK=1
 LD:=gcc -L/opt/vc/lib
 LDPOST:=$(RABBITLIB) -lpthread -lasound -lbcm_host -lm -lz
